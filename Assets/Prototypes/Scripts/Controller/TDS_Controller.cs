@@ -107,8 +107,8 @@ public class TDS_Controller : TDS_GroundedElement
     // The coroutine used to reset the combo
     [SerializeField] private Coroutine resetComboCoroutine = null;
 
-    // The hitbox range of the controller
-    [SerializeField] private TDS_Hitbox rangeBox = null;
+    // All attack detection boxes of this player
+    [SerializeField] private TDS_AttackBox[] attackBoxes = new TDS_AttackBox[] { };
 
     // The sprite of the controller
     [SerializeField] private SpriteRenderer sprite = null;
@@ -192,11 +192,19 @@ public class TDS_Controller : TDS_GroundedElement
     private void Hit()
     {
         // If the player can't attack, return
-        if (!canAttack || rangeBox.InterractibleElements.Count == 0) return;
+        if (!canAttack) return;
+
+        // Raycast in the box of the attack
+        TDS_Enemy[] _enemies = AttackRaycast("Melee Box");
+
+        if (_enemies.Length == 0) return;
 
         int _damages = Mathf.Clamp(Random.Range(1, comboValue + 1), damagesMin, damagesMax + 1);
 
-        rangeBox.InterractibleElements.ForEach(i => i.TakeDamages(_damages));
+        foreach (TDS_Enemy _enemy in _enemies)
+        {
+            _enemy.TakeDamages(_damages);
+        }
 
         // Show the combo value
         (Instantiate((GameObject)Resources.Load("DamageBehaviour"), transform.position + Vector3.up + (Vector3.right * 0.5f), Quaternion.identity)).GetComponent<TDS_DamageBehaviour>().Init("x" + comboValue);
@@ -232,7 +240,7 @@ public class TDS_Controller : TDS_GroundedElement
             Hit();
         }
         // If the player wants to project something / soomeone
-        else if (Input.GetKey(projectKey))
+        else if (Input.GetKeyDown(projectKey))
         {
             Project();
         }
@@ -242,16 +250,40 @@ public class TDS_Controller : TDS_GroundedElement
     private void Project()
     {
         // If the player can't attack, return
-        if (!canAttack || rangeBox.InterractibleElements.Count == 0) return;
+        if (!canAttack) return;
+
+        // Raycast in the box of the attack
+        TDS_Enemy[] _interactibles = AttackRaycast("Project Box");
+
+        if (_interactibles.Length == 0) return;
 
         // Select the nearest interactable element and project it
-        rangeBox.InterractibleElements.OrderBy(i => Vector3.Distance(transform.position, i.transform.position)).First().SetProjection(damagesProjection, transform);
+        _interactibles.OrderBy(i => Vector3.Distance(transform.position, i.transform.position)).First().SetProjection(damagesProjection, transform);
 
         // Set the cool down between two attacks
         StartCoroutine(SetAttackCoolDown());
 
         // Reset the combo
         ComboValue = 1;
+    }
+
+    // Raycast in a given box and return encounter colliders
+    private TDS_Enemy[] AttackRaycast(string _boxName)
+    {
+        // Get the right box
+        TDS_AttackBox _box = attackBoxes.Where(b => b.Name.ToLower() == _boxName.ToLower()).FirstOrDefault();
+
+        // if the box wasn't founded, debug it and return
+        if (_box == null)
+        {
+            TDS_CustomDebug.CustomDebugLogError("The attack box '" + _boxName + "' couldn't be found !");
+            return new TDS_Enemy[] { };
+        }
+        else
+        {
+            // Else, return the result of the raycast in the box
+            return Physics.OverlapBox(transform.position + _box.CenterPosition, _box.HalfExtents).Select(c => c.GetComponent<TDS_Enemy>()).ToArray().Where(e => e != null).ToArray();
+        }
     }
     #endregion
 
@@ -312,25 +344,37 @@ public class TDS_Controller : TDS_GroundedElement
 
     private void OnDrawGizmos()
     {
-        // If no combo is in progress and the player can attack, return
-        if (hitComboTimer == 0) return;
-
-        Vector3 _position = transform.position + (Vector3.up * 2f);
-
-        // Draws a gizmo indicating the reset combo timer if a combo is started
-        if (comboValue > 1)
+        // If a combo is in progress or the player can't attack :
+        if (hitComboTimer != 0)
         {
-            Gizmos.color = Color.cyan;
-            Gizmos.DrawSphere(_position, gogoPowerRangers);
+            Vector3 _position = transform.position + (Vector3.up * 2f);
+
+            // Draws a gizmo indicating the reset combo timer if a combo is started
+            if (comboValue > 1)
+            {
+                Gizmos.color = Color.cyan;
+                Gizmos.DrawSphere(_position, gogoPowerRangers);
+            }
+            // If the player can't attack, draws a gizmo indicating the cool down
+            if (!canAttack)
+            {
+                Gizmos.color = Color.yellow;
+                Gizmos.DrawSphere(_position, gogoPowerRangers * (hitCoolDown / comboResetTime));
+            }
+            Gizmos.color = canAttack ? Color.green : Color.red;
+            Gizmos.DrawSphere(_position, gogoPowerRangers * (hitComboTimer / comboResetTime));
         }
-        // If the player can't attack, draws a gizmo indicating the cool down
-        if (!canAttack)
+
+        // Draw each box that is visible
+        foreach (TDS_AttackBox _box in attackBoxes)
         {
-            Gizmos.color = Color.yellow;
-            Gizmos.DrawSphere(_position, gogoPowerRangers * (hitCoolDown / comboResetTime));
+            if (_box.isVisible)
+            {
+                Gizmos.color = _box.Color;
+                Gizmos.DrawCube(transform.position + _box.CenterPosition, _box.HalfExtents);
+                Debug.Log("In");
+            }
         }
-        Gizmos.color = canAttack ? Color.green : Color.red;
-        Gizmos.DrawSphere(_position, gogoPowerRangers * (hitComboTimer / comboResetTime));
 
         // Reset the color of the gizmos
         Gizmos.color = Color.white;
