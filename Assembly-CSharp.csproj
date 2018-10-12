@@ -136,8 +136,8 @@
     <Compile Include="Assets\Prototypes\Scripts\Camera\TDS_SpriteBehaviour.cs" />
     <Compile Include="Assets\Prototypes\Scripts\Commun\TDS_GroundedElement.cs" />
     <Compile Include="Assets\Prototypes\Scripts\Commun\TDS_IInterractible.cs" />
+    <Compile Include="Assets\Prototypes\Scripts\Controller\TDS_AttackBox.cs" />
     <Compile Include="Assets\Prototypes\Scripts\Controller\TDS_Controller.cs" />
-    <Compile Include="Assets\Prototypes\Scripts\Controller\TDS_Hitbox.cs" />
     <Compile Include="Assets\Prototypes\Scripts\Enemies\TDS_Enemy.cs" />
     <Compile Include="Assets\Prototypes\Scripts\Enemies\TDS_EnemyLifeBar.cs" />
     <Compile Include="Assets\Prototypes\Scripts\Networking\TDS_Networking.cs" />
