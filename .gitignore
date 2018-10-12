@@ -5,6 +5,11 @@ Temp/
 Library/
 Temp\
 Library\
+[Tt]emp/
+[Oo]bj/
+[Bb]uild
+/[Bb]uilds/
+/[Ll]ibrary/
 
 # ===================================== #
 # Visual Studio / MonoDevelop generated #
