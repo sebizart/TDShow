@@ -218,7 +218,7 @@ MonoBehaviour:
   zMovement: 0
   speed: 5
   agent: {fileID: 0}
-  renderer: {fileID: 212125470836174350}
+  renderer: {fileID: 0}
   isVisible: 1
   canAttack: 1
   comboMax: 3
@@ -230,10 +230,21 @@ MonoBehaviour:
   gogoPowerRangers: 0.25
   hitCoolDown: 0.5
   hitComboTimer: 0
-  rangeBox: {fileID: 114040499060494774}
+  attackBoxes:
+  - name: Melee Box
+    isVisible: 0
+    color: {r: 0.8980392, g: 0.11372546, b: 0.11372546, a: 0.32941177}
+    centerPosition: {x: 0.39, y: 0.5, z: 0}
+    halfExtents: {x: 1.12, y: 1, z: 0.35}
+  - name: Project Box
+    isVisible: 0
+    color: {r: 0.22922872, g: 0.18823424, b: 0.8490566, a: 0.39215687}
+    centerPosition: {x: 0.27, y: 0.5, z: 0}
+    halfExtents: {x: 0.65, y: 1, z: 0.35}
+  sprite: {fileID: 0}
   hitKey: 323
   projectKey: 324
-  photonID: {fileID: 114618198311910328}
+  photonID: {fileID: 0}
   xPositionOnline: 0
   yPositionOnline: 0
   zPositionOnline: 0
