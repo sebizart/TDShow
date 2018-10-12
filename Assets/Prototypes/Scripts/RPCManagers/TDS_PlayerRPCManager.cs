@@ -32,7 +32,7 @@ public class TDS_PlayerRPCManager : PunBehaviour
     public void CheckHitBox(int _playerPunID)
     {
         if (!PhotonNetwork.isMasterClient) return; 
-
+        
     }
     
     #endregion

@@ -9,7 +9,7 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{318F51A9-DC61-A361-33F1-60E955A18FEF}</ProjectGuid>
+    <ProjectGuid>{326C971F-3F87-51DF-34FA-3F616628C1A4}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Assembly-CSharp-Editor</AssemblyName>
@@ -87,37 +87,37 @@
     <Compile Include="Assets\Scripts\Team Tools\SpritesManager\Editor\SpritesToolEditor.cs" />
     <Compile Include="Assets\Scripts\Team Tools\XBoxMappingController\Editor\AlexisMappingController.cs" />
     <Reference Include="Unity.2D.Animation.Runtime">
-      <HintPath>C:/Users/EPIIC - Etudiant/Documents/CATA_Unity/The Dreadful Show/Library/ScriptAssemblies/Unity.2D.Animation.Runtime.dll</HintPath>
+      <HintPath>C:/Users/EPIIC - Etudiant/Documents/CATA_Unity/The Dreadful Show/TDShow/Library/ScriptAssemblies/Unity.2D.Animation.Runtime.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.StandardEvents">
-      <HintPath>C:/Users/EPIIC - Etudiant/Documents/CATA_Unity/The Dreadful Show/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
+      <HintPath>C:/Users/EPIIC - Etudiant/Documents/CATA_Unity/The Dreadful Show/TDShow/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro.Editor">
-      <HintPath>C:/Users/EPIIC - Etudiant/Documents/CATA_Unity/The Dreadful Show/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
+      <HintPath>C:/Users/EPIIC - Etudiant/Documents/CATA_Unity/The Dreadful Show/TDShow/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.PackageManagerUI.Editor">
-      <HintPath>C:/Users/EPIIC - Etudiant/Documents/CATA_Unity/The Dreadful Show/Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll</HintPath>
+      <HintPath>C:/Users/EPIIC - Etudiant/Documents/CATA_Unity/The Dreadful Show/TDShow/Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.InternalAPIEngineBridge.001">
-      <HintPath>C:/Users/EPIIC - Etudiant/Documents/CATA_Unity/The Dreadful Show/Library/ScriptAssemblies/Unity.InternalAPIEngineBridge.001.dll</HintPath>
+      <HintPath>C:/Users/EPIIC - Etudiant/Documents/CATA_Unity/The Dreadful Show/TDShow/Library/ScriptAssemblies/Unity.InternalAPIEngineBridge.001.dll</HintPath>
     </Reference>
     <Reference Include="Unity.2D.Common.Runtime">
-      <HintPath>C:/Users/EPIIC - Etudiant/Documents/CATA_Unity/The Dreadful Show/Library/ScriptAssemblies/Unity.2D.Common.Runtime.dll</HintPath>
+      <HintPath>C:/Users/EPIIC - Etudiant/Documents/CATA_Unity/The Dreadful Show/TDShow/Library/ScriptAssemblies/Unity.2D.Common.Runtime.dll</HintPath>
     </Reference>
     <Reference Include="Unity.2D.Animation.Editor">
-      <HintPath>C:/Users/EPIIC - Etudiant/Documents/CATA_Unity/The Dreadful Show/Library/ScriptAssemblies/Unity.2D.Animation.Editor.dll</HintPath>
+      <HintPath>C:/Users/EPIIC - Etudiant/Documents/CATA_Unity/The Dreadful Show/TDShow/Library/ScriptAssemblies/Unity.2D.Animation.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.2D.Triangle.Runtime">
-      <HintPath>C:/Users/EPIIC - Etudiant/Documents/CATA_Unity/The Dreadful Show/Library/ScriptAssemblies/Unity.2D.Triangle.Runtime.dll</HintPath>
+      <HintPath>C:/Users/EPIIC - Etudiant/Documents/CATA_Unity/The Dreadful Show/TDShow/Library/ScriptAssemblies/Unity.2D.Triangle.Runtime.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro">
-      <HintPath>C:/Users/EPIIC - Etudiant/Documents/CATA_Unity/The Dreadful Show/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
+      <HintPath>C:/Users/EPIIC - Etudiant/Documents/CATA_Unity/The Dreadful Show/TDShow/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
     </Reference>
     <Reference Include="Unity.2D.Common.Editor">
-      <HintPath>C:/Users/EPIIC - Etudiant/Documents/CATA_Unity/The Dreadful Show/Library/ScriptAssemblies/Unity.2D.Common.Editor.dll</HintPath>
+      <HintPath>C:/Users/EPIIC - Etudiant/Documents/CATA_Unity/The Dreadful Show/TDShow/Library/ScriptAssemblies/Unity.2D.Common.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.InternalAPIEditorBridge.001">
-      <HintPath>C:/Users/EPIIC - Etudiant/Documents/CATA_Unity/The Dreadful Show/Library/ScriptAssemblies/Unity.InternalAPIEditorBridge.001.dll</HintPath>
+      <HintPath>C:/Users/EPIIC - Etudiant/Documents/CATA_Unity/The Dreadful Show/TDShow/Library/ScriptAssemblies/Unity.InternalAPIEditorBridge.001.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AIModule">
       <HintPath>C:/Program Files/Unity/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>
@@ -360,16 +360,16 @@
       <HintPath>C:/Program Files/Unity/Editor/Data/PlaybackEngines/windowsstandalonesupport/UnityEditor.WindowsStandalone.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
-      <HintPath>C:/Users/EPIIC - Etudiant/Documents/CATA_Unity/The Dreadful Show/Assets/Photon/Photon Unity Networking/Editor/PhotonNetwork/Newtonsoft.Json.dll</HintPath>
+      <HintPath>C:/Users/EPIIC - Etudiant/Documents/CATA_Unity/The Dreadful Show/TDShow/Assets/Photon/Photon Unity Networking/Editor/PhotonNetwork/Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Photon3Unity3D">
-      <HintPath>C:/Users/EPIIC - Etudiant/Documents/CATA_Unity/The Dreadful Show/Assets/Photon/Plugins/Photon3Unity3D.dll</HintPath>
+      <HintPath>C:/Users/EPIIC - Etudiant/Documents/CATA_Unity/The Dreadful Show/TDShow/Assets/Photon/Plugins/Photon3Unity3D.dll</HintPath>
     </Reference>
     <Reference Include="websocket-sharp">
-      <HintPath>C:/Users/EPIIC - Etudiant/Documents/CATA_Unity/The Dreadful Show/Assets/Photon/Plugins/WebSocket/websocket-sharp.dll</HintPath>
+      <HintPath>C:/Users/EPIIC - Etudiant/Documents/CATA_Unity/The Dreadful Show/TDShow/Assets/Photon/Plugins/WebSocket/websocket-sharp.dll</HintPath>
     </Reference>
     <Reference Include="UtilsLibrary">
-      <HintPath>C:/Users/EPIIC - Etudiant/Documents/CATA_Unity/The Dreadful Show/Assets/Plugins/UtilsLibrary.dll</HintPath>
+      <HintPath>C:/Users/EPIIC - Etudiant/Documents/CATA_Unity/The Dreadful Show/TDShow/Assets/Plugins/UtilsLibrary.dll</HintPath>
     </Reference>
     <Reference Include="NSubstitute">
       <HintPath>C:/Users/EPIIC - Etudiant/AppData/Local/Unity/cache/packages/packages.unity.com/com.unity.2d.common@1.0.10-preview/Tests/Editor/Lib/NSubstitute/NSubstitute.dll</HintPath>
@@ -740,7 +740,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="Assembly-CSharp.csproj">
-      <Project>{055A69E4-AEA6-1C0B-5138-668531FB690E}</Project>
+      <Project>{0B0F8349-DA4A-EEAD-E789-0DF75C1E4226}</Project>
       <Name>Assembly-CSharp</Name>
     </ProjectReference>
   </ItemGroup>
