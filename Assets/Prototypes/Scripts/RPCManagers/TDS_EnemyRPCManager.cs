@@ -30,6 +30,41 @@ public class TDS_EnemyRPCManager : PunBehaviour
     #region Methods
     public void AddNewEnemy(TDS_Enemy _enemy) => AllEnemies.Add(_enemy);
 
+    /// <summary>
+    /// Get all damages informations for each touched enemies and apply the damages
+    /// </summary>
+    /// <param name="_damagesInformations"></param>
+    public void GetDamagesInformation(string _damagesInformations)
+    {
+        if (!PhotonNetwork.isMasterClient) return;
+        string[] _enemiesDamages = SplitInformations(_damagesInformations);
+        int _enemyId;
+        int _damages; 
+        for (int i = 0; i < _enemiesDamages.Length; i++)
+        {
+            string[] _enemyDamages = _enemiesDamages[i].Split(',');
+            if (int.TryParse(_enemyDamages[0], out _enemyId))
+            {
+                if (int.TryParse(_enemyDamages[1], out _damages))
+                {
+                    EnemyRPCManagerPhotonView.RPC("ApplyLifeModification", PhotonTargets.All, _enemyId, _damages); 
+                }
+                else break; 
+            }
+            else break; 
+        }
+    }
+
+    /// <summary>
+    /// Split the damages informations
+    /// </summary>
+    /// <param name="_damagesInfo"></param>
+    /// <returns></returns>
+    private string[] SplitInformations(string _damagesInfo)
+    {
+        return _damagesInfo.Split('|'); 
+    }
+
     #region RPC
     /// <summary>
     /// Call this Methods when a Enemy is instanciated to add it to the list of all enemies

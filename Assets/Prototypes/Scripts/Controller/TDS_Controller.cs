@@ -67,6 +67,7 @@ public class TDS_Controller : TDS_GroundedElement
     #region Combat
     // Can the player attack ?
     [SerializeField] private bool canAttack = true;
+    public bool CanAttack { get { return canAttack;  } }
 
     // The max combo
     [SerializeField] private int comboMax = 3;
@@ -88,16 +89,19 @@ public class TDS_Controller : TDS_GroundedElement
 
     // The max & min amount of damages when hitting
     [SerializeField] private int damagesMin = 1;
+    public int DamagesMin { get { return damagesMin; } }
     [SerializeField] private int damagesMax = 2;
+    public int DamagesMax { get { return damagesMax; } }
 
     // The damages dealt when projecting
     [SerializeField] private int damagesProjection = 1;
+    public int DamagesProjection {  get { return damagesProjection; } }
 
     // The time it takes to reset the combo when the player is not hitting
     [SerializeField] private float comboResetTime = 1;
 
     // The size of the combat's gizmo debug sphere
-    [SerializeField] private float gogoPowerRangers = .25f;
+    [SerializeField] private float gizmoSizeDebug = .25f;
 
     // The cool down time between two hits
     [SerializeField] private float hitCoolDown = .5f;
@@ -188,24 +192,16 @@ public class TDS_Controller : TDS_GroundedElement
         isFacingRight = !isFacingRight;
     }
 
-    // Hit all interactibles elements in range
+    // When the player wants to hit, send information to the MasterManager
     private void Hit()
     {
-        // If the player can't attack, return
-        if (!canAttack) return;
+        TDS_PlayerRPCManager.Instance.PlayerRPCManagerPhotonView.RPC("CheckHitBox", PhotonTargets.MasterClient, photonID.viewID); 
+    }
 
-        // Raycast in the box of the attack
-        TDS_Enemy[] _enemies = AttackRaycast("Melee Box");
-
-        if (_enemies.Length == 0) return;
-
-        int _damages = Mathf.Clamp(Random.Range(1, comboValue + 1), damagesMin, damagesMax + 1);
-
-        foreach (TDS_Enemy _enemy in _enemies)
-        {
-            _enemy.TakeDamages(_damages);
-        }
-
+    /// When the MasterManager has verified the targets can be hit, throw the callbacks and add 1 to the combo value
+    ///Set the cooldown between 2 attacks
+    public void HitVerified()
+    {
         // Show the combo value
         (Instantiate((GameObject)Resources.Load("DamageBehaviour"), transform.position + Vector3.up + (Vector3.right * 0.5f), Quaternion.identity)).GetComponent<TDS_DamageBehaviour>().Init("x" + comboValue);
 
@@ -215,6 +211,7 @@ public class TDS_Controller : TDS_GroundedElement
         // Set the cool down between two attacks
         StartCoroutine(SetAttackCoolDown());
     }
+
 
     // Get the inputs of the player and executes related actions in-game
     private void Inputs()
@@ -246,20 +243,14 @@ public class TDS_Controller : TDS_GroundedElement
         }
     }
 
-    // Project one interactible element (nearest) in range
+    // When the player wants to project, send information to the MasterManager
     private void Project()
     {
-        // If the player can't attack, return
-        if (!canAttack) return;
+        TDS_PlayerRPCManager.Instance.PlayerRPCManagerPhotonView.RPC("CheckProjectionBox", PhotonTargets.MasterClient, photonID.viewID);
+    }
 
-        // Raycast in the box of the attack
-        TDS_Enemy[] _interactibles = AttackRaycast("Project Box");
-
-        if (_interactibles.Length == 0) return;
-
-        // Select the nearest interactable element and project it
-        _interactibles.OrderBy(i => Vector3.Distance(transform.position, i.transform.position)).First().SetProjection(damagesProjection, transform);
-
+    public void ProjectVerified()
+    {
         // Set the cool down between two attacks
         StartCoroutine(SetAttackCoolDown());
 
@@ -268,7 +259,7 @@ public class TDS_Controller : TDS_GroundedElement
     }
 
     // Raycast in a given box and return encounter colliders
-    private TDS_Enemy[] AttackRaycast(string _boxName)
+    public TDS_Enemy[] AttackRaycast(string _boxName)
     {
         // Get the right box
         TDS_AttackBox _box = attackBoxes.Where(b => b.Name.ToLower() == _boxName.ToLower()).FirstOrDefault();
@@ -353,16 +344,16 @@ public class TDS_Controller : TDS_GroundedElement
             if (comboValue > 1)
             {
                 Gizmos.color = Color.cyan;
-                Gizmos.DrawSphere(_position, gogoPowerRangers);
+                Gizmos.DrawSphere(_position, gizmoSizeDebug);
             }
             // If the player can't attack, draws a gizmo indicating the cool down
             if (!canAttack)
             {
                 Gizmos.color = Color.yellow;
-                Gizmos.DrawSphere(_position, gogoPowerRangers * (hitCoolDown / comboResetTime));
+                Gizmos.DrawSphere(_position, gizmoSizeDebug * (hitCoolDown / comboResetTime));
             }
             Gizmos.color = canAttack ? Color.green : Color.red;
-            Gizmos.DrawSphere(_position, gogoPowerRangers * (hitComboTimer / comboResetTime));
+            Gizmos.DrawSphere(_position, gizmoSizeDebug * (hitComboTimer / comboResetTime));
         }
 
         // Draw each box that is visible

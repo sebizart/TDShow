@@ -1278,6 +1278,16 @@ Prefab:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 114827094661946866, guid: 9b7ccb9d88c207c4cb3af6fb82bee560,
+        type: 2}
+      propertyPath: attackBoxes.Array.data[0].isVisible
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114827094661946866, guid: 9b7ccb9d88c207c4cb3af6fb82bee560,
+        type: 2}
+      propertyPath: attackBoxes.Array.data[1].isVisible
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9b7ccb9d88c207c4cb3af6fb82bee560, type: 2}
   m_IsPrefabAsset: 0

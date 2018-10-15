@@ -7,7 +7,7 @@ SceneListEnd?
 486cd95c82d8305219c352c06b776e1f Assembly-CSharp.dll:.PunTeams
 cf1e852f36c718789a279fa7a28eeec5 Assembly-CSharp.dll:.SmoothSyncMovement
 c422dd62785a6d0afa870fbd111886ce Unity.TextMeshPro.dll:TMPro.TMP_SelectionCaret
-70aec03f02640c9aa8b73024b79dc123 Assembly-CSharp.dll:.TDS_Controller
+714e8dadd1e2cf7c82cf221f413e0235 Assembly-CSharp.dll:.TDS_Controller
 7b803eb2910e9b4cd5e521ae07b9f7d6 Unity.TextMeshPro.dll:TMPro.TMP_Dropdown
 486cd95c82d8305219c352c06b776e1f UnityEngine.Timeline.dll:UnityEngine.Timeline.ActivationPlayableAsset
 9e61f3535f3c55760a1cedfbd114f4af UnityEngine.Timeline.dll:UnityEngine.Timeline.ActivationTrack
@@ -141,7 +141,6 @@ e1ea12ca952c81d81a9a21fdf34446ed UnityEngine.HoloLens.dll:UnityEngine.EventSyste
 98d69a140ec0084cde3b6a5e09aea295 UnityEngine.HoloLens.dll:UnityEngine.XR.WSA.SpatialMappingCollider
 dfd33ff9ae3ce8d7ca1f22b475ec2387 UnityEngine.HoloLens.dll:UnityEngine.XR.WSA.SpatialMappingRenderer
 96f3ea9f23b6f08e60710ebb4af49174 Unity.TextMeshPro.dll:TMPro.TMP_SpriteAsset
-7620dfdcabdd76d1a177b20447b74af0 Assembly-CSharp.dll:.TDS_Hitbox
 365ffd26d874861e558e6e995c7361bb Assembly-CSharp.dll:.SpritesManager
 f16835701e71dd5d6fb1fed4b7aff1d8 Unity.TextMeshPro.dll:TMPro.TMP_Asset
 067427652b58b8867df9781554d4a023 Assembly-CSharp.dll:.OnClickInstantiate
@@ -198,6 +197,7 @@ e1ea12ca952c81d81a9a21fdf34446ed UnityEngine.HoloLens.dll:UnityEngine.EventSyste
 dfd33ff9ae3ce8d7ca1f22b475ec2387 UnityEngine.HoloLens.dll:UnityEngine.XR.WSA.SpatialMappingRenderer
 5c31437a93d3edab30a7d21c677ce307 Assembly-CSharp.dll:.OnJoinedInstantiate
 aac9c55ae7ba4b95b852a7d9c191acd1 Unity.TextMeshPro.dll:TMPro.TextMeshProUGUI
+bb2eae21576406e0d073e5f0d395792f Assembly-CSharp.dll:.TDS_PlayerRPCManager
 fd1e15b01c6e8d9c3c753ad322216267 Assembly-CSharp.dll:.PhotonLagSimulationGui
 0a006f3734181ba8b26758f0866152c0 UnityEngine.SpatialTracking.dll:UnityEngine.SpatialTracking.TrackedPoseDriver
 a2651694e7b6c8dd699b038f729bf69b Assembly-CSharp.dll:.SupportLogger
@@ -217,4 +217,3 @@ ac4015b3f9c2f9a8f87357544349e470 Assembly-CSharp.dll:.InRoomChat
 817781a7db393edc78c8263b7d19f749 Assembly-CSharp.dll:.TDS_LoggerManager
 93307bd34e39d73fd24e00ec39c25a91 Unity.TextMeshPro.dll:TMPro.TMP_SubMesh
 486cd95c82d8305219c352c06b776e1f Assembly-CSharp.dll:.SpritesBehaviour
-bb2eae21576406e0d073e5f0d395792f Assembly-CSharp.dll:.TDS_PlayerRPCManager

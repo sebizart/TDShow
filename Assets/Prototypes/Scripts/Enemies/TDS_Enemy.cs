@@ -121,7 +121,6 @@ public class TDS_Enemy : TDS_GroundedElement, TDS_IInterractible
         SnapActivation();
     }
 
-
     /// ONLINE INFOS TO SEND
 
     /// <summary>
@@ -141,11 +140,11 @@ public class TDS_Enemy : TDS_GroundedElement, TDS_IInterractible
         }
     }
 
-    public void SetProjection(int _damages, Transform _playerTransform)
-    {
-        BeingProjected(_damages, _playerTransform);
-        TDS_EnemyRPCManager.Instance.EnemyRPCManagerPhotonView.RPC("ProjectEnemyAndApplyLifeModification", PhotonTargets.Others, EnemyPhotonView.viewID, _damages, TDS_Networking.Instance.OwnerID);
-    }
+    //public void SetProjection(int _damages, Transform _playerTransform)
+    //{
+    //    BeingProjected(_damages, _playerTransform);
+    //    TDS_EnemyRPCManager.Instance.EnemyRPCManagerPhotonView.RPC("ProjectEnemyAndApplyLifeModification", PhotonTargets.Others, EnemyPhotonView.viewID, _damages, TDS_Networking.Instance.OwnerID);
+    //}
 
     /// <summary>
     /// Call when the enemy takes damages
