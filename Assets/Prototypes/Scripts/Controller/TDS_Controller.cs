@@ -120,14 +120,14 @@ public class TDS_Controller : TDS_GroundedElement
     // The key code for projecting
     [SerializeField] private KeyCode projectKey = KeyCode.Mouse1;
     #endregion
-    #endregion
 
-    #region Network Fields / Properties
+    #region Network
     // The photon ID of the object
     [SerializeField] private PhotonView photonID;
 
     // The position of the online character
     [SerializeField] private float xPositionOnline, yPositionOnline, zPositionOnline, xScaleOnline = 0;
+    #endregion
     #endregion
 
     #region Methods
@@ -189,18 +189,9 @@ public class TDS_Controller : TDS_GroundedElement
     }
 
     // Hit all interactibles elements in range
-    private void Hit()
+    public void Hit(TDS_Enemy[] _enemies, int _damages)
     {
-        // If the player can't attack, return
-        if (!canAttack) return;
-
-        // Raycast in the box of the attack
-        TDS_Enemy[] _enemies = AttackRaycast("Melee Box");
-
-        if (_enemies.Length == 0) return;
-
-        int _damages = Mathf.Clamp(Random.Range(1, comboValue + 1), damagesMin, damagesMax + 1);
-
+        // Damages each enemy
         foreach (TDS_Enemy _enemy in _enemies)
         {
             _enemy.TakeDamages(_damages);
@@ -214,6 +205,35 @@ public class TDS_Controller : TDS_GroundedElement
 
         // Set the cool down between two attacks
         StartCoroutine(SetAttackCoolDown());
+    }
+    // Check what this player can hit
+    public void HitCheck()
+    {
+        // If the player can't attack, return
+        if (!canAttack) return;
+
+        // Raycast in the box of the attack
+        TDS_Enemy[] _enemies = AttackRaycast("Melee Box");
+
+        if (_enemies.Length == 0) return;
+
+        int _damages = Mathf.Clamp(Random.Range(1, comboValue + 1), damagesMin, damagesMax + 1);
+
+        // Send to the Player Manager informations about the enemies hit
+        string _enemiesAndDamages = string.Empty;
+        for (int _i = 0; _i < _enemies.Length; _i++)
+        {
+            _enemiesAndDamages += _enemies[_i].photonView.viewID;
+            if (_i != _enemies.Length - 1) _enemiesAndDamages += ",";
+            else
+            {
+                _enemiesAndDamages += "-" + _damages;
+            }
+        }
+        TDS_PlayerRPCManager.Instance.Hit(_enemiesAndDamages);
+
+        // Now, hit them
+        Hit(_enemies, _damages);
     }
 
     // Get the inputs of the player and executes related actions in-game
@@ -237,17 +257,42 @@ public class TDS_Controller : TDS_GroundedElement
         // If the player wants to hit something / someone
         if (Input.GetKeyDown(hitKey))
         {
-            Hit();
+            if (PhotonNetwork.isMasterClient)
+            {
+                HitCheck();
+            }
+            else
+            {
+                TDS_PlayerRPCManager.Instance.HitCheck(photonID.viewID);
+            }
         }
         // If the player wants to project something / soomeone
         else if (Input.GetKeyDown(projectKey))
         {
-            Project();
+            if (PhotonNetwork.isMasterClient)
+            {
+                ProjectCheck();
+            }
+            else
+            {
+                TDS_PlayerRPCManager.Instance.ProjectCheck(photonID.viewID);
+            }
         }
     }
 
     // Project one interactible element (nearest) in range
-    private void Project()
+    public void Project(TDS_Enemy _enemy)
+    {
+        _enemy.SetProjection(damagesProjection, transform);
+
+        // Set the cool down between two attacks
+        StartCoroutine(SetAttackCoolDown());
+
+        // Reset the combo
+        ComboValue = 1;
+    }
+    // Check what this player can project
+    public void ProjectCheck()
     {
         // If the player can't attack, return
         if (!canAttack) return;
@@ -258,13 +303,12 @@ public class TDS_Controller : TDS_GroundedElement
         if (_interactibles.Length == 0) return;
 
         // Select the nearest interactable element and project it
-        _interactibles.OrderBy(i => Vector3.Distance(transform.position, i.transform.position)).First().SetProjection(damagesProjection, transform);
+        TDS_Enemy _enemy = (_interactibles.OrderBy(i => Vector3.Distance(transform.position, i.transform.position)).First());
 
-        // Set the cool down between two attacks
-        StartCoroutine(SetAttackCoolDown());
+        string _enemyDamagesAndTransform = _enemy.photonView.viewID.ToString() + "," + damagesProjection + "," + photonView.viewID;
+        TDS_PlayerRPCManager.Instance.Project(_enemyDamagesAndTransform);
 
-        // Reset the combo
-        ComboValue = 1;
+        Project(_enemy);
     }
 
     // Raycast in a given box and return encounter colliders

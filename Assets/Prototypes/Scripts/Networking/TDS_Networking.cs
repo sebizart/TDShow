@@ -109,8 +109,9 @@ public class TDS_Networking : PunBehaviour
         {
             OwnerID = _playerId.viewID;
         }
-        List<TDS_Controller> _players = FindObjectsOfType<TDS_Controller>().ToList();
-        TDS_PlayerRPCManager.Instance.AllPlayers = _players; 
+        TDS_PlayerRPCManager.Instance.AllPlayers = FindObjectsOfType<TDS_Controller>().ToList();
+
+        TDS_PlayerRPCManager.Instance.AddPlayer(_playerId.viewID, true);
     }
 
     /// <summary>

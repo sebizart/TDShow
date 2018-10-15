@@ -44,4 +44,9 @@ MonoBehaviour:
   - UpdatePlayerList
   - AddNewPlayer
   - CheckHitBox
+  - Hit
+  - HitCheck
+  - Project
+  - ProjectCheck
+  - AddPlayer
   DisableAutoOpenWizard: 1

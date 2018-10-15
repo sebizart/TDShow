@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Photon; 
 
@@ -25,7 +26,6 @@ public class TDS_EnemyRPCManager : PunBehaviour
     public PhotonView EnemyRPCManagerPhotonView;
     public List<TDS_Enemy> AllEnemies = new List<TDS_Enemy>();
     #endregion
-
 
     #region Methods
     public void AddNewEnemy(TDS_Enemy _enemy) => AllEnemies.Add(_enemy);
@@ -97,6 +97,24 @@ public class TDS_EnemyRPCManager : PunBehaviour
 
     #endregion
 
+    public void HitEnemies(string _enemiesAndDamges)
+    {
+        string[] _separed = _enemiesAndDamges.Split('-');
+        string[] _enemiesID = _separed[0].Split(',');
+        int _damages = 0;
+        int.TryParse(_separed[1], out _damages);
+
+        AllEnemies.Where(e => _enemiesID.Contains(e.photonView.viewID.ToString())).ToList().ForEach(e => e.TakeDamages(_damages));
+    }
+
+    public void ProjectEnemy(int _enemyID, int _damages, Transform _playerTransform)
+    {
+        TDS_Enemy _enemy = AllEnemies.Where(e => e.photonView.viewID == _enemyID).FirstOrDefault();
+
+        if (!_enemy) return;
+
+        _enemy.SetProjection(_damages, _playerTransform);
+    }
     #endregion
 
     #region UnityMethods
