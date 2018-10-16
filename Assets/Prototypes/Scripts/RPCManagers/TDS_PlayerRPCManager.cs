@@ -59,8 +59,6 @@ public class TDS_PlayerRPCManager : PunBehaviour
     {
         if (PhotonNetwork.isMasterClient)
         {
-            PhotonView _playerPV = PhotonView.Find(_playerID);
-
             TDS_Controller _player = AllPlayers.Where(p => p.photonView.viewID == _playerID).FirstOrDefault();
             if (!_player) return;
             _player.HitCheck();
