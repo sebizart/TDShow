@@ -46,4 +46,6 @@ MonoBehaviour:
   - CheckHitBox
   - CheckProjectionBox
   - SendInfosToPlayer
+  - SendHitInfosToPlayer
+  - SendProjectionInfosToPlayer
   DisableAutoOpenWizard: 1
