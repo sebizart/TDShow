@@ -19,11 +19,17 @@ Date:
 Description:
 */
 
+public enum MethodType
+{
+    HitCheck,
+    Hit
+}
+
 public class TDS_PlayerRPCManager : PunBehaviour
 {
     #region Fields/Properties
     public static TDS_PlayerRPCManager Instance;
-    public PhotonView photonID; 
+    public PhotonView photonID = null; 
     public List<TDS_Controller> AllPlayers = new List<TDS_Controller>();
     #endregion
 
@@ -115,7 +121,12 @@ public class TDS_PlayerRPCManager : PunBehaviour
             Destroy(this);
             return;
         }
-        Instance = this; 
+        Instance = this;
+    }
+
+    public void CallRPC(MethodType _type, PhotonTargets _targets, object _parameters)
+    {
+        photonID.RPC(_type.ToString(), _targets, _parameters); 
     }
     #endregion
 }
