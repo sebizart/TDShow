@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq; 
 using UnityEngine;
@@ -19,7 +18,8 @@ Date:
 Description:
 */
 
-public class TDS_AttackBox : MonoBehaviour 
+[Serializable]
+public class TDS_AttackBox 
 {
 
     #region Fields/Properties
@@ -29,7 +29,15 @@ public class TDS_AttackBox : MonoBehaviour
     [SerializeField] private int maxDamages;
     [SerializeField] private int minDamages;
     [SerializeField, Header("Box")] private Vector3 centerPosition;
-    [SerializeField] private Vector3 extendPosition; 
+    public Vector3 CenterPosition { get { return centerPosition; } }
+    [SerializeField] private Vector3 extendPosition;
+    public Vector3 ExtendPosition { get { return extendPosition; } }
+
+    // Gizmo utilities
+    [SerializeField] private bool isVisible = false;
+    public bool IsVisible { get { return isVisible; } }
+    [SerializeField] private Color boxColor = Color.green;
+    public Color BoxColor { get { return boxColor; } }
     #endregion
     
     #region Methods

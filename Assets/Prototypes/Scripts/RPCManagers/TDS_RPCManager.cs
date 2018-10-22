@@ -48,8 +48,6 @@ public class TDS_RPCManager : PunBehaviour
             return;
         }
         Dictionary<int, int> _allChars = _char.CheckHit(_attackID);
-        _char.Hit(_attackID);
-
         RPCManagerPhotonView.RPC("ApplyInfoDamages", PhotonTargets.All, SetInfoDamages(_allChars, _characterID, _attackID)); 
     }
 

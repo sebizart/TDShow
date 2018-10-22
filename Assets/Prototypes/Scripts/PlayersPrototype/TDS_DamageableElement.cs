@@ -79,6 +79,12 @@ public abstract class TDS_DamageableElement : PunBehaviour
         Health -= _damages;
         OnTakingDamages?.Invoke();
     }
+
+    //ON PHOTON SERIALIZE VIEW
+    protected virtual void OnPhotonSerializeView(PhotonStream _stream, PhotonMessageInfo _messageInfo)
+    {
+
+    }
     #endregion
 
     #region UnityMethods

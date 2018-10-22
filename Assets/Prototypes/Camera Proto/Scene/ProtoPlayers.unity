@@ -112,7 +112,7 @@ NavMeshSettings:
     accuratePlacement: 0
     debug:
       m_Flags: 0
-  m_NavMeshData: {fileID: 0}
+  m_NavMeshData: {fileID: 23800000, guid: 233a6daa595dad94facba25cba789fb9, type: 2}
 --- !u!1 &141689849
 GameObject:
   m_ObjectHideFlags: 0
@@ -382,8 +382,8 @@ MonoBehaviour:
   - {fileID: 1035719941}
   - {fileID: 901136873}
   - {fileID: 1221905960}
-  - {fileID: 0}
   - {fileID: 1886710347}
+  - {fileID: 540115334}
 --- !u!4 &342750167
 Transform:
   m_ObjectHideFlags: 0
@@ -490,6 +490,62 @@ MonoBehaviour:
     type: 2}
   m_PrefabInternal: {fileID: 372694825}
   m_Script: {fileID: 11500000, guid: 20fa6631d0662494496bf6aaeb069578, type: 3}
+--- !u!1001 &414754967
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4773150334804420, guid: 14a5f2524587248408e127f84720538f, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: -1.7462
+      objectReference: {fileID: 0}
+    - target: {fileID: 4773150334804420, guid: 14a5f2524587248408e127f84720538f, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0.319
+      objectReference: {fileID: 0}
+    - target: {fileID: 4773150334804420, guid: 14a5f2524587248408e127f84720538f, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: -1.4337873
+      objectReference: {fileID: 0}
+    - target: {fileID: 4773150334804420, guid: 14a5f2524587248408e127f84720538f, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0.3431679
+      objectReference: {fileID: 0}
+    - target: {fileID: 4773150334804420, guid: 14a5f2524587248408e127f84720538f, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4773150334804420, guid: 14a5f2524587248408e127f84720538f, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4773150334804420, guid: 14a5f2524587248408e127f84720538f, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 0.9392741
+      objectReference: {fileID: 0}
+    - target: {fileID: 4773150334804420, guid: 14a5f2524587248408e127f84720538f, type: 2}
+      propertyPath: m_RootOrder
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 114918765745383700, guid: 14a5f2524587248408e127f84720538f,
+        type: 2}
+      propertyPath: viewIdField
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114918765745383700, guid: 14a5f2524587248408e127f84720538f,
+        type: 2}
+      propertyPath: instantiationId
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1823587953247330, guid: 14a5f2524587248408e127f84720538f, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 14a5f2524587248408e127f84720538f, type: 2}
+  m_IsPrefabAsset: 0
 --- !u!1 &465170581
 GameObject:
   m_ObjectHideFlags: 0
@@ -678,6 +734,11 @@ MonoBehaviour:
   zOffset: -3.9
   player: {fileID: 0}
   playerRigidbody: {fileID: 0}
+--- !u!4 &540115334 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4773150334804420, guid: 14a5f2524587248408e127f84720538f,
+    type: 2}
+  m_PrefabInternal: {fileID: 414754967}
 --- !u!1 &601308046
 GameObject:
   m_ObjectHideFlags: 0
@@ -1390,6 +1451,7 @@ GameObject:
   - component: {fileID: 1032854177}
   - component: {fileID: 1032854178}
   - component: {fileID: 1032854176}
+  - component: {fileID: 1032854179}
   m_Layer: 0
   m_Name: Logic
   m_TagString: Untagged
@@ -1478,6 +1540,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PlayerRPCManagerPhotonView: {fileID: 1032854176}
   AllPlayers: []
+--- !u!114 &1032854179
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1032854173}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3bc5adb1bb2cc974e82548914ffc53a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  RPCManagerPhotonView: {fileID: 1032854176}
 --- !u!1 &1035719940
 GameObject:
   m_ObjectHideFlags: 0
@@ -1865,7 +1939,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 8
   m_IsActive: 1
 --- !u!64 &1311003564
 MeshCollider:

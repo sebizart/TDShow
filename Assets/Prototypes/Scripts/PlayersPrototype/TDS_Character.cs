@@ -35,8 +35,9 @@ public abstract class TDS_Character : TDS_DamageableElement
     [SerializeField, Header("Nav Mesh")] NavMeshAgent navMeshCharacter;
 
     //PROJECTILE
-    //ANIMATOR
-    //ATTACKBOX
+
+    [SerializeField, Header("Animator")] protected Animator CharacterAnimator; 
+
     [SerializeField, Header("AttackBoxes")] protected TDS_AttackBox[] attackBoxes = new TDS_AttackBox[] { };  
     #endregion
 
@@ -47,8 +48,9 @@ public abstract class TDS_Character : TDS_DamageableElement
     /// <param name="_newSide">New orientation side of the character</param>
     protected void ChangeSide(FacingSide _newSide)
     {
-        currentSide = _newSide; 
+        currentSide = _newSide;
         // Change Animator State
+        CharacterAnimator.SetInteger("OrientationState", (int)_newSide); 
     }
 
     /// <summary>
@@ -57,7 +59,7 @@ public abstract class TDS_Character : TDS_DamageableElement
     /// <param name="_attackID">ID of the attack </param>
     protected void CallHit(int _attackID)
     {
-        //Requête RPC
+        TDS_RPCManager.Instance.RPCManagerPhotonView.RPC("LaunchAttack", PhotonTargets.MasterClient, PhotonViewElementID, _attackID); 
     }
 
     /// <summary>
@@ -70,7 +72,7 @@ public abstract class TDS_Character : TDS_DamageableElement
         if (!PhotonNetwork.isMasterClient) return null;
         // Get the right box         
         TDS_AttackBox _box = attackBoxes.Where(b => b.ID == _attackID).FirstOrDefault();
-        if (!_box)
+        if (_box == null)
         {
             TDS_CustomDebug.CustomDebugLog($"Attack Box n°{_attackID} can't be found on {this.name}");
             return null;
@@ -82,10 +84,7 @@ public abstract class TDS_Character : TDS_DamageableElement
     /// Apply effects of the attack with the ID
     /// </summary>
     /// <param name="_attackId">ID of the attack </param>
-    public virtual void Hit(int _attackId)
-    {
-
-    }
+    public abstract void Hit(int _attackId);
 
     /// <summary>
     /// Set the destination of this character to a new position
@@ -93,7 +92,7 @@ public abstract class TDS_Character : TDS_DamageableElement
     /// <param name="_position">New destination position of the character</param>
     protected virtual void SetDestination(Vector3 _position)
     {
-
+        navMeshCharacter.SetDestination(_position);
     }
 
     #region Combats
@@ -113,17 +112,54 @@ public abstract class TDS_Character : TDS_DamageableElement
     #endregion
 
     #region NET methods
-    protected void NetSetOnlinePosition()
+    protected void NetSetOnlinePosition(Vector3 _onlinePos)
     {
+        //SUIVRE LA POSITION DU PLAYER LOCAL AVEC LE ONPHOTONSERIALIZEVIEW
+        transform.position = Vector3.Lerp(transform.position, _onlinePos, Time.deltaTime * speed); 
 
+        //OU ENVOYER LE PATH AVEC UNE REQUËTE RPC SOUS FORME D'UNE CHAINE STRING POUR QUE TOUS LES PLAYERS SUIVENT LE PATH DONNÉ PAR LE MASTERMANAGER
     }
 
     //ON PHOTON SERIALIZE VIEW
-    #endregion 
+    protected override void OnPhotonSerializeView(PhotonStream _stream, PhotonMessageInfo _messageInfo)
+    {
+        base.OnPhotonSerializeView(_stream, _messageInfo); 
+        if(_stream.isWriting)
+        {
+            _stream.SendNext(transform.position.x);
+            _stream.SendNext(transform.position.y);
+            _stream.SendNext(transform.position.z);
+            _stream.SendNext((int)currentSide); 
+        }
+        else if(_stream.isReading)
+        {
+            float _posX = (float)_stream.ReceiveNext();
+            float _posY= (float)_stream.ReceiveNext();
+            float _posZ = (float)_stream.ReceiveNext();
+            FacingSide _side = (FacingSide)_stream.ReceiveNext();
+            Vector3 _onlinePos = new Vector3(_posX, _posY, _posZ);
+            NetSetOnlinePosition(_onlinePos);
+            ChangeSide(_side); 
+        }
+    }
+
+    #endregion
 
     #endregion
 
     #region UnityMethods
+    private void OnDrawGizmos()
+    {
+        foreach (TDS_AttackBox _box in attackBoxes)
+        {
+            if (_box.IsVisible)
+            {
+                Gizmos.color = _box.BoxColor;
+                Gizmos.DrawCube(transform.position + _box.CenterPosition, _box.ExtendPosition);
+            }
+        }
+    }
+
     void Start () 
     {
     	
@@ -141,8 +177,8 @@ public abstract class TDS_Character : TDS_DamageableElement
 /// </summary>
 public enum FacingSide
 {
-    Bottom, 
-    Left, 
-    Right, 
-    Top
+    Bottom = 0, 
+    Left = 1 , 
+    Right = 2, 
+    Top = 3
 }

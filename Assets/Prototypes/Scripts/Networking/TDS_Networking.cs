@@ -104,7 +104,7 @@ public class TDS_Networking : PunBehaviour
     public override void OnJoinedRoom()
     {
         base.OnJoinedRoom();
-        PhotonView _playerId = PhotonNetwork.Instantiate("Beard Leady - Socle", Vector3.zero + Vector3.up, Quaternion.identity,0).GetComponent<PhotonView>();
+        PhotonView _playerId = PhotonNetwork.Instantiate(playerName, Vector3.zero + Vector3.up, Quaternion.identity,0).GetComponent<PhotonView>();
         if (_playerId.isMine)
         {
             OwnerID = _playerId.viewID;

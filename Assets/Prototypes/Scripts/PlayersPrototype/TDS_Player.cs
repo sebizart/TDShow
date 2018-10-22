@@ -40,6 +40,12 @@ public class TDS_Player : TDS_Character
             currentComboValue = value; 
         }
     }
+
+    #region Key Codes
+    [Header("Key Codes")]
+    [SerializeField] KeyCode attackOneKey = KeyCode.Mouse0;
+    [SerializeField] KeyCode catchKey = KeyCode.Mouse1;
+    #endregion
     #endregion
 
     #region Methods
@@ -48,7 +54,51 @@ public class TDS_Player : TDS_Character
     /// </summary>
     protected void CheckInputs()
     {
+        float _horizontal = Input.GetAxis("Horizontal");
+        float _vertical = Input.GetAxis("Vertical");
 
+        // Set the orientation side of the player
+        if (_horizontal >= .5F)
+        {
+            if (currentSide != FacingSide.Right)
+            {
+                ChangeSide(FacingSide.Right);
+            }
+        }
+        else if (_horizontal <= -.5f)
+        {
+            if (currentSide != FacingSide.Left)
+            {
+                ChangeSide(FacingSide.Left);
+            }
+        }
+        else if (_vertical > 0)
+        {
+            if (currentSide != FacingSide.Top)
+            {
+                ChangeSide(FacingSide.Top);
+            }
+        }
+        else if (_vertical < 0)
+        {
+            if (currentSide != FacingSide.Bottom)
+            {
+                ChangeSide(FacingSide.Bottom);
+            }
+        }
+
+        // Set the destination of the player's inputs
+        SetDestination(new Vector3(transform.position.x + _horizontal, transform.position.y, transform.position.z + _vertical));
+
+        // Attacks verifications
+        if (Input.GetKeyDown(attackOneKey))
+        {
+            CallHit(1);
+        }
+        else if (Input.GetKeyDown(catchKey))
+        {
+            CallHit(4);
+        }
     }
 
     /// <summary>
@@ -79,10 +129,27 @@ public class TDS_Player : TDS_Character
     protected override void AttackTwo()
     {
     }
-    #endregion 
+
+    public override void Hit(int _attackId)
+    {
+        Debug.Log("Hit " + _attackId + " !");
+    }
+    #endregion
+
+    protected override void SetDestination(Vector3 _position)
+    {
+        base.SetDestination(_position);
+
+    }
     #endregion
 
     #region UnityMethods
+    private void FixedUpdate()
+    {
+        // Checks the inputs of the player
+        CheckInputs();
+    }
+
     void Start () 
     {
     	
