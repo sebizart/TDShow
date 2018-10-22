@@ -141,6 +141,7 @@
     <Compile Include="Assets\Prototypes\Scripts\Enemies\TDS_Enemy.cs" />
     <Compile Include="Assets\Prototypes\Scripts\Enemies\TDS_EnemyLifeBar.cs" />
     <Compile Include="Assets\Prototypes\Scripts\Networking\TDS_Networking.cs" />
+    <Compile Include="Assets\Prototypes\Scripts\PlayersPrototype\Players\TDS_BeardLady.cs" />
     <Compile Include="Assets\Prototypes\Scripts\PlayersPrototype\TDS_AttackBox.cs" />
     <Compile Include="Assets\Prototypes\Scripts\PlayersPrototype\TDS_Character.cs" />
     <Compile Include="Assets\Prototypes\Scripts\PlayersPrototype\TDS_DamageableElement.cs" />

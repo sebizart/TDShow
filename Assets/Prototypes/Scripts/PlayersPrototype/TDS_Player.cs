@@ -17,27 +17,39 @@ Date:
 Description:
 */
 
-public class TDS_Player : TDS_Character 
+public enum PlayerAttacks
+{
+    AttackOne = 1,
+    AttackTwo,
+    AttackThree,
+    Catch,
+    Dodge,
+    AirAttack,
+    RodeoAttack,
+    Super
+}
+
+public abstract class TDS_Player : TDS_Character
 {
     public event Action OnHeal;
 
     #region Fields/Properties
     [SerializeField, Header("Player", order = 0), Header("Int", order = 1)] protected int comboMax = 3;
     [SerializeField] protected int comboResetTime = 1;
-    [SerializeField] protected int currentComboValue = 0; 
+    [SerializeField] protected int currentComboValue = 0;
     public int ComboValue
     {
         get
         {
-            return currentComboValue; 
+            return currentComboValue;
         }
         protected set
         {
-            if(value >= comboMax)
+            if (value >= comboMax)
             {
-                value = 0; 
+                value = 0;
             }
-            currentComboValue = value; 
+            currentComboValue = value;
         }
     }
 
@@ -93,11 +105,11 @@ public class TDS_Player : TDS_Character
         // Attacks verifications
         if (Input.GetKeyDown(attackOneKey))
         {
-            CallHit(1);
+            CallHit((int)PlayerAttacks.AttackOne);
         }
         else if (Input.GetKeyDown(catchKey))
         {
-            CallHit(4);
+            CallHit((int)PlayerAttacks.Catch);
         }
     }
 
@@ -111,46 +123,59 @@ public class TDS_Player : TDS_Character
         OnHeal?.Invoke();
     }
 
-    protected /*abstract*/ void AirAttack() { }
-    protected /*abstract*/ void Catch() { }
-    protected /*abstract*/ void Dodge() { }
-    protected /*abstract*/ void RodeoAttack() { }
-    protected /*abstract*/ void Super() { }
-
-    #region Attacks
-    protected override void AttackOne()
-    {
-    }
-
-    protected override void AttackThree()
-    {
-    }
-
-    protected override void AttackTwo()
-    {
-    }
-
     public override void Hit(int _attackId)
     {
-        Debug.Log("Hit " + _attackId + " !");
+        // Triggers the right attack depending on the attack id
+        switch (_attackId)
+        {
+            case 1:
+                AttackOne();
+                break;
+            case 2:
+                AttackTwo();
+                break;
+            case 3:
+                AttackThree();
+                break;
+            case 4:
+                Catch();
+                break;
+            case 5:
+                Dodge();
+                break;
+            case 6:
+                AirAttack();
+                break;
+            case 7:
+                RodeoAttack();
+                break;
+            case 8:
+                Super();
+                break;
+            default:
+                TDS_CustomDebug.CustomDebugLogWarning($"The Player's attack ID \"{_attackId}\" is unknown, sorry miss");
+                break;
+        }
     }
+
+    #region Attacks
+    protected abstract void AirAttack();
+    protected abstract void Catch();
+    protected abstract void Dodge();
+    protected abstract void RodeoAttack();
+    protected abstract void Super();
     #endregion
-
-    protected override void SetDestination(Vector3 _position)
-    {
-        base.SetDestination(_position);
-
-    }
     #endregion
 
     #region UnityMethods
     private void FixedUpdate()
     {
-        if(photonViewElement.isMine)
+        // If it's the player's avatar : Checks the inputs of the player
+        if (photonViewElement.isMine)
         {
-            // Checks the inputs of the player
             CheckInputs();
         }
+        // If not, just set the position of this player localy
         else
         {
             NetSetOnlinePosition(); 
