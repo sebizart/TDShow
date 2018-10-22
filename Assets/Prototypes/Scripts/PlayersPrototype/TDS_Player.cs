@@ -146,8 +146,16 @@ public class TDS_Player : TDS_Character
     #region UnityMethods
     private void FixedUpdate()
     {
-        // Checks the inputs of the player
-        CheckInputs();
+        if(photonViewElement.isMine)
+        {
+            // Checks the inputs of the player
+            CheckInputs();
+        }
+        else
+        {
+            NetSetOnlinePosition(); 
+        }
+
     }
 
     void Start () 

@@ -33,6 +33,7 @@ public abstract class TDS_Character : TDS_DamageableElement
     [SerializeField, Header("Float")] protected float speed = 1;
 
     [SerializeField, Header("Nav Mesh")] NavMeshAgent navMeshCharacter;
+    private Vector3 netOnlinePosition; 
 
     //PROJECTILE
 
@@ -112,10 +113,11 @@ public abstract class TDS_Character : TDS_DamageableElement
     #endregion
 
     #region NET methods
-    protected void NetSetOnlinePosition(Vector3 _onlinePos)
+    protected void NetSetOnlinePosition()
     {
+        if (photonViewElement.isMine) return; 
         //SUIVRE LA POSITION DU PLAYER LOCAL AVEC LE ONPHOTONSERIALIZEVIEW
-        transform.position = Vector3.Lerp(transform.position, _onlinePos, Time.deltaTime * speed); 
+        transform.position = Vector3.Lerp(transform.position, netOnlinePosition, Time.deltaTime * navMeshCharacter.speed); 
 
         //OU ENVOYER LE PATH AVEC UNE REQUËTE RPC SOUS FORME D'UNE CHAINE STRING POUR QUE TOUS LES PLAYERS SUIVENT LE PATH DONNÉ PAR LE MASTERMANAGER
     }
@@ -137,8 +139,7 @@ public abstract class TDS_Character : TDS_DamageableElement
             float _posY= (float)_stream.ReceiveNext();
             float _posZ = (float)_stream.ReceiveNext();
             FacingSide _side = (FacingSide)_stream.ReceiveNext();
-            Vector3 _onlinePos = new Vector3(_posX, _posY, _posZ);
-            NetSetOnlinePosition(_onlinePos);
+            netOnlinePosition = new Vector3(_posX, _posY, _posZ);
             ChangeSide(_side); 
         }
     }
