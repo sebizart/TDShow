@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/Prototypes/Camera Proto/Scene/ProtoCamera.unity
+- path: Assets/Prototypes/Camera Proto/Scene/ProtoPlayers.unity
   isLoaded: 1
   isActive: 1

@@ -48,4 +48,6 @@ MonoBehaviour:
   - SendInfosToPlayer
   - SendHitInfosToPlayer
   - SendProjectionInfosToPlayer
+  - LaunchAttack
+  - ApplyInfoDamages
   DisableAutoOpenWizard: 1

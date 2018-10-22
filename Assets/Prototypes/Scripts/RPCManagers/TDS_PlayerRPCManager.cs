@@ -29,6 +29,7 @@ public class TDS_PlayerRPCManager : PunBehaviour
     #endregion
 
     #region Methods
+    #region OLD
     /// <summary>
     /// Check if there is something to project in the hit box of the player
     /// if there is something to project, tell everyone to hit this element
@@ -37,9 +38,9 @@ public class TDS_PlayerRPCManager : PunBehaviour
     [PunRPC]
     public void CheckHitBox(int _playerPunID)
     {
-        if (PhotonNetwork.isMasterClient) return; 
+        if (!PhotonNetwork.isMasterClient) return; 
         TDS_Controller _player = GetControllerByID(_playerPunID);
-        if (_player == null) return; 
+        if (_player == null) return;
 
         //Check all verifications to throw the attack method
         // If the player can't attack, return
@@ -117,6 +118,9 @@ public class TDS_PlayerRPCManager : PunBehaviour
         if (!_player) return;
         _player.ProjectVerified();
     }
+    #endregion
+
+
 
     /// <summary>
     /// Search the player according to his PhotonView ID
