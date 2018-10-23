@@ -108,7 +108,7 @@ public class TDS_Controller : TDS_GroundedElement
     [SerializeField] private Coroutine resetComboCoroutine = null;
 
     // All attack detection boxes of this player
-    [SerializeField] private TDS_AttackBox[] attackBoxes = new TDS_AttackBox[] { };
+    [SerializeField] private TDS_OLDAttackBox[] attackBoxes = new TDS_OLDAttackBox[] { };
 
     // The sprite of the controller
     [SerializeField] private SpriteRenderer sprite = null;
@@ -315,7 +315,7 @@ public class TDS_Controller : TDS_GroundedElement
     private TDS_Enemy[] AttackRaycast(string _boxName)
     {
         // Get the right box
-        TDS_AttackBox _box = attackBoxes.Where(b => b.Name.ToLower() == _boxName.ToLower()).FirstOrDefault();
+        TDS_OLDAttackBox _box = attackBoxes.Where(b => b.Name.ToLower() == _boxName.ToLower()).FirstOrDefault();
 
         // if the box wasn't founded, debug it and return
         if (_box == null)
@@ -410,7 +410,7 @@ public class TDS_Controller : TDS_GroundedElement
         }
 
         // Draw each box that is visible
-        foreach (TDS_AttackBox _box in attackBoxes)
+        foreach (TDS_OLDAttackBox _box in attackBoxes)
         {
             if (_box.isVisible)
             {

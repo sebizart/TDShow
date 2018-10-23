@@ -49,4 +49,6 @@ MonoBehaviour:
   - Project
   - ProjectCheck
   - AddPlayer
+  - ApplyInfoDamages
+  - LaunchAttack
   DisableAutoOpenWizard: 1
