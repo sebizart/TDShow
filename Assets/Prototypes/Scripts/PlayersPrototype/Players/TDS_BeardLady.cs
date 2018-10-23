@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq; 
 using UnityEngine;
 
 /*
@@ -49,10 +50,46 @@ public class TDS_BeardLady : TDS_Player
     [SerializeField] int beardDurabilityMax = 2;
     [SerializeField] int growingBeardCooldown = 5;
     [SerializeField] int growingBeardValue = 0;
-    [Header("Animator"), SerializeField] Animator beardAnimator; 
+    [Header("Animator"), SerializeField] Animator beardAnimator;
+
     #endregion
 
     #region Methods
+
+    public override Dictionary<int, int> CheckHit(int _attackID)
+    {
+        if (!PhotonNetwork.isMasterClient) return null;
+        // Get the right box         
+        TDS_AttackBox _box = attackBoxes.Where(b => b.ID == _attackID).FirstOrDefault();
+        if (_box == null)
+        {
+            TDS_CustomDebug.CustomDebugLog($"Attack Box n°{_attackID} can't be found on {this.name}");
+            return null;
+        }
+        float _beardOffset;
+        switch (currentBeardState)
+        {
+            case BeardState.VeryShort:
+                _beardOffset = .5f; 
+                break;
+            case BeardState.Short:
+                _beardOffset = .75f; 
+                break;
+            case BeardState.Average:
+                _beardOffset = 1;
+                break;
+            case BeardState.Long:
+                _beardOffset = 1.5f; 
+                break;
+            case BeardState.VeryLong:
+                _beardOffset = 2; 
+                break;
+            default:
+                _beardOffset = 1;
+                break;
+        }
+        return _box.RayCastAttack(_beardOffset);
+    }
 
     /// <summary>
     /// 

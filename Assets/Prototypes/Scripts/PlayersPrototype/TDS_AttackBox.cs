@@ -43,6 +43,7 @@ public class TDS_AttackBox
     #region Methods
     public Dictionary<int, int> RayCastAttack()
     {
+        // Créer un layer pour chaque type et ne pas prendre en compte le type de layer de l'attaquant (pour éviter que les players se tapent entre eux)
         int[] _elements =  Physics.OverlapBox(centerPosition, extendPosition).Select(c => c.GetComponent<TDS_DamageableElement>()).ToArray().Where(e => e != null).Select(e => e.PhotonViewElementID).ToArray();
         int _damages;
         Dictionary<int, int> _characterDamages = new Dictionary<int, int>();
@@ -53,9 +54,20 @@ public class TDS_AttackBox
         }
         return _characterDamages; 
     }
-    #endregion
-    
-    #region UnityMethods
-
+    public Dictionary<int, int> RayCastAttack(float _beardOffset)
+    {
+        // Créer un layer pour chaque type et ne pas prendre en compte le type de layer de l'attaquant (pour éviter que les players se tapent entre eux)
+        Vector3 _centerPosition = new Vector3(centerPosition.x * _beardOffset, centerPosition.y, centerPosition.z);
+        Vector3 _extendPosition = new Vector3(extendPosition.x * _beardOffset, extendPosition.y, extendPosition.z);
+        int[] _elements = Physics.OverlapBox(_centerPosition, _extendPosition).Select(c => c.GetComponent<TDS_DamageableElement>()).ToArray().Where(e => e != null).Select(e => e.PhotonViewElementID).ToArray();
+        int _damages;
+        Dictionary<int, int> _characterDamages = new Dictionary<int, int>();
+        foreach (int id in _elements)
+        {
+            _damages = Random.Range(minDamages, maxDamages);
+            _characterDamages.Add(id, _damages);
+        }
+        return _characterDamages;
+    }
     #endregion
 }
