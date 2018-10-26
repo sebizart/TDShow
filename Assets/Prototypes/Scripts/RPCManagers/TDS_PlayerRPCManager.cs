@@ -47,14 +47,14 @@ public class TDS_PlayerRPCManager : PunBehaviour
         if (!_player.CanAttack) return;
 
         // Raycast in the box of the attack
-        TDS_Enemy[] _enemies = _player.AttackRaycast("Melee Box");
+        TDS_EnemyOLD[] _enemies = _player.AttackRaycast("Melee Box");
         
         if(_enemies.Length > 0)
         {
             int _enemyID; 
             int _damages;
             string _infosDamages = string.Empty;
-            foreach (TDS_Enemy _e in _enemies)
+            foreach (TDS_EnemyOLD _e in _enemies)
             {
                 if (!_e.GetComponent<PhotonView>()) break; 
                 _enemyID = _e.GetComponent<PhotonView>().viewID; 
@@ -83,12 +83,12 @@ public class TDS_PlayerRPCManager : PunBehaviour
         if (!_player.CanAttack) return;
 
         // Raycast in the box of the attack
-        TDS_Enemy[] _enemies = _player.AttackRaycast("Project Box");
+        TDS_EnemyOLD[] _enemies = _player.AttackRaycast("Project Box");
 
         if (_enemies.Length == 0) return;
 
         // Select the nearest interactable element and project it
-        TDS_Enemy _nearestEnemy = _enemies.OrderBy(i => Vector3.Distance(transform.position, i.transform.position)).First();
+        TDS_EnemyOLD _nearestEnemy = _enemies.OrderBy(i => Vector3.Distance(transform.position, i.transform.position)).First();
         if (!_nearestEnemy.GetComponent<PhotonView>()) return ;
         int _enemyId = _nearestEnemy.GetComponent<PhotonView>().viewID;
         TDS_EnemyRPCManager.Instance.EnemyRPCManagerPhotonView.RPC("ProjectEnemyAndApplyLifeModification", PhotonTargets.All, _enemyId, _player.DamagesProjection, _playerPunID);

@@ -21,7 +21,7 @@ Description:
 public class TDS_EnemyLifeBar : MonoBehaviour 
 {
     #region Fields/Properties
-    [SerializeField] TDS_Enemy owner;
+    [SerializeField] TDS_EnemyOLD owner;
     [SerializeField] Image background;
     [SerializeField] Image fillForground;
 

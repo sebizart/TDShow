@@ -23,12 +23,12 @@ public class TDS_EnemyRPCManager : PunBehaviour
     #region Fields/Properties
     public static TDS_EnemyRPCManager Instance;
     public PhotonView EnemyRPCManagerPhotonView;
-    public List<TDS_Enemy> AllEnemies = new List<TDS_Enemy>();
+    public List<TDS_EnemyOLD> AllEnemies = new List<TDS_EnemyOLD>();
     #endregion
 
 
     #region Methods
-    public void AddNewEnemy(TDS_Enemy _enemy) => AllEnemies.Add(_enemy);
+    public void AddNewEnemy(TDS_EnemyOLD _enemy) => AllEnemies.Add(_enemy);
 
     /// <summary>
     /// Get all damages informations for each touched enemies and apply the damages
@@ -78,7 +78,7 @@ public class TDS_EnemyRPCManager : PunBehaviour
         {
             return;
         }
-        TDS_Enemy _enemy = _enemyPhotonView.GetComponent<TDS_Enemy>();
+        TDS_EnemyOLD _enemy = _enemyPhotonView.GetComponent<TDS_EnemyOLD>();
         if (!_enemy)
         {
             return;
@@ -94,7 +94,7 @@ public class TDS_EnemyRPCManager : PunBehaviour
     [PunRPC]
     public void ApplyLifeModification(int _punID, int _newValue)
     {
-        PhotonView.Find(_punID).GetComponent<TDS_Enemy>().ApplyDamages(_newValue);
+        PhotonView.Find(_punID).GetComponent<TDS_EnemyOLD>().ApplyDamages(_newValue);
     }
 
     /// <summary>
@@ -111,7 +111,7 @@ public class TDS_EnemyRPCManager : PunBehaviour
         {
             return;
         }
-        PhotonView.Find(_punID).GetComponent<TDS_Enemy>().BeingProjected(_dmgValue, _user.transform);
+        PhotonView.Find(_punID).GetComponent<TDS_EnemyOLD>().BeingProjected(_dmgValue, _user.transform);
     }
 
     /// <summary>
@@ -121,7 +121,7 @@ public class TDS_EnemyRPCManager : PunBehaviour
     [PunRPC]
     public void RegenerateLife(int _punID)
     {
-        foreach (TDS_Enemy _e in AllEnemies)
+        foreach (TDS_EnemyOLD _e in AllEnemies)
         {
             if (_e.EnemyPhotonView.viewID == _punID)
             {

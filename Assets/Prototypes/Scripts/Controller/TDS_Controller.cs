@@ -259,7 +259,7 @@ public class TDS_Controller : TDS_GroundedElement
     }
 
     // Raycast in a given box and return encounter colliders
-    public TDS_Enemy[] AttackRaycast(string _boxName)
+    public TDS_EnemyOLD[] AttackRaycast(string _boxName)
     {
         // Get the right box
         TDS_OLDAttackBox _box = attackBoxes.Where(b => b.Name.ToLower() == _boxName.ToLower()).FirstOrDefault();
@@ -268,12 +268,12 @@ public class TDS_Controller : TDS_GroundedElement
         if (_box == null)
         {
             TDS_CustomDebug.CustomDebugLogError("The attack box '" + _boxName + "' couldn't be found !");
-            return new TDS_Enemy[] { };
+            return new TDS_EnemyOLD[] { };
         }
         else
         {
             // Else, return the result of the raycast in the box
-            return Physics.OverlapBox(transform.position + _box.CenterPosition, _box.HalfExtents).Select(c => c.GetComponent<TDS_Enemy>()).ToArray().Where(e => e != null).ToArray();
+            return Physics.OverlapBox(transform.position + _box.CenterPosition, _box.HalfExtents).Select(c => c.GetComponent<TDS_EnemyOLD>()).ToArray().Where(e => e != null).ToArray();
         }
     }
     #endregion
