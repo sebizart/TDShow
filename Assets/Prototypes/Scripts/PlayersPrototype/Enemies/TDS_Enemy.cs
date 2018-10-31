@@ -17,19 +17,40 @@ Date:
 Description:
 */
 
-public class TDS_Enemy : MonoBehaviour 
+public class TDS_Enemy : TDS_Character 
 {
 
-#region Fields/Properties
 
-#endregion
+    #region Fields/Properties
+    [Header("Enemy")]
+    [SerializeField]private EnemyName prefabName = EnemyName.Acrobat; 
+    public EnemyName PrefabName { get { return prefabName; } }
+    #endregion
 
-#region Methods
+    #region Methods
+    public override void Action(int _actionId)
+    {
+        throw new NotImplementedException();
+    }
 
-#endregion
+    protected override void AttackOne()
+    {
+        throw new NotImplementedException();
+    }
 
-#region UnityMethods
-	void Start () 
+    protected override void AttackThree()
+    {
+        throw new NotImplementedException();
+    }
+
+    protected override void AttackTwo()
+    {
+        throw new NotImplementedException();
+    }
+    #endregion
+
+    #region UnityMethods
+    void Start () 
 	{
 		
 	}
@@ -38,5 +59,13 @@ public class TDS_Enemy : MonoBehaviour
 	{
 		
 	}
-#endregion
+    #endregion
+}
+public enum EnemyName
+{
+    Acrobat, 
+    Fakir, 
+    MightyMan, 
+    Mime, 
+    Punk
 }

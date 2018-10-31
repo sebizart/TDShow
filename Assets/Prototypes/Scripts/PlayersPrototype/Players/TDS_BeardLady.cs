@@ -56,6 +56,11 @@ public class TDS_BeardLady : TDS_Player
 
     #region Methods
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="_attackID"></param>
+    /// <returns></returns>
     public override Dictionary<int, int> CheckHit(int _attackID)
     {
         if (!PhotonNetwork.isMasterClient) return null;
@@ -147,6 +152,14 @@ public class TDS_BeardLady : TDS_Player
     {
         ResetBeardAfterAttack();
     }
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="_attack"></param>
+    protected override void ExecuteAction(PlayerAttacks _attack)
+    {
+        throw new NotImplementedException();
+    }
 
     #region Beard
     /// <summary>
@@ -192,6 +205,8 @@ public class TDS_BeardLady : TDS_Player
 	{
 		
 	}
+
+    
     #endregion
 }
 

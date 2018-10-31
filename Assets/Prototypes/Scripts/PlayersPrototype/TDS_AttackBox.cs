@@ -27,7 +27,12 @@ public class TDS_AttackBox
     [SerializeField, Header("Int")] private int id;
     public int ID { get { return id;  } }
     [SerializeField] private int maxDamages;
+    public int MaxDamages { get { return maxDamages; } }
     [SerializeField] private int minDamages;
+    public int MinDamages
+    {
+        get { return minDamages; }
+    }
     [SerializeField, Header("Box")] private Vector3 centerPosition;
     public Vector3 CenterPosition { get { return centerPosition; } }
     [SerializeField] private Vector3 extendPosition;
@@ -41,9 +46,12 @@ public class TDS_AttackBox
     #endregion
     
     #region Methods
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
     public Dictionary<int, int> RayCastAttack()
     {
-        // Créer un layer pour chaque type et ne pas prendre en compte le type de layer de l'attaquant (pour éviter que les players se tapent entre eux)
         int[] _elements =  Physics.OverlapBox(centerPosition, extendPosition).Select(c => c.GetComponent<TDS_DamageableElement>()).ToArray().Where(e => e != null).Select(e => e.PhotonViewElementID).ToArray();
         int _damages;
         Dictionary<int, int> _characterDamages = new Dictionary<int, int>();
@@ -54,12 +62,15 @@ public class TDS_AttackBox
         }
         return _characterDamages; 
     }
-    public Dictionary<int, int> RayCastAttack(float _beardOffset)
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
+    public Dictionary<int, int> RayCastAttack(float _offset)
     {
-        // Créer un layer pour chaque type et ne pas prendre en compte le type de layer de l'attaquant (pour éviter que les players se tapent entre eux)
-        Vector3 _centerPosition = new Vector3(centerPosition.x * _beardOffset, centerPosition.y, centerPosition.z);
-        Vector3 _extendPosition = new Vector3(extendPosition.x * _beardOffset, extendPosition.y, extendPosition.z);
-        int[] _elements = Physics.OverlapBox(_centerPosition, _extendPosition).Select(c => c.GetComponent<TDS_DamageableElement>()).ToArray().Where(e => e != null).Select(e => e.PhotonViewElementID).ToArray();
+        Vector3 _offsetedCenterPosition = new Vector3(centerPosition.x * _offset, centerPosition.y, centerPosition.z);
+        Vector3 _offsetedExtendedPosition = new Vector3(extendPosition.x * _offset, extendPosition.y, extendPosition.z);
+        int[] _elements = Physics.OverlapBox(_offsetedCenterPosition, _offsetedExtendedPosition).Select(c => c.GetComponent<TDS_DamageableElement>()).ToArray().Where(e => e != null).Select(e => e.PhotonViewElementID).ToArray();
         int _damages;
         Dictionary<int, int> _characterDamages = new Dictionary<int, int>();
         foreach (int id in _elements)
@@ -69,5 +80,9 @@ public class TDS_AttackBox
         }
         return _characterDamages;
     }
+    #endregion
+
+    #region UnityMethods
+
     #endregion
 }

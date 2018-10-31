@@ -50,4 +50,8 @@ MonoBehaviour:
   - SendProjectionInfosToPlayer
   - LaunchAttack
   - ApplyInfoDamages
+  - GrabObject
+  - LaunchAction
+  - ThrowObject
+  - TryToGrabObject
   DisableAutoOpenWizard: 1
