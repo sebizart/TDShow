@@ -24,22 +24,27 @@ public abstract class TDS_Character : TDS_DamageableElement
 {
 
     #region Fields/Properties
+    [SerializeField, Header("Bool")] protected bool isGrabObjectBoxVisible = false;
+
     [SerializeField, Header("Character", order = 0), Header("Bool", order = 1)]protected bool canAttack = true; 
     [SerializeField]protected bool canMove = true;
 
-    [SerializeField, Header("FacingSide")]protected FacingSide currentSide = FacingSide.Right; 
-    public FacingSide CurrentSide { get { return currentSide; } }
+    [SerializeField, Header("FacingSide")]protected FacingSide facingSide = FacingSide.Right; 
+    public FacingSide FacingSide { get { return facingSide; } }
 
     [SerializeField, Header("Float")] protected float speed = 1;
 
     [SerializeField, Header("Nav Mesh")] NavMeshAgent navMeshCharacter;
-    private Vector3 netOnlinePosition; 
+    private Vector3 netOnlinePosition;
 
-    //PROJECTILE
+    [SerializeField, Header("Projectile")] protected TDS_Throwable projectile;
 
     [SerializeField, Header("Animator")] protected Animator CharacterAnimator; 
 
-    [SerializeField, Header("AttackBoxes")] protected TDS_AttackBox[] attackBoxes = new TDS_AttackBox[] { };  
+    [SerializeField, Header("AttackBoxes")] protected TDS_AttackBox[] attackBoxes = new TDS_AttackBox[] { };
+
+    [SerializeField, Header("Vector 3")] protected Vector3 grabObjectZoneCenter = Vector3.zero;
+    [SerializeField] protected Vector3 grabObjectZoneExtents = Vector3.one;
     #endregion
 
     #region Methods
@@ -49,9 +54,14 @@ public abstract class TDS_Character : TDS_DamageableElement
     /// <param name="_newSide">New orientation side of the character</param>
     protected void ChangeSide(FacingSide _newSide)
     {
-        currentSide = _newSide;
+        facingSide = _newSide;
         // Change Animator State
         CharacterAnimator.SetInteger("OrientationState", (int)_newSide); 
+    }
+
+    protected void CallAction(int _attackID)
+    {
+        TDS_RPCManager.Instance.RPCManagerPhotonView.RPC("LaunchAction", PhotonTargets.All, PhotonViewElementID, _attackID);
     }
 
     /// <summary>
@@ -60,6 +70,7 @@ public abstract class TDS_Character : TDS_DamageableElement
     /// <param name="_attackID">ID of the attack </param>
     protected void CallHit(int _attackID)
     {
+        CallAction(_attackID);
         TDS_RPCManager.Instance.RPCManagerPhotonView.RPC("LaunchAttack", PhotonTargets.MasterClient, PhotonViewElementID, _attackID); 
     }
 
@@ -82,10 +93,10 @@ public abstract class TDS_Character : TDS_DamageableElement
     }
 
     /// <summary>
-    /// Apply effects of the attack with the ID
+    /// Apply effects of the action with the ID
     /// </summary>
-    /// <param name="_attackId">ID of the attack </param>
-    public abstract void Hit(int _attackId);
+    /// <param name="_actionID">ID of the action</param>
+    public abstract void Action(int _actionID);
 
     /// <summary>
     /// Set the destination of this character to a new position
@@ -100,15 +111,66 @@ public abstract class TDS_Character : TDS_DamageableElement
     protected abstract void AttackOne();
     protected abstract void AttackThree();
     protected abstract void AttackTwo();
+    #endregion
+
+    #region Object Interaction
+    /// <summary>
+    /// Grabs an object
+    /// </summary>
+    /// <param name="_objectID">ID of the object to grab</param>
+    public virtual void GrabObject(int _objectID)
+    {
+        // If the character already have a projectile, return
+        if (projectile) return;
+
+        // Find the object via photon ID & get its Throwable component
+        PhotonView _objectPhoton = PhotonView.Find(_objectID);
+
+        if (_objectPhoton)
+        {
+            TDS_Throwable _projectile = _objectPhoton.GetComponent<TDS_Throwable>();
+
+            if (!_projectile)
+            {
+                TDS_CustomDebug.CustomDebugLogWarning($"The object \"{_objectPhoton.name}\" couldn't be found");
+                return;
+            }
+
+            // If the character can grab the object, stock it
+            if (_projectile.Grab(this))
+            {
+                projectile = _projectile;
+            }
+        }
+        else
+        {
+            TDS_CustomDebug.CustomDebugLogWarning($"The object with PhotonID \"{_objectID}\" doesn't have the \"TDS_Throwable\" component !");
+            return;
+        }
+    }
 
     /// <summary>
-    /// Makes the character interact with an object :
-    ///     - If the player does not have an object in hand, take the nearest of the objects that can be taken in range
-    ///     - If he does have an object in hand, throw it in front of him
+    /// Throw the grabed object
     /// </summary>
-    protected virtual void InterractWithObjects()
+    public virtual void ThrowObject()
     {
+        // If the character doesn't have a projectile to throw, return
+        if (!projectile) return;
 
+        // Throw the projectile and remove it from the current weared object
+        projectile.Throw(FacingSide);
+        projectile = null;
+    }
+
+    /// <summary>
+    /// Check the object that can be grabed around and take the first
+    /// </summary>
+    /// <returns>Returns the first object to grab or null if none</returns>
+    public virtual TDS_Throwable TryToGrabObject()
+    {
+        TDS_Throwable _throwable = Physics.OverlapBox(transform.position + grabObjectZoneCenter, grabObjectZoneExtents).Where(o => o.GetComponent<TDS_Throwable>()).Select(o => o.GetComponent<TDS_Throwable>()).FirstOrDefault();
+
+        return _throwable;
     }
     #endregion
 
@@ -131,7 +193,7 @@ public abstract class TDS_Character : TDS_DamageableElement
             _stream.SendNext(transform.position.x);
             _stream.SendNext(transform.position.y);
             _stream.SendNext(transform.position.z);
-            _stream.SendNext((int)currentSide); 
+            _stream.SendNext((int)facingSide); 
         }
         else if(_stream.isReading)
         {
@@ -149,7 +211,7 @@ public abstract class TDS_Character : TDS_DamageableElement
     #endregion
 
     #region UnityMethods
-    private void OnDrawGizmos()
+    protected virtual void OnDrawGizmos()
     {
         foreach (TDS_AttackBox _box in attackBoxes)
         {
@@ -159,6 +221,13 @@ public abstract class TDS_Character : TDS_DamageableElement
                 Gizmos.DrawCube(transform.position + _box.CenterPosition, _box.ExtendPosition);
             }
         }
+
+        if (isGrabObjectBoxVisible)
+        {
+            Gizmos.color = new Color(0, 1, 0, .25f);
+            Gizmos.DrawCube(transform.position + grabObjectZoneCenter, grabObjectZoneExtents);
+        }
+        Gizmos.color = Color.white;
     }
 
     void Start () 
@@ -166,7 +235,7 @@ public abstract class TDS_Character : TDS_DamageableElement
     	
     }
     
-    void Update () 
+    protected virtual void Update () 
     {
     	
     }

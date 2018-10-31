@@ -22,10 +22,11 @@ public enum PlayerAttacks
     AttackOne = 1,
     AttackTwo,
     AttackThree,
-    Catch,
-    Dodge,
     AirAttack,
     RodeoAttack,
+    InteractWithObject,
+    Dodge,
+    Catch,
     Super
 }
 
@@ -34,7 +35,8 @@ public abstract class TDS_Player : TDS_Character
     public event Action OnHeal;
 
     #region Fields/Properties
-    [SerializeField, Header("Player", order = 0), Header("Int", order = 1)] protected int comboMax = 3;
+    [SerializeField, Header("Player", order = 0), Header("Bool", order = 1)] bool isGrounded = true;
+    [SerializeField, Header("Int")] protected int comboMax = 3;
     [SerializeField] protected int comboResetTime = 1;
     [SerializeField] protected int currentComboValue = 0;
     public int ComboValue
@@ -55,8 +57,15 @@ public abstract class TDS_Player : TDS_Character
 
     #region Key Codes
     [Header("Key Codes")]
-    [SerializeField] KeyCode attackOneKey = KeyCode.Mouse0;
-    [SerializeField] KeyCode catchKey = KeyCode.Mouse1;
+    [SerializeField] protected KeyCode attackOneKey = KeyCode.Mouse0;
+    [SerializeField] protected KeyCode attackThreeKey = KeyCode.Mouse2;
+    [SerializeField] protected KeyCode attackTwoKey = KeyCode.Mouse1;
+    [SerializeField] protected KeyCode airAttackKey = KeyCode.Mouse0;
+    [SerializeField] protected KeyCode airRodeoKey = KeyCode.Mouse1;
+    [SerializeField] protected KeyCode interactWithObjectKey = KeyCode.E;
+    [SerializeField] protected KeyCode dodgeKey = KeyCode.LeftControl;
+    [SerializeField] protected KeyCode catchKey = KeyCode.F;
+    [SerializeField] protected KeyCode superKey = KeyCode.X;
     #endregion
     #endregion
 
@@ -72,28 +81,28 @@ public abstract class TDS_Player : TDS_Character
         // Set the orientation side of the player
         if (_horizontal >= .5F)
         {
-            if (currentSide != FacingSide.Right)
+            if (facingSide != FacingSide.Right)
             {
                 ChangeSide(FacingSide.Right);
             }
         }
         else if (_horizontal <= -.5f)
         {
-            if (currentSide != FacingSide.Left)
+            if (facingSide != FacingSide.Left)
             {
                 ChangeSide(FacingSide.Left);
             }
         }
         else if (_vertical > 0)
         {
-            if (currentSide != FacingSide.Top)
+            if (facingSide != FacingSide.Top)
             {
                 ChangeSide(FacingSide.Top);
             }
         }
         else if (_vertical < 0)
         {
-            if (currentSide != FacingSide.Bottom)
+            if (facingSide != FacingSide.Bottom)
             {
                 ChangeSide(FacingSide.Bottom);
             }
@@ -105,11 +114,45 @@ public abstract class TDS_Player : TDS_Character
         // Attacks verifications
         if (Input.GetKeyDown(attackOneKey))
         {
-            CallHit((int)PlayerAttacks.AttackOne);
+            if (isGrounded)
+            {
+                AttackOne();
+            }
+            else
+            {
+                AirAttack();
+            }
+        }
+        else if (Input.GetKeyDown(attackTwoKey))
+        {
+            if (isGrounded)
+            {
+                AttackTwo();
+            }
+            else
+            {
+                RodeoAttack();
+            }
+        }
+        else if (Input.GetKeyDown(attackThreeKey))
+        {
+            AttackThree();
+        }
+        else if (Input.GetKeyDown(interactWithObjectKey))
+        {
+            InteractWithObjects();
+        }
+        else if (Input.GetKeyDown(dodgeKey))
+        {
+            Dodge();
         }
         else if (Input.GetKeyDown(catchKey))
         {
-            CallHit((int)PlayerAttacks.Catch);
+            Catch();
+        }
+        else if (Input.GetKeyDown(superKey))
+        {
+            Super();
         }
     }
 
@@ -123,33 +166,36 @@ public abstract class TDS_Player : TDS_Character
         OnHeal?.Invoke();
     }
 
-    public override void Hit(int _attackId)
+    public override void Action(int _attackId)
     {
         // Triggers the right attack depending on the attack id
-        switch (_attackId)
+        switch ((PlayerAttacks)_attackId)
         {
-            case 1:
+            case PlayerAttacks.AttackOne:
                 AttackOne();
                 break;
-            case 2:
+            case PlayerAttacks.AttackTwo:
                 AttackTwo();
                 break;
-            case 3:
+            case PlayerAttacks.AttackThree:
                 AttackThree();
                 break;
-            case 4:
-                Catch();
-                break;
-            case 5:
-                Dodge();
-                break;
-            case 6:
+            case PlayerAttacks.AirAttack:
                 AirAttack();
                 break;
-            case 7:
+            case PlayerAttacks.RodeoAttack:
                 RodeoAttack();
                 break;
-            case 8:
+            case PlayerAttacks.InteractWithObject:
+                InteractWithObjects();
+                break;
+            case PlayerAttacks.Dodge:
+                Dodge();
+                break;
+            case PlayerAttacks.Catch:
+                Catch();
+                break;
+            case PlayerAttacks.Super:
                 Super();
                 break;
             default:
@@ -165,10 +211,27 @@ public abstract class TDS_Player : TDS_Character
     protected abstract void RodeoAttack();
     protected abstract void Super();
     #endregion
+
+    /// <summary>
+    /// Makes the player interact with an object :
+    ///     - If the player does not have an object in hand, take the nearest of the objects that can be taken in range
+    ///     - If he does have an object in hand, throw it in front of him
+    /// </summary>
+    protected virtual void InteractWithObjects()
+    {
+        if (!projectile)
+        {
+            TDS_RPCManager.Instance.RPCManagerPhotonView.RPC("TryToGrabObject", PhotonTargets.MasterClient, PhotonViewElementID);
+        }
+        else
+        {
+            TDS_RPCManager.Instance.RPCManagerPhotonView.RPC("ThrowObject", PhotonTargets.All, PhotonViewElementID);
+        }
+    }
     #endregion
 
     #region UnityMethods
-    private void FixedUpdate()
+    protected virtual void FixedUpdate()
     {
         // If it's the player's avatar : Checks the inputs of the player
         if (photonViewElement.isMine)
@@ -183,12 +246,12 @@ public abstract class TDS_Player : TDS_Character
 
     }
 
-    void Start () 
+    protected virtual void Start () 
     {
     	
     }
     
-    void Update () 
+    protected override void Update () 
     {
     	
     }

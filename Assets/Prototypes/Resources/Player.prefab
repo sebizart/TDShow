@@ -77,18 +77,46 @@ MonoBehaviour:
   health: 0
   maxHealth: 50
   photonViewElement: {fileID: 114918765745383700}
+  isGrabObjectBoxVisible: 0
   canAttack: 1
   canMove: 1
-  currentSide: 2
+  facingSide: 2
   speed: 1
   navMeshCharacter: {fileID: 195893754861657854}
+  projectile: {fileID: 0}
   CharacterAnimator: {fileID: 95655269983918416}
-  attackBoxes: []
+  attackBoxes:
+  - boxName: Attack1
+    id: 0
+    maxDamages: 4
+    minDamages: 7
+    centerPosition: {x: 0, y: 0, z: 0}
+    extendPosition: {x: 0, y: 0, z: 0}
+    isVisible: 0
+    boxColor: {r: 0, g: 0, b: 0, a: 0.7764706}
+  - boxName: Catch
+    id: 1
+    maxDamages: 1
+    minDamages: 1
+    centerPosition: {x: 0, y: 0, z: 0}
+    extendPosition: {x: 0, y: 0, z: 0}
+    isVisible: 0
+    boxColor: {r: 0, g: 0, b: 0, a: 0}
+  grabObjectZoneCenter: {x: 0, y: 0, z: 0}
+  grabObjectZoneExtents: {x: 1.5, y: 1.5, z: 1.5}
+  isGrounded: 1
   comboMax: 3
   comboResetTime: 1
   currentComboValue: 0
   attackOneKey: 323
+  attackThreeKey: 325
+  attackTwoKey: 324
+  airAttackKey: 323
+  airRodeoKey: 324
+  interactWithObjectKey: 101
+  dodgeKey: 306
   catchKey: 324
+  superKey: 120
   projectileMaxAmount: 3
   projectiles: []
 --- !u!114 &114918765745383700

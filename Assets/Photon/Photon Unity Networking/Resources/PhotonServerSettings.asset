@@ -51,4 +51,8 @@ MonoBehaviour:
   - AddPlayer
   - ApplyInfoDamages
   - LaunchAttack
+  - GrabObject
+  - ThrowObject
+  - TryToGrabObject
+  - LaunchAction
   DisableAutoOpenWizard: 1
