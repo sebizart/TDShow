@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Photon; 
 
@@ -27,6 +28,9 @@ public class TDS_RPCManager : PunBehaviour
     #endregion
 
     #region Methods
+    
+    // TRY TO GLOBALIZE THE METHODS IN ONE 
+
     /// <summary>
     /// Get the character with its photonView ID
     /// </summary>
@@ -54,6 +58,21 @@ public class TDS_RPCManager : PunBehaviour
         TDS_DamageableElement _elem = _playerPhotonView.GetComponent<TDS_DamageableElement>();
         return _elem;
     }
+
+    /// <summary>
+    /// Get the Fighting Area with its PhotonView ID
+    /// </summary>
+    /// <param name="_areaID"></param>
+    /// <returns></returns>
+    private TDS_FightingArea GetFightingAreaByID(int _areaID)
+    {
+        PhotonView _areaPhotonView = PhotonView.Find(_areaID);
+        if (!_areaPhotonView) return null;
+        TDS_FightingArea _elem = _areaPhotonView.GetComponent<TDS_FightingArea>();
+        return _elem;
+    }
+
+    // END GLOBALIZATION
 
     /// <summary>
     /// Set the info damages into a string
@@ -190,9 +209,22 @@ public class TDS_RPCManager : PunBehaviour
     }
     #endregion
 
-    #region SpawnPoints
-    #endregion 
+    #region FightingAreaInformations
+    [PunRPC]
+    public void ApplyAreaInformations(string _areaInfo)
+    {
+        if (!PhotonNetwork.isMasterClient) return; 
+        TDS_FightingAreaInfo _infos = new TDS_FightingAreaInfo(_areaInfo);
+        TDS_FightingArea _area = GetFightingAreaByID(_infos.FightingAreaID);
+        foreach (TDS_EnemyInfo info in _infos.EnemiesInfos)
+        {
+            TDS_Enemy _enemy = PhotonNetwork.Instantiate(((EnemyName)info.EnemyType).ToString(), info.EnemyPosition, Quaternion.identity, 0).GetComponent<TDS_Enemy>();
+            _area.SpawnedEnemies.Add(_enemy); 
+        }
+    }
 
+    
+    #endregion
     #endregion
     #endregion
 
@@ -214,6 +246,8 @@ public class TDS_RPCManager : PunBehaviour
     #endregion
 }
 
+
+#region AttackInfo
 public class TDS_AttackInfo
 {
     public int AttackerId;
@@ -241,3 +275,8 @@ public class TDS_AttackSubInfo
         Damages = int.Parse(_subInfo.Split('#')[1]); 
     }
 }
+#endregion
+
+
+
+

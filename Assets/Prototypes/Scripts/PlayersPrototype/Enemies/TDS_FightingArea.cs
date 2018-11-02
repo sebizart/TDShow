@@ -19,7 +19,7 @@ Date:
 Description:
 */
 
-[RequireComponent(typeof(BoxCollider))]
+[RequireComponent(typeof(BoxCollider))][RequireComponent(typeof(PhotonView))]
 public class TDS_FightingArea : PunBehaviour
 {
     #region events
@@ -79,10 +79,13 @@ public class TDS_FightingArea : PunBehaviour
     void Spawn()
     {
         if (!PhotonNetwork.isMasterClient) return;
-        Debug.Log("OKAY"); 
         TDS_SpawnPoint[] _spawnablePoints = GetSpawnPoints();
         //TROUVER LE NOMBRE D'ENEMIES A FAIRE SPAWN A CHAQUE WAVE -> DANS UN GAME MANAGER qui calcule les dégats qu'ont infligé les joueurs?
         // Pour le moment, on en fera spawn autant qu'il y a de points
+        for (int i = 0; i < _spawnablePoints.Length; i++)
+        {
+            spawnedEnemies.Add(_spawnablePoints[i].SpawnEnemy()); 
+        }
     }
 
     private TDS_SpawnPoint[] GetSpawnPoints()
@@ -94,12 +97,46 @@ public class TDS_FightingArea : PunBehaviour
             return SpawnPoints.FindAll(p => !p.IsOnFightingArea).ToArray(); ; 
     }
 
-    #region Networking
+    private string SetFightingAreaInfos(int _areaID, TDS_Enemy[] _enemiesID)
+    {
+        string _info = $"{_areaID}";
+        foreach (TDS_Enemy _enemy in _enemiesID.ToList())
+        {
+            _info += $"|{_enemy.PhotonViewElementID}#{_enemy.transform.position.x.ToString("0.0")}#{_enemy.transform.position.y.ToString("0.0")}#{_enemy.transform.position.z.ToString("0.0")}#{(int)_enemy.PrefabName}";
+        }
+        return _info;
+    }
+
+    /// <summary>
+    /// Change the owner of the photonView #TRY#
+    /// </summary>
+    private void ChangeOwnerShip()
+    {
+        areaPhotonView.TransferOwnership(PhotonNetwork.masterClient.ID); 
+    }
+    
+    /// <summary>
+    /// Migrate informations while using RPC Requests #TRY#
+    /// </summary>
+    private void MigrateInformations()
+    {
+        //Migrate Area datas  + enemies datas
+        string _info = SetFightingAreaInfos(areaPhotonView.viewID, spawnedEnemies.ToArray());
+        TDS_RPCManager.Instance.RPCManagerPhotonView.RPC("ApplyAreaInformations", PhotonTargets.MasterClient, _info);
+    }
+
+    #region PUN Networking
+    //FAIRE QUITTER LA ROOM AVANT DE TOUT FERMER
     public override void OnLeftRoom()
     {
-        base.OnLeftRoom();
-        if (!PhotonNetwork.isMasterClient) return; 
-        //Migrate spawn point datas  + enemies datas
+        if (!PhotonNetwork.isMasterClient) return;
+        //Set a new Master if there is more than one player
+        if (PhotonNetwork.otherPlayers.Length == 0) return;
+        PhotonNetwork.SetMasterClient(PhotonNetwork.otherPlayers[0]);
+        Debug.Log("NEW MASTER SET"); 
+        //MigrateInformations();
+        //OR
+        ChangeOwnerShip(); 
     }
     #endregion
 
@@ -119,46 +156,46 @@ public enum SpawnPointState
     Completed
 }
 
+#region Fighting Area Info
+public class TDS_FightingAreaInfo
+{
+    public int FightingAreaID;
+    // Add Complementary informations 
 
-//
-//
-//
-//
-//
-//
-//
+    public List<TDS_EnemyInfo> EnemiesInfos = new List<TDS_EnemyInfo>();
 
-//
-//
-//
-//
-//
-//
+    public TDS_FightingAreaInfo(string _info)
+    {
+        FightingAreaID = int.Parse(_info.Split('|')[0]);
+        for (int i = 1; i < _info.Split('|').Length; i++)
+        {
+            EnemiesInfos.Add(new TDS_EnemyInfo(_info.Split('|')[i]));
+        }
+    }
+}
 
+/// <summary>
+/// string to convert into infomations: EnemyId#PosX#PosY#PosZ#EnemyType
+/// </summary>
+public class TDS_EnemyInfo
+{
+    public int EnemyId;
+    public Vector3 EnemyPosition;
+    public int EnemyType;
+    //Add all transfered informations (animation state, life, etc...)
 
-//
+    public TDS_EnemyInfo(string _info)
+    {
+        EnemyId = int.Parse(_info.Split('#')[0]);
+        float _xPos = int.Parse(_info.Split('#')[1]);
+        float _yPos = int.Parse(_info.Split('#')[2]);
+        float _zPos = int.Parse(_info.Split('#')[3]);
+        EnemyPosition = new Vector3(_xPos, _yPos, _zPos);
+        EnemyType = int.Parse(_info.Split('#')[4]);
 
+    }
 
-//
-//
+}
+#endregion
 
-//
-//
-//
-//
-
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 

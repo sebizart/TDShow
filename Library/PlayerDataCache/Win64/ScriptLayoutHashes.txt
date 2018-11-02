@@ -1,6 +1,6 @@
 WindowsStandalone
 PlayerPath?
-C:/Users/EPIIC - Etudiant/Documents/CATA_Unity/The Dreadful Show/Build/The Dreadful Show.exe
+C:/Users/AlexisAdmin/Documents/GitHub/TDShow/Build/The Dreadful Show.exe
 SceneListBegin?
 Assets/Prototypes/Camera Proto/Scene/ProtoPlayers.unity
 SceneListEnd?
@@ -156,7 +156,7 @@ f031ef8996d6c29c1c44534f3612476f Assembly-CSharp.dll:.PhotonTransformView
 9231524af9440fa9a2304790b206f16a Assembly-CSharp.dll:.OnClickDestroy
 eaf0bcdb10d442a4029d615f41d09957 Unity.TextMeshPro.dll:TMPro.TextContainer
 b2d91e5360bed4d8ee0899f561a72a83 Assembly-CSharp.dll:.CATA_PointLightScript
-3e5a3af79bbdbcbb78c807c6a91aa87a Assembly-CSharp.dll:.TDS_FightingArea
+007be5395082dbf80ac956dc020fc01e Assembly-CSharp.dll:.TDS_FightingArea
 2872f4e563a195ddc87c684ac88022e7 Assembly-CSharp.dll:.TDS_GroundedElement
 f05280408411314c4b768724722aaf8f Assembly-CSharp.dll:.PickupItem
 d512e4e66999237a671da6e9503bfe1e Assembly-CSharp.dll:.TDS_Camera
