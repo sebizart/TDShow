@@ -189,6 +189,54 @@ public class TDS_RPCManager : PunBehaviour
         }
     }
     #endregion
+
+    #region Spawn
+    [PunRPC]
+    public void AddPlayer(int _playerCharacter)
+    {
+        TDS_GameManager.Instance.InGamePlayers[(PlayerCharacter)_playerCharacter] = true;
+    }
+
+    [PunRPC]
+    public void ReceiveInGamePlayers(string _players)
+    {
+        if (_players == string.Empty) return;
+
+        string[] _split = _players.Split('|');
+        foreach (string _inGamePlayer in _split)
+        {
+            int _type = int.Parse(_inGamePlayer);
+            TDS_GameManager.Instance.InGamePlayers[(PlayerCharacter)_type] = true;
+        }
+    }
+
+    [PunRPC]
+    public void RemovePlayer(int _playerCharacter)
+    {
+        TDS_GameManager.Instance.InGamePlayers[(PlayerCharacter)_playerCharacter] = false;
+        TDS_UIManager.Instance.RemovePlayer((PlayerCharacter)_playerCharacter);
+    }
+
+    [PunRPC]
+    public void SendInGamePlayers()
+    {
+        if (!PhotonNetwork.isMasterClient) return;
+
+        string _toSend = string.Empty;
+
+        foreach (KeyValuePair<PlayerCharacter, bool> _player in TDS_GameManager.Instance.InGamePlayers)
+        {
+            if (_player.Value == true)
+            {
+                if (_toSend != string.Empty) _toSend += '|';
+                int _type = (int)_player.Key;
+                _toSend += _type;
+            }
+        }
+
+        RPCManagerPhotonView.RPC("ReceiveInGamePlayers", PhotonTargets.Others, _toSend);
+    }
+    #endregion
     #endregion
     #endregion
 
