@@ -22,23 +22,23 @@ public class TDS_ProjectileUtils
         if (_posAmount < 3) _posAmount = 3;
 
         // Create the array conaining the positions ; set the first as original position and the last as destination position
-        Vector3[] _positions = new Vector3[_posAmount];
+        Vector3[] _positions = new Vector3[_posAmount + 1];
         _positions[0] = _originalPos;
-        _positions[_posAmount - 1] = _destinationPos;
+        _positions[_posAmount] = _destinationPos;
 
         // Get the distance between these positions in the X & Z axis plus on both
         float _distanceBetweenPosX = (_destinationPos.x - _originalPos.x) / _posAmount;
         float _distanceBetweenPosZ = (_destinationPos.z - _originalPos.z) / _posAmount;
         float _distanceBetweenPosXZ = Mathf.Sqrt(Mathf.Pow(_distanceBetweenPosX, 2) + Mathf.Pow(_distanceBetweenPosZ, 2));
 
-        // Create float that will be used in the folowwing loop
+        // Creates float that will be used in the following loop
         float _t = 0;
         float _x = 0;
         float _y = 0;
         float _z = 0;
 
         // Get the required position amount
-        for (int _i = 1; _i < _posAmount - 1; _i++)
+        for (int _i = 1; _i < _posAmount; _i++)
         {
             // Get the time value
             _t = (_distanceBetweenPosXZ * _i) / (_velocity * Mathf.Cos(_angle));
@@ -51,7 +51,7 @@ public class TDS_ProjectileUtils
             _y = -.5f * Physics.gravity.magnitude * Mathf.Pow(_t, 2) + _velocity * Mathf.Sin(_angle) * _t;
 
             // Add the point to the array
-            _positions[_i] = new Vector3(_x, _y, _z);
+            _positions[_i] = _originalPos + new Vector3(_x, _y, _z);
         }
 
         // Return all positions
