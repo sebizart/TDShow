@@ -93,9 +93,9 @@ public class TDS_FightingAreaEditor : Editor
         float _scaleZ = p_target.DetectionArea.ExtendedZ; 
         EditorGUI.BeginChangeCheck();
         Handles.color = p_target.DetectionArea.DebugColor; 
-        _scaleX = Handles.ScaleSlider(_scaleX, p_target.DetectionArea.CenterPosition, _scaleX <= 1? Vector3.right : Vector3.right * _scaleX,  Quaternion.identity, .5f, .5f );
-        _scaleY = Handles.ScaleSlider(_scaleY, p_target.DetectionArea.CenterPosition, _scaleY <= 1 ? Vector3.up : Vector3.up * _scaleY, Quaternion.identity, .5f, .5f);
-        _scaleZ = Handles.ScaleSlider(_scaleZ, p_target.DetectionArea.CenterPosition, _scaleZ <= 1 ? Vector3.forward : Vector3.forward * _scaleZ, Quaternion.identity, .5f, .5f);
+        _scaleX = Handles.ScaleSlider(_scaleX, p_target.DetectionArea.CenterPosition, Mathf.Abs(_scaleX) <= 1? Vector3.right : Vector3.right * _scaleX,  Quaternion.identity, .5f, .5f );
+        _scaleY = Handles.ScaleSlider(_scaleY, p_target.DetectionArea.CenterPosition, Mathf.Abs(_scaleY) <= 1 ? Vector3.up : Vector3.up * _scaleY, Quaternion.identity, .5f, .5f);
+        _scaleZ = Handles.ScaleSlider(_scaleZ, p_target.DetectionArea.CenterPosition, Mathf.Abs(_scaleZ) <= 1 ? Vector3.forward : Vector3.forward * _scaleZ, Quaternion.identity, .5f, .5f);
         if (EditorGUI.EndChangeCheck())
         {
             p_target.DetectionArea.UpdateAreaScale(_scaleX, _scaleY, _scaleZ); 
