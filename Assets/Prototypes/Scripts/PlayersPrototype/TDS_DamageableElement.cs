@@ -66,6 +66,7 @@ public abstract class TDS_DamageableElement : PunBehaviour
     }
 
     [SerializeField, Header("Photon")] protected PhotonView photonViewElement; 
+    public PhotonView PhotonViewElement { get { return photonViewElement; } }
     public int PhotonViewElementID { get { return photonViewElement.viewID; } }
     #endregion
 

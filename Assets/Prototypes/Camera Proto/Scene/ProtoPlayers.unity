@@ -429,33 +429,33 @@ MonoBehaviour:
   detectionArea:
     extendedX: 18.820337
     extendedY: 1.5341483
-    extendedZ: 11.427667
+    extendedZ: 11.550972
     debugColor: {r: 1, g: 0, b: 0, a: 1}
   spawnPoints:
   - name: Spawn Point 1
-    spawnPosition: {x: 2.9576986, y: 0, z: 0}
+    spawnPosition: {x: 6.57, y: 0, z: 2.5885563}
     id: 1
-    isOnFightingArea: 0
+    isOnFightingArea: 1
     isSelected: 0
     EnemiesSpawnable:
     - {fileID: 114290383028662650, guid: cd76fe4882b6b8d42a59ef6f065af2c6, type: 2}
-    spawnPointColor: {r: 1, g: 0, b: 0, a: 1}
+    spawnPointColor: {r: 1, g: 0, b: 0.8279877, a: 1}
   - name: Spawn Point 2
-    spawnPosition: {x: 0, y: 0, z: 1.502658}
+    spawnPosition: {x: 1.5375905, y: 0, z: 4.002034}
     id: 2
     isOnFightingArea: 0
     isSelected: 0
     EnemiesSpawnable:
     - {fileID: 114290383028662650, guid: cd76fe4882b6b8d42a59ef6f065af2c6, type: 2}
-    spawnPointColor: {r: 1, g: 0, b: 0, a: 1}
+    spawnPointColor: {r: 1, g: 0, b: 0.85180044, a: 1}
   - name: Spawn Point 3
-    spawnPosition: {x: 1.7280421, y: 0, z: 1.3656826}
+    spawnPosition: {x: 5.097185, y: 0, z: -2.754829}
     id: 3
     isOnFightingArea: 0
     isSelected: 0
     EnemiesSpawnable:
     - {fileID: 114290383028662650, guid: cd76fe4882b6b8d42a59ef6f065af2c6, type: 2}
-    spawnPointColor: {r: 1, g: 0, b: 0, a: 1}
+    spawnPointColor: {r: 1, g: 0, b: 0.8795767, a: 1}
   spawnedEnemies: []
   areaPhotonView: {fileID: 350726759}
 --- !u!4 &350726757
@@ -465,7 +465,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 350726755}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.19, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -1490,10 +1490,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1032854175}
   - component: {fileID: 1032854174}
-  - component: {fileID: 1032854177}
-  - component: {fileID: 1032854178}
   - component: {fileID: 1032854176}
   - component: {fileID: 1032854179}
+  - component: {fileID: 1032854180}
   m_Layer: 0
   m_Name: Logic
   m_TagString: Untagged
@@ -1554,34 +1553,6 @@ MonoBehaviour:
   instantiationId: 4
   currentMasterID: -1
   isRuntimeInstantiated: 0
---- !u!114 &1032854177
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1032854173}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d61234cd093201446aab22567cd76f12, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  EnemyRPCManagerPhotonView: {fileID: 1032854176}
-  AllEnemies:
-  - {fileID: 1989968285}
-  - {fileID: 372694826}
---- !u!114 &1032854178
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1032854173}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62d4122cfa3873f4a8aa9fcf61bfb7c1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  PlayerRPCManagerPhotonView: {fileID: 1032854176}
-  AllPlayers: []
 --- !u!114 &1032854179
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1594,6 +1565,219 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RPCManagerPhotonView: {fileID: 1032854176}
+--- !u!114 &1032854180
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1032854173}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9816cba28a6d474ba223ae2e41847cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  leftStickX: 0
+  leftStickY: 0
+  rightStickX: 0
+  rightStickY: 0
+  dpadx: 0
+  dpady: 0
+  rightTrigger: 0
+  leftTrigger: 0
+  aButtonDown: 0
+  aButtonUp: 0
+  aButton: 0
+  bButtonDown: 0
+  bButtonUp: 0
+  bButton: 0
+  xButtonDown: 0
+  xButtonUp: 0
+  xButton: 0
+  yButtonDown: 0
+  yButtonUp: 0
+  yButton: 0
+  startButtonDown: 0
+  startButtonUp: 0
+  startButton: 0
+  backButtonDown: 0
+  backButtonUp: 0
+  backButton: 0
+  rightBumperDown: 0
+  leftBumperDown: 0
+  rightBumperUp: 0
+  leftBumperUp: 0
+  rightBumper: 0
+  leftBumper: 0
+  leftStickClickDown: 0
+  leftStickClickUp: 0
+  leftStickClick: 0
+  rightStickClickDown: 0
+  rightStickClickUp: 0
+  rightStickClick: 0
+  mouseX: 0
+  mouseY: 0
+  leftClick: 0
+  leftClickDown: 0
+  leftClickUp: 0
+  rightClick: 0
+  rightClickDown: 0
+  rightClickUp: 0
+  wheelClick: 0
+  wheelClickDown: 0
+  wheelClickUp: 0
+  alphaOneKeyboard: 0
+  alphaOneKeyboardDown: 0
+  alphaOneKeyboardUp: 0
+  alphaTwoKeyboard: 0
+  alphaTwoKeyboardDown: 0
+  alphaTwoKeyboardUp: 0
+  alphaThreeKeyboard: 0
+  alphaThreeKeyboardDown: 0
+  alphaThreeKeyboardUp: 0
+  alphFourKeyboard: 0
+  alphFourKeyboardDown: 0
+  alphFourKeyboardUp: 0
+  alphaFiveKeyboard: 0
+  alphaFiveKeyboardDown: 0
+  alphaFiveKeyboardUp: 0
+  alphaSixKeyboard: 0
+  alphaSixKeyboardDown: 0
+  alphaSixKeyboardUp: 0
+  alphaSevenKeyboard: 0
+  alphaSevenKeyboardDown: 0
+  alphaSevenKeyboardUp: 0
+  alphaEightKeyboard: 0
+  alphaEightKeyboardDown: 0
+  alphaEightKeyboardUp: 0
+  alphaNineKeyboard: 0
+  alphaNineKeyboardDown: 0
+  alphaNineKeyboardUp: 0
+  alphaZeroKeyboard: 0
+  alphaZeroKeyboardDown: 0
+  alphaZeroKeyboardUp: 0
+  downArrow: 0
+  downArrowDown: 0
+  downArrowUp: 0
+  leftArrow: 0
+  leftArrowDown: 0
+  leftArrowUp: 0
+  rightArrow: 0
+  rightArrowDown: 0
+  rightArrowUp: 0
+  upArrow: 0
+  upArrowDown: 0
+  upArrowUp: 0
+  keypadZeroKeyboard: 0
+  keypadZeroKeyboardDown: 0
+  keypadZeroKeyboardUp: 0
+  keypadOneKeyboard: 0
+  keypadOneKeyboardDown: 0
+  keypadOneKeyboardUp: 0
+  keypadTwoKeyboard: 0
+  keypadTwoKeyboardDown: 0
+  keypadTwoKeyboardUp: 0
+  keypadThreeKeyboard: 0
+  keypadThreeKeyboardDown: 0
+  keypadThreeKeyboardUp: 0
+  keypadFourKeyboard: 0
+  keypadFourKeyboardDown: 0
+  keypadFourKeyboardUp: 0
+  keypadFiveKeyboard: 0
+  keypadFiveKeyboardDown: 0
+  keypadFiveKeyboardUp: 0
+  keypadSixKeyboard: 0
+  keypadSixKeyboardDown: 0
+  keypadSixKeyboardUp: 0
+  keypadSevenKeyboard: 0
+  keypadSevenKeyboardDown: 0
+  keypadSevenKeyboardUp: 0
+  keypadEightKeyboard: 0
+  keypadEightKeyboardDown: 0
+  keypadEightKeyboardUp: 0
+  keypadNineKeyboard: 0
+  keypadNineKeyboardDown: 0
+  keypadNineKeyboardUp: 0
+  aKeyboard: 0
+  aKeyboardDown: 0
+  aKeyboardUp: 0
+  zKeyboard: 0
+  zKeyboardDown: 0
+  zKeyboardUp: 0
+  eKeyboard: 0
+  eKeyboardDown: 0
+  eKeyboardUp: 0
+  rKeyboard: 0
+  rKeyboardDown: 0
+  rKeyboardUp: 0
+  tKeyboard: 0
+  tKeyboardDown: 0
+  tKeyboardUp: 0
+  yKeyboard: 0
+  yKeyboardDown: 0
+  yKeyboardUp: 0
+  uKeyboard: 0
+  uKeyboardDown: 0
+  uKeyboardUp: 0
+  iKeyboard: 0
+  iKeyboardDown: 0
+  iKeyboardUp: 0
+  oKeyboard: 0
+  oKeyboardDown: 0
+  oKeyboardUp: 0
+  pKeyboard: 0
+  pKeyboardDown: 0
+  pKeyboardUp: 0
+  qKeyboard: 0
+  qKeyboardDown: 0
+  qKeyboardUp: 0
+  sKeyboard: 0
+  sKeyboardDown: 0
+  sKeyboardUp: 0
+  dKeyboard: 0
+  dKeyboardDown: 0
+  dKeyboardUp: 0
+  fKeyboard: 0
+  fKeyboardDown: 0
+  fKeyboardUp: 0
+  gKeyboard: 0
+  gKeyboardDown: 0
+  gKeyboardUp: 0
+  hKeyboard: 0
+  hKeyboardDown: 0
+  hKeyboardUp: 0
+  jKeyboard: 0
+  jKeyboardDown: 0
+  jKeyboardUp: 0
+  kKeyboard: 0
+  kKeyboardDown: 0
+  kKeyboardUp: 0
+  lKeyboard: 0
+  lKeyboardDown: 0
+  lKeyboardUp: 0
+  mKeyboard: 0
+  mKeyboardDown: 0
+  mKeyboardUp: 0
+  wKeyboard: 0
+  wKeyboardDown: 0
+  wKeyboardUp: 0
+  xKeyboard: 0
+  xKeyboardDown: 0
+  xKeyboardUp: 0
+  cKeyboard: 0
+  cKeyboardDown: 0
+  cKeyboardUp: 0
+  vKeyboard: 0
+  vKeyboardDown: 0
+  vKeyboardUp: 0
+  bKeyboard: 0
+  bKeyboardDown: 0
+  bKeyboardUp: 0
+  nKeyboard: 0
+  nKeyboardDown: 0
+  nKeyboardUp: 0
+  escape: 0
+  escapeDown: 0
+  escapeUp: 0
 --- !u!1 &1035719940
 GameObject:
   m_ObjectHideFlags: 0

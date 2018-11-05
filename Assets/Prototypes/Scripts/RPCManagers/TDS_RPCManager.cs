@@ -25,10 +25,12 @@ public class TDS_RPCManager : PunBehaviour
     #region Fields/Properties
     public static TDS_RPCManager Instance;
     public PhotonView RPCManagerPhotonView;
+
+
     #endregion
 
     #region Methods
-    
+
     // TRY TO GLOBALIZE THE METHODS IN ONE 
 
     /// <summary>
@@ -213,20 +215,16 @@ public class TDS_RPCManager : PunBehaviour
     [PunRPC]
     public void ApplyAreaInformations(string _areaInfo)
     {
-        if (!PhotonNetwork.isMasterClient) return; 
+        if (!PhotonNetwork.isMasterClient) return;
         TDS_FightingAreaInfo _infos = new TDS_FightingAreaInfo(_areaInfo);
         TDS_FightingArea _area = GetFightingAreaByID(_infos.FightingAreaID);
-        foreach (TDS_EnemyInfo info in _infos.EnemiesInfos)
-        {
-            TDS_Enemy _enemy = PhotonNetwork.Instantiate(((EnemyName)info.EnemyType).ToString(), info.EnemyPosition, Quaternion.identity, 0).GetComponent<TDS_Enemy>();
-            _area.SpawnedEnemies.Add(_enemy); 
-        }
+        if (_area == null) return; 
+        _area.SpawnEnemiesUsingInfos(_infos.EnemiesInfos);
     }
+    #endregion
+    #endregion
+    #endregion
 
-    
-    #endregion
-    #endregion
-    #endregion
 
     #region UnityMethods
     private void Awake()

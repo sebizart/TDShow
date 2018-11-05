@@ -1,6 +1,6 @@
 WindowsStandalone
 PlayerPath?
-C:/Users/AlexisAdmin/Documents/GitHub/TDShow/Build/The Dreadful Show.exe
+C:/Users/EPIIC - Etudiant/Documents/CATA_Unity/The Dreadful Show/Build/The Dreadful Show.exe
 SceneListBegin?
 Assets/Prototypes/Camera Proto/Scene/ProtoPlayers.unity
 SceneListEnd?

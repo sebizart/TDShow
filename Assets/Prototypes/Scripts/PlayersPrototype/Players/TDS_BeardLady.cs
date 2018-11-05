@@ -158,7 +158,6 @@ public class TDS_BeardLady : TDS_Player
     /// <param name="_attack"></param>
     protected override void ExecuteAction(PlayerAttacks _attack)
     {
-        throw new NotImplementedException();
     }
 
     #region Beard

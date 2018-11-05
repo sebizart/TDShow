@@ -55,4 +55,5 @@ MonoBehaviour:
   - ThrowObject
   - TryToGrabObject
   - ApplyAreaInformations
+  - InformationsReceive
   DisableAutoOpenWizard: 1

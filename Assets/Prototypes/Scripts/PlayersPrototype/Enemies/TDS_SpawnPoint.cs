@@ -49,7 +49,6 @@ public class TDS_SpawnPoint
         if (!PhotonNetwork.isMasterClient) return null;
         //ESSAYER DE VOIR POUR FAIRE SPAWN UN TYPE D'ENEMY EN PARTICULIER
         //Pour le moment, random enemy
-        Debug.Log("SPAWN");  
         TDS_Enemy _enemy = EnemiesSpawnable[(int)UnityEngine.Random.Range(0, EnemiesSpawnable.Count - 1)];
         PhotonView _enemyId = PhotonNetwork.Instantiate(_enemy.PrefabName.ToString(), spawnPosition + Vector3.up, Quaternion.identity, 0).GetComponent<PhotonView>();
         return _enemy;
