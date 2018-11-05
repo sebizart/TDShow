@@ -62,6 +62,12 @@ public class TDS_Juggler : TDS_Player
 
     #region Methods
     #region Unity Methods
+    protected override void Awake()
+    {
+        base.Awake();
+        character = PlayerCharacter.Juggler;
+    }
+
     protected override void FixedUpdate()
     {
         // If the juggler is preparing a throw, return
@@ -75,13 +81,13 @@ public class TDS_Juggler : TDS_Player
     }
 
     // Use this for initialization
-    void Start ()
+    protected override void Start()
     {
-		       
-	}
-	
-	// Update is called once per frame
-	protected override void Update ()
+        base.Start();
+    }
+
+    // Update is called once per frame
+    protected override void Update ()
     {
         // If the juggler is preparing a throw, return
         if (isPreparingThrow) return;
