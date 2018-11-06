@@ -121,6 +121,9 @@ MonoBehaviour:
   vertical: 0
   controlID: 142
 <<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> parent of d156084... Sélection de Personnage
+=======
 >>>>>>> parent of d156084... Sélection de Personnage
 =======
 >>>>>>> parent of d156084... Sélection de Personnage
@@ -272,6 +275,7 @@ MonoBehaviour:
     y: 0
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     width: 2041
     height: 1341
   m_MinSize: {x: 406, y: 492}
@@ -285,6 +289,13 @@ MonoBehaviour:
   m_MinSize: {x: 406, y: 342}
   m_MaxSize: {x: 8006, y: 8042}
   vertical: 1
+=======
+    width: 1472
+    height: 947
+  m_MinSize: {x: 406, y: 342}
+  m_MaxSize: {x: 8006, y: 8042}
+  vertical: 1
+>>>>>>> parent of d156084... Sélection de Personnage
 =======
     width: 1472
     height: 947
@@ -319,9 +330,12 @@ MonoBehaviour:
   vertical: 0
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   controlID: 548
 --- !u!114 &11
 =======
+=======
+>>>>>>> parent of d156084... Sélection de Personnage
 =======
 >>>>>>> parent of d156084... Sélection de Personnage
   controlID: 103
@@ -741,7 +755,11 @@ MonoBehaviour:
     m_Folders:
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     - Assets
+=======
+    - Assets/Prototypes/Scripts/PlayersPrototype
+>>>>>>> parent of d156084... Sélection de Personnage
 =======
     - Assets/Prototypes/Scripts/PlayersPrototype
 >>>>>>> parent of d156084... Sélection de Personnage
@@ -751,6 +769,7 @@ MonoBehaviour:
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
   - Assets
@@ -765,6 +784,8 @@ MonoBehaviour:
 =======
 =======
 >>>>>>> parent of d156084... Sélection de Personnage
+=======
+>>>>>>> parent of d156084... Sélection de Personnage
   - Assets/Prototypes/Scripts/PlayersPrototype
   m_LastFoldersGridSize: 68
   m_LastProjectPath: C:\Users\EPIIC - Etudiant\Desktop\The Dreadful Show\TDShow -
@@ -777,6 +798,9 @@ MonoBehaviour:
     m_LastClickedID: 3274
     m_ExpandedIDs: 00000000080c0000c60c0000e60c00005e0d0000160f00001c0f0000b00f000000ca9a3b
 <<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> parent of d156084... Sélection de Personnage
+=======
 >>>>>>> parent of d156084... Sélection de Personnage
 =======
 >>>>>>> parent of d156084... Sélection de Personnage
@@ -810,7 +834,11 @@ MonoBehaviour:
     m_LastClickedID: 0
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     m_ExpandedIDs: 00000000b023000000ca9a3bffffff7f
+=======
+    m_ExpandedIDs: 00000000080c0000c60c0000e60c00005e0d0000160f00001c0f0000b00f0000
+>>>>>>> parent of d156084... Sélection de Personnage
 =======
     m_ExpandedIDs: 00000000080c0000c60c0000e60c00005e0d0000160f00001c0f0000b00f0000
 >>>>>>> parent of d156084... Sélection de Personnage
@@ -844,11 +872,14 @@ MonoBehaviour:
   m_ListAreaState:
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     m_SelectedInstanceIDs: 
     m_LastClickedInstanceID: 0
     m_HadKeyboardFocusLastEvent: 0
     m_ExpandedInstanceIDs: c6230000
 =======
+=======
+>>>>>>> parent of d156084... Sélection de Personnage
 =======
 >>>>>>> parent of d156084... Sélection de Personnage
     m_SelectedInstanceIDs: 7809fbff
