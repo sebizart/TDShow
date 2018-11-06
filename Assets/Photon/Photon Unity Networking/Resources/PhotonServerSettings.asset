@@ -55,9 +55,4 @@ MonoBehaviour:
   - ThrowObject
   - TryToGrabObject
   - LaunchAction
-  - CheckAvailableSpawn
-  - RemovePlayer
-  - Spawn
-  - ReceiveInGamePlayers
-  - SendInGamePlayers
   DisableAutoOpenWizard: 1

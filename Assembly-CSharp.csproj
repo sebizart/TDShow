@@ -142,12 +142,8 @@
     <Compile Include="Assets\Prototypes\Scripts\Enemies\TDS_EnemyLifeBar.cs" />
     <Compile Include="Assets\Prototypes\Scripts\Networking\TDS_Networking.cs" />
     <Compile Include="Assets\Prototypes\Scripts\PlayersPrototype\TDS_AttackBox.cs" />
-    <Compile Include="Assets\Prototypes\Scripts\PlayersPrototype\TDS_BeardLady.cs" />
     <Compile Include="Assets\Prototypes\Scripts\PlayersPrototype\TDS_Character.cs" />
     <Compile Include="Assets\Prototypes\Scripts\PlayersPrototype\TDS_DamageableElement.cs" />
-    <Compile Include="Assets\Prototypes\Scripts\PlayersPrototype\TDS_FatLady.cs" />
-    <Compile Include="Assets\Prototypes\Scripts\PlayersPrototype\TDS_FireEater.cs" />
-    <Compile Include="Assets\Prototypes\Scripts\PlayersPrototype\TDS_GameManager.cs" />
     <Compile Include="Assets\Prototypes\Scripts\PlayersPrototype\TDS_Item.cs" />
     <Compile Include="Assets\Prototypes\Scripts\PlayersPrototype\TDS_Juggler.cs" />
     <Compile Include="Assets\Prototypes\Scripts\PlayersPrototype\TDS_Player.cs" />
