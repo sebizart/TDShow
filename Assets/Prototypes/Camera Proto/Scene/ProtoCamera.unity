@@ -4387,6 +4387,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed41d0611575d4d4e9480d62e2850dc3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+<<<<<<< HEAD
+=======
 --- !u!1 &1919373472
 GameObject:
   m_ObjectHideFlags: 0
@@ -4462,6 +4464,7 @@ CanvasRenderer:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1919373472}
   m_CullTransparentMesh: 0
+>>>>>>> d1560844edba0fec0bee0c6697d300af3e361927
 --- !u!1 &1944084239
 GameObject:
   m_ObjectHideFlags: 0

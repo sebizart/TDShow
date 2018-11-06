@@ -10,6 +10,7 @@ public enum ThrowType
     Two
 }
 
+[RequireComponent(typeof(LineRenderer))]
 public class TDS_Juggler : TDS_Player
 {
     /* TDS_Juggler :
@@ -40,6 +41,9 @@ public class TDS_Juggler : TDS_Player
     [SerializeField] private int throwTwoAngle = 40;
     // The amount of points to draw for the projectile's trajectory preview
     [SerializeField] private int trajectoryPointsAmount = 10;
+
+    // The line renderer used to draw the preview of the projectile's trajectory
+    [SerializeField] private LineRenderer lineRenderer = null;
 
     // The list of current projectiles in the Juggler's hands
     [SerializeField] private List<TDS_Throwable> projectiles = new List<TDS_Throwable>();
@@ -102,29 +106,38 @@ public class TDS_Juggler : TDS_Player
 
     private IEnumerator PrepareThrow(ThrowType _throwType)
     {
+        // Set the boolean indicating the juggler is preparing to throw
+        isPreparingThrow = true;
+
         // Set the current throw type
         currentThrow = _throwType;
+
+        // Get the angle of the throw
+        float _angle = _throwType == ThrowType.One ? throwOneAngle : throwTwoAngle;
 
         // Set the default destination
         switch (facingSide)
         {
             case FacingSide.Bottom:
-                projectileDestination = transform.position + -(Vector3.forward * 1.5f);
+                projectileDestination = new Vector3(transform.position.x, 0, transform.position.z) + -(Vector3.forward * 1.5f);
                 break;
             case FacingSide.Left:
-                projectileDestination = transform.position + -(Vector3.right * 1.5f);
+                projectileDestination = new Vector3(transform.position.x, 0, transform.position.z) + -(Vector3.right * 1.5f);
                 break;
             case FacingSide.Right:
-                projectileDestination = transform.position + (Vector3.right * 1.5f);
+                projectileDestination = new Vector3(transform.position.x, 0, transform.position.z) + (Vector3.right * 1.5f);
                 break;
             case FacingSide.Top:
-                projectileDestination = transform.position + (Vector3.forward * 1.5f);
+                projectileDestination = new Vector3(transform.position.x, 0, transform.position.z) + (Vector3.forward * 1.5f);
                 break;
             default:
                 break;
         }
 
-        // Draws the curbe of the default destination
+        // Get the velocity of the default destination
+        projectileVelocity = TDS_ProjectileUtils.GetProjectileVelocityAsVector3(projectile.transform.position, projectileDestination, _angle);
+        // Get the positions of projectile's trajectory for preview
+        trajectoryPositions = TDS_ProjectileUtils.GetProjectileMotionPoints(projectile.transform.position, projectileDestination, projectileVelocity.magnitude, _angle, trajectoryPointsAmount);
 
         // While the player keep the input down, let him prepare the object's trajectory
         while (Input.GetKey(_throwType == ThrowType.One ? attackOneKey : attackTwoKey))
@@ -157,17 +170,49 @@ public class TDS_Juggler : TDS_Player
                     ChangeSide(FacingSide.Top);
                 }
 
-                // Draw the new curve
+                // Get the velocity of the default destination
+                projectileVelocity = TDS_ProjectileUtils.GetProjectileVelocityAsVector3(projectile.transform.position, projectileDestination, _angle);
+                // Get the positions of projectile's trajectory for preview
+                trajectoryPositions = TDS_ProjectileUtils.GetProjectileMotionPoints(projectile.transform.position, projectileDestination, projectileVelocity.magnitude, _angle, trajectoryPointsAmount);
+            }
+            // Positions to send to draw the trajectory's preview
+            Vector3[] _previewPositions = trajectoryPositions;
+            // The raycast hit indicating where the obstacle is
+            RaycastHit _raycastHit = new RaycastHit();
 
+            // Raycast to know if there is an obstacle on the projectile's trajectory
+            for (int _i = 0; _i < trajectoryPositions.Length - 1; _i++)
+            {
+                // If something was hit, set this point as end of the trajectory
+                if (Physics.Linecast(trajectoryPositions[_i], trajectoryPositions[_i + 1], out _raycastHit))
+                {
+                    _previewPositions = new Vector3[_i + 2];
+                    for (int _j = 0; _j <= _i; _j++)
+                    {
+                        _previewPositions[_j] = trajectoryPositions[_j];
+                    }
+                    _previewPositions[_i + 1] = _raycastHit.point;
+                    break;
+                }
             }
 
+            // Draws the curve of the destination
+            lineRenderer.DrawTrajectory(_previewPositions);
+
             // Wait 0.1 second before checking the trajectory once again
-            yield return new WaitForSeconds(.1f);
+            yield return new WaitForSeconds(.05f);
         }
 
         // If the player releases the input, throw the object
         projectile.Throw(projectileVelocity);
         projectile = null;
+
+        // Reset projectile informations
+        isPreparingThrow = false;
+        projectileVelocity = Vector3.zero;
+        trajectoryPositions = new Vector3[] { };
+        projectileDestination = Vector3.zero;
+        lineRenderer.DrawTrajectory(trajectoryPositions);
         yield break;
     }
 
