@@ -156,7 +156,6 @@
     <Compile Include="Assets\Prototypes\Scripts\RPCManagers\TDS_PlayerRPCManager.cs" />
     <Compile Include="Assets\Prototypes\Scripts\RPCManagers\TDS_RPCManager.cs" />
     <Compile Include="Assets\Prototypes\Scripts\TDS_DamageBehaviour.cs" />
-    <Compile Include="Assets\Prototypes\Scripts\TDS_UIManager.cs" />
     <Compile Include="Assets\Scripts\LogSaver\RunTime\TDS_CustomDebug.cs" />
     <Compile Include="Assets\Scripts\LogSaver\RunTime\TDS_LoggerManager.cs" />
     <Compile Include="Assets\Scripts\LogSaver\RunTime\TDS_LogSaver.cs" />

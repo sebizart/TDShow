@@ -77,6 +77,7 @@ public abstract class TDS_Player : TDS_Character
     {
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             TDS_GameManager.Instance.LeftParty(character);
@@ -84,6 +85,8 @@ public abstract class TDS_Player : TDS_Character
             return;
         }
 
+=======
+>>>>>>> parent of d156084... Sélection de Personnage
 =======
 >>>>>>> parent of d156084... Sélection de Personnage
 =======
