@@ -187,8 +187,7 @@ public abstract class TDS_Character : TDS_DamageableElement
     //ON PHOTON SERIALIZE VIEW
     protected override void OnPhotonSerializeView(PhotonStream _stream, PhotonMessageInfo _messageInfo)
     {
-        base.OnPhotonSerializeView(_stream, _messageInfo);
-
+        base.OnPhotonSerializeView(_stream, _messageInfo); 
         if(_stream.isWriting)
         {
             _stream.SendNext(transform.position.x);
@@ -231,7 +230,7 @@ public abstract class TDS_Character : TDS_DamageableElement
         Gizmos.color = Color.white;
     }
 
-    protected virtual void Start () 
+    void Start () 
     {
     	
     }

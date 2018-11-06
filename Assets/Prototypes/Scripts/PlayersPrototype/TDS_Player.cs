@@ -30,23 +30,12 @@ public enum PlayerAttacks
     Super
 }
 
-public enum PlayerCharacter
-{
-    BeardLady,
-    FatLady,
-    FireEater,
-    Juggler
-}
-
 public abstract class TDS_Player : TDS_Character
 {
     public event Action OnHeal;
 
     #region Fields/Properties
     [SerializeField, Header("Player", order = 0), Header("Bool", order = 1)] bool isGrounded = true;
-
-    [SerializeField, Header("Character")] protected PlayerCharacter character = PlayerCharacter.BeardLady;
-
     [SerializeField, Header("Int")] protected int comboMax = 3;
     [SerializeField] protected int comboResetTime = 1;
     [SerializeField] protected int currentComboValue = 0;
@@ -86,6 +75,7 @@ public abstract class TDS_Player : TDS_Character
     /// </summary>
     protected void CheckInputs()
     {
+<<<<<<< HEAD
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             TDS_GameManager.Instance.LeftParty(character);
@@ -93,6 +83,8 @@ public abstract class TDS_Player : TDS_Character
             return;
         }
 
+=======
+>>>>>>> parent of d156084... Sélection de Personnage
         float _horizontal = Input.GetAxis("Horizontal");
         float _vertical = Input.GetAxis("Vertical");
 
@@ -249,11 +241,6 @@ public abstract class TDS_Player : TDS_Character
     #endregion
 
     #region UnityMethods
-    protected virtual void Awake()
-    {
-
-    }
-
     protected virtual void FixedUpdate()
     {
         // If it's the player's avatar : Checks the inputs of the player
@@ -269,23 +256,14 @@ public abstract class TDS_Player : TDS_Character
 
     }
 
-    protected override void Start() 
+    protected virtual void Start () 
     {
-        base.Start();
-
-        if (photonViewElement.isMine)
-        {
-            TDS_UIManager.Instance.SetMainPlayer(character);
-        }
-        else
-        {
-            TDS_UIManager.Instance.AddPlayer(character);
-        }
+    	
     }
     
     protected override void Update () 
     {
-        base.Update();
+    	
     }
     #endregion
 }
