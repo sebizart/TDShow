@@ -53,10 +53,10 @@ public class TDS_UIManager : MonoBehaviour
         bool _fireEaterEnabled = !TDS_GameManager.Instance.InGamePlayers[PlayerCharacter.FireEater];
         bool _jugglerEnabled = !TDS_GameManager.Instance.InGamePlayers[PlayerCharacter.Juggler];
 
-        beardLadySB.enabled = _beardLadyEnabled;
-        fatLadySB.enabled = _fatLadyEnabled;
-        fireEaterSB.enabled = _fireEaterEnabled;
-        jugglerSB.enabled = _jugglerEnabled;
+        beardLadySB.interactable = _beardLadyEnabled;
+        fatLadySB.interactable = _fatLadyEnabled;
+        fireEaterSB.interactable = _fireEaterEnabled;
+        jugglerSB.interactable = _jugglerEnabled;
     }
 
     public void Spawn(PlayerCharacter _player)

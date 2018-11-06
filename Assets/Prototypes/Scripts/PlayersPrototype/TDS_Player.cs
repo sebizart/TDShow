@@ -90,7 +90,6 @@ public abstract class TDS_Player : TDS_Character
         {
             TDS_GameManager.Instance.LeftParty(character);
             PhotonNetwork.Destroy(photonViewElement);
-            Destroy(gameObject);
             return;
         }
 

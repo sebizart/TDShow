@@ -166,6 +166,7 @@
     <Compile Include="Assets\Scripts\LogSaver\RunTime\TDS_LogSaver.cs" />
     <Compile Include="Assets\Scripts\Team Tools\FPSCounter\Core\FPSCounter.cs" />
     <Compile Include="Assets\Scripts\Team Tools\InputManager\Core\InputsManager.cs" />
+    <Compile Include="Assets\Scripts\Team Tools\InputManager\Core\SwitchControllerManager.cs" />
     <Compile Include="Assets\Scripts\Team Tools\InputManager\ReadMe.cs" />
     <Compile Include="Assets\Scripts\Team Tools\SpritesManager\Core\SpritesBehaviour.cs" />
     <Compile Include="Assets\Scripts\Team Tools\SpritesManager\Core\SpritesManager.cs" />

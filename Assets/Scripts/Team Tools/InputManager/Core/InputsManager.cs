@@ -379,10 +379,10 @@ public class InputsManager : MonoBehaviour
     #endregion
     #region 7
     #region GetKey
-    public static event Action<bool> OnKPSevenInputPress;
+    public static event Action<bool> OnKPASevenInputPress;
     #endregion
     #region GetKeyDown
-    public static event Action<bool> OnKPSevenDownInputPress;
+    public static event Action<bool> OnKPASevenDownInputPress;
     #endregion
     #region GetKeyUp
     public static event Action<bool> OnKPASevenUpInputPress;
@@ -390,10 +390,10 @@ public class InputsManager : MonoBehaviour
     #endregion
     #region 8
     #region GetKey
-    public static event Action<bool> OnKPEightInputPress;
+    public static event Action<bool> OnKPAEightInputPress;
     #endregion
     #region GetKeyDown
-    public static event Action<bool> OnKPEightDownInputPress;
+    public static event Action<bool> OnKPAEightDownInputPress;
     #endregion
     #region GetKeyUp
     public static event Action<bool> OnKPAEightUpInputPress;
@@ -401,10 +401,10 @@ public class InputsManager : MonoBehaviour
     #endregion
     #region 9
     #region GetKey
-    public static event Action<bool> OnKPNineInputPress;
+    public static event Action<bool> OnKPANineInputPress;
     #endregion
     #region GetKeyDown
-    public static event Action<bool> OnKPNineDownInputPress;
+    public static event Action<bool> OnKPANineDownInputPress;
     #endregion
     #region GetKeyUp
     public static event Action<bool> OnKPANineUpInputPress;
@@ -751,7 +751,6 @@ public class InputsManager : MonoBehaviour
     #endregion
     #endregion
     #endregion
-
     #region apportionment
     #region Xbox Controller
     #region Axis
@@ -784,7 +783,7 @@ public class InputsManager : MonoBehaviour
     #region A
     #region GetKeyDown
     [SerializeField, Header("A Button")]
-    bool aButtonDown;
+    bool aButtonDown ;
     public bool AButtonDown { get { return aButtonDown = Input.GetKeyDown(KeyCode.JoystickButton0); } }
     #endregion
     #region GetKeyUp
@@ -1904,245 +1903,261 @@ public class InputsManager : MonoBehaviour
     #region Meths
     void TestAxis(float _x, float _y)
     {
-        //test
+        //move
     }
-    private void OnDestroy()
+    #endregion
+
+    #region UniMeths 
+    void Awake()
     {
-     #region Events
-     #region Xbox Controller
-     #region LeftStick
-     OnVerticalAxisInput = null;
-     OnHorizontalAxisInput = null;
-     OnMoveAxisInput = null;
-    #endregion
-     #region RightStick
-     OnRotateXAxisInput = null;
-     OnRotateYAxisInput = null;
-     OnRotateAxisInput = null;
-    #endregion
-     #region D-pad
-     OnDpadxAxis = null;
-     OnDpadyAxis = null;
-     OnDpadxButton = null;
-     OnDpadyButton = null;
-    #endregion
-     #region Trigger
-     OnRightTriggerAxis = null;
-     OnLeftTriggerAxis = null;
-    #endregion
-     #region  Buttons
-    #region A
-    //A
-    OnAInputPress = null;
-    //AUp
-    OnAUpInputPress = null;
-    //ADown
-    OnADownInputPress = null;
-    #endregion
-    #region B
-    //B
-    OnBInputPress = null;
-    //BUp
-    OnBUpInputPress = null;
-    //BDown
-    OnBDownInputPress = null;
-    #endregion
-    #region X
-    //X
-    OnXInputPress = null;
-    //XUp
-    OnXUpInputPress = null;
-    //XDown
-    OnXDownInputPress = null;
-    #endregion
-    #region Y
-    //Y
-    OnYInputPress = null;
-    //YUp
-    OnYUpInputPress = null;
-    //YDown
-    OnYDownInputPress = null;
-    #endregion
-    #region Start
-    //Start
-    OnStartInputPress = null;
-    //StartUp
-    OnStartUpInputPress = null;
-    //StartDown
-    OnStartDownInputPress = null;
-    #endregion
-    #region Back
-    //Back
-    OnBackInputPress = null;
-    //BackUp
-    OnBackUpInputPress = null;
-    //BackDown
-    OnBackDownInputPress = null;
-    #endregion
-    #region Bumper
-    #region GetKeyDown
-    //RightBumperDown
-    OnRightBumperDownInputPress = null;
-    //LeftBumperDown
-    OnLeftBumperDownInputPress = null;
-    #endregion
-    #region GetKeyUp
-    //RightBumperUp
-    OnRightBumperUpInputPress = null;
-    //LeftBumperUp
-    OnLeftBumperUpInputPress = null;
-    #endregion
-    #region GetKey
-    //RightBumper
-    OnRightBumperInputPress = null;
-    //LeftBumper
-    OnLeftBumperInputPress = null;
-    #endregion
-    #endregion
-    #region LeftTriggerClick
-    #region GetKey
-    OnLeftStickClickInputPress = null;
-    #endregion
-    #region GetKeyDown
-    OnLeftStickClickDownInputPress = null;
-    #endregion
-    #region GetKeyUp
-    OnLeftStickClickUpInputPress = null;
-    #endregion
-    #endregion
-    #region RightTriggerClick
-    #region GetKey
-    OnRightStickClickInputPress = null;
-    #endregion
-    #region GetKeyDown
-    OnRightStickClickDownInputPress = null;
-    #endregion
-    #region GetKeyUp
-    OnRightStickClickUpInputPress = null;
-    #endregion
-    #endregion
-    #endregion
-    #endregion
-     #region  Mouse/Keyboard
-     #region Axis
-     OnMouseXAxisInput = null;
-     OnMouseYAxisInput = null;
-     OnMoveMouseAxisInput = null;
-    #endregion
-     #region Buttons keyboard
-    #region Alphanumeric
-    #region 1
-    #region GetKey
-    OnKBAOneInputPress = null;
-    #endregion
-    #region GetKeyDown
-    OnKBAOneDownInputPress = null;
-    #endregion
-    #region GetKeyUp
-    OnKBAOneUpInputPress = null;
-    #endregion
-    #endregion    
-    #region 2
-    #region GetKey
-    OnKBATwoInputPress = null;
-    #endregion
-    #region GetKeyDown
-    OnKBATwoDownInputPress = null;
-    #endregion
-    #region GetKeyUp
-    OnKBATwoUpInputPress = null;
-    #endregion
-    #endregion
-    #region 3
-    #region GetKey
-    OnKBAThreeInputPress = null;
-    #endregion
-    #region GetKeyDown
-    OnKBAThreeDownInputPress = null;
-    #endregion
-    #region GetKeyUp
-    OnKBAThreeUpInputPress = null;
-    #endregion
-    #endregion
-    #region 4
-    #region GetKey
-    OnKBAFourInputPress = null;
-    #endregion
-    #region GetKeyDown
-    OnKBAFourDownInputPress = null;
-    #endregion
-    #region GetKeyUp
-    OnKBAFourUpInputPress = null;
-    #endregion
-    #endregion
-    #region 5
-    #region GetKey
-    OnKBAFiveInputPress = null;
-    #endregion
-    #region GetKeyDown
-    OnKBAFiveDownInputPress = null;
-    #endregion
-    #region GetKeyUp
-    OnKBAFiveUpInputPress = null;
-    #endregion
-    #endregion
-    #region 6
-    #region GetKey
-    OnKBASixInputPress = null;
-    #endregion
-    #region GetKeyDown
-    OnKBASixDownInputPress = null;
-    #endregion
-    #region GetKeyUp
-    OnKBASixUpInputPress = null;
-    #endregion
-    #endregion
-    #region 7
-    #region GetKey
-    OnKBASevenInputPress = null;
-    #endregion
-    #region GetKeyDown
-    OnKBASevenDownInputPress = null;
-    #endregion
-    #region GetKeyUp
-    OnKBASevenUpInputPress = null;
-    #endregion
-    #endregion
-    #region 8
-    #region GetKey
-    OnKBAEightInputPress = null;
-    #endregion
-    #region GetKeyDown
-    OnKBAEightDownInputPress = null;
-    #endregion
-    #region GetKeyUp
-    OnKBAEightUpInputPress = null;
-    #endregion
-    #endregion
-    #region 9
-    #region GetKey
-    OnKBANineInputPress = null;
-    #endregion
-    #region GetKeyDown
-    OnKBANineDownInputPress = null;
-    #endregion
-    #region GetKeyUp
-    OnKBANineUpInputPress = null;
-    #endregion
-    #endregion
-    #region 0
-    #region GetKey
-    OnKBAZeroInputPress = null;
-    #endregion
-    #region GetKeyDown
-    OnKBAZeroDownInputPress = null;
-    #endregion
-    #region GetKeyUp
-    OnKBAZeroUpInputPress = null;
+        if (!Instance)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Debug.Log("Already an Input Manager in the Scene !");
+            Destroy(this);
+        }
+    }
+
+    void OnDestroy()
+    {
+        #region Events
+        #region Xbox Controller
+        #region LeftStick
+        OnVerticalAxisInput = null;
+        OnHorizontalAxisInput = null;
+        OnMoveAxisInput = null;
+        #endregion
+        #region RightStick
+        OnRotateXAxisInput = null;
+        OnRotateYAxisInput = null;
+        OnRotateAxisInput = null;
+        #endregion
+        #region D-pad
+        OnDpadxAxis = null;
+        OnDpadyAxis = null;
+        OnDpadxButton = null;
+        OnDpadyButton = null;
+        #endregion
+        #region Trigger
+        OnRightTriggerAxis = null;
+        OnLeftTriggerAxis = null;
+        #endregion
+        #region  Buttons
+        #region A
+        //A
+        OnAInputPress = null;
+        //AUp
+        OnAUpInputPress = null;
+        //ADown
+        OnADownInputPress = null;
+        #endregion
+        #region B
+        //B
+        OnBInputPress = null;
+        //BUp
+        OnBUpInputPress = null;
+        //BDown
+        OnBDownInputPress = null;
+        #endregion
+        #region X
+        //X
+        OnXInputPress = null;
+        //XUp
+        OnXUpInputPress = null;
+        //XDown
+        OnXDownInputPress = null;
+        #endregion
+        #region Y
+        //Y
+        OnYInputPress = null;
+        //YUp
+        OnYUpInputPress = null;
+        //YDown
+        OnYDownInputPress = null;
+        #endregion
+        #region Start
+        //Start
+        OnStartInputPress = null;
+        //StartUp
+        OnStartUpInputPress = null;
+        //StartDown
+        OnStartDownInputPress = null;
+        #endregion
+        #region Back
+        //Back
+        OnBackInputPress = null;
+        //BackUp
+        OnBackUpInputPress = null;
+        //BackDown
+        OnBackDownInputPress = null;
+        #endregion
+        #region Bumper
+        #region GetKeyDown
+        //RightBumperDown
+        OnRightBumperDownInputPress = null;
+        //LeftBumperDown
+        OnLeftBumperDownInputPress = null;
+        #endregion
+        #region GetKeyUp
+        //RightBumperUp
+        OnRightBumperUpInputPress = null;
+        //LeftBumperUp
+        OnLeftBumperUpInputPress = null;
+        #endregion
+        #region GetKey
+        //RightBumper
+        OnRightBumperInputPress = null;
+        //LeftBumper
+        OnLeftBumperInputPress = null;
+        #endregion
+        #endregion
+        #region LeftTriggerClick
+        #region GetKey
+        OnLeftStickClickInputPress = null;
+        #endregion
+        #region GetKeyDown
+        OnLeftStickClickDownInputPress = null;
+        #endregion
+        #region GetKeyUp
+        OnLeftStickClickUpInputPress = null;
+        #endregion
+        #endregion
+        #region RightTriggerClick
+        #region GetKey
+        OnRightStickClickInputPress = null;
+        #endregion
+        #region GetKeyDown
+        OnRightStickClickDownInputPress = null;
+        #endregion
+        #region GetKeyUp
+        OnRightStickClickUpInputPress = null;
         #endregion
         #endregion
         #endregion
-    #region DirectionalArrow
+        #endregion
+        #region  Mouse/Keyboard
+        #region Axis
+        OnMouseXAxisInput = null;
+        OnMouseYAxisInput = null;
+        OnMoveMouseAxisInput = null;
+        #endregion
+        #region Buttons keyboard
+        #region Alphanumeric
+        #region 1
+        #region GetKey
+        OnKBAOneInputPress = null;
+        #endregion
+        #region GetKeyDown
+        OnKBAOneDownInputPress = null;
+        #endregion
+        #region GetKeyUp
+        OnKBAOneUpInputPress = null;
+        #endregion
+        #endregion
+        #region 2
+        #region GetKey
+        OnKBATwoInputPress = null;
+        #endregion
+        #region GetKeyDown
+        OnKBATwoDownInputPress = null;
+        #endregion
+        #region GetKeyUp
+        OnKBATwoUpInputPress = null;
+        #endregion
+        #endregion
+        #region 3
+        #region GetKey
+        OnKBAThreeInputPress = null;
+        #endregion
+        #region GetKeyDown
+        OnKBAThreeDownInputPress = null;
+        #endregion
+        #region GetKeyUp
+        OnKBAThreeUpInputPress = null;
+        #endregion
+        #endregion
+        #region 4
+        #region GetKey
+        OnKBAFourInputPress = null;
+        #endregion
+        #region GetKeyDown
+        OnKBAFourDownInputPress = null;
+        #endregion
+        #region GetKeyUp
+        OnKBAFourUpInputPress = null;
+        #endregion
+        #endregion
+        #region 5
+        #region GetKey
+        OnKBAFiveInputPress = null;
+        #endregion
+        #region GetKeyDown
+        OnKBAFiveDownInputPress = null;
+        #endregion
+        #region GetKeyUp
+        OnKBAFiveUpInputPress = null;
+        #endregion
+        #endregion
+        #region 6
+        #region GetKey
+        OnKBASixInputPress = null;
+        #endregion
+        #region GetKeyDown
+        OnKBASixDownInputPress = null;
+        #endregion
+        #region GetKeyUp
+        OnKBASixUpInputPress = null;
+        #endregion
+        #endregion
+        #region 7
+        #region GetKey
+        OnKBASevenInputPress = null;
+        #endregion
+        #region GetKeyDown
+        OnKBASevenDownInputPress = null;
+        #endregion
+        #region GetKeyUp
+        OnKBASevenUpInputPress = null;
+        #endregion
+        #endregion
+        #region 8
+        #region GetKey
+        OnKBAEightInputPress = null;
+        #endregion
+        #region GetKeyDown
+        OnKBAEightDownInputPress = null;
+        #endregion
+        #region GetKeyUp
+        OnKBAEightUpInputPress = null;
+        #endregion
+        #endregion
+        #region 9
+        #region GetKey
+        OnKBANineInputPress = null;
+        #endregion
+        #region GetKeyDown
+        OnKBANineDownInputPress = null;
+        #endregion
+        #region GetKeyUp
+        OnKBANineUpInputPress = null;
+        #endregion
+        #endregion
+        #region 0
+        #region GetKey
+        OnKBAZeroInputPress = null;
+        #endregion
+        #region GetKeyDown
+        OnKBAZeroDownInputPress = null;
+        #endregion
+        #region GetKeyUp
+        OnKBAZeroUpInputPress = null;
+        #endregion
+        #endregion
+        #endregion
+        #region DirectionalArrow
         #region DownArrow
         #region GetKey
         OnDownArrowInputPress = null;
@@ -2188,475 +2203,460 @@ public class InputsManager : MonoBehaviour
         #endregion
         #endregion
         #endregion
-    #region Lettres
+        #region Lettres
         #region A
         #region GetKey
         OnKBAInputPress = null;
-    #endregion
-    #region GetKeyDown
-    OnKBADownInputPress = null;
-    #endregion
-    #region GetKeyUp
-    OnKBAUpInputPress = null;
-    #endregion
-    #endregion
-    #region Z
-    #region GetKey
-    OnKBZInputPress = null;
-    #endregion
-    #region GetKeyDown
-    OnKBZDownInputPress = null;
-    #endregion
-    #region GetKeyUp
-    OnKBZUpInputPress = null;
-    #endregion
-    #endregion
-    #region E
-    #region GetKey
-    OnKBEInputPress = null;
-    #endregion
-    #region GetKeyDown
-    OnKBEDownInputPress = null;
-    #endregion
-    #region GetKeyUp
-    OnKBEUpInputPress = null;
-    #endregion
-    #endregion
-    #region R
-    #region GetKey
-    OnKBRInputPress = null;
-    #endregion
-    #region GetKeyDown
-    OnKBRDownInputPress = null;
-    #endregion
-    #region GetKeyUp
-    OnKBRUpInputPress = null;
-    #endregion
-    #endregion
-    #region T
-    #region GetKey
-    OnKBTInputPress = null;
-    #endregion
-    #region GetKeyDown
-    OnKBTDownInputPress = null;
-    #endregion
-    #region GetKeyUp
-    OnKBTUpInputPress = null;
-    #endregion
-    #endregion
-    #region Y
-    #region GetKey
-    OnKBYInputPress = null;
-    #endregion
-    #region GetKeyDown
-    OnKBYDownInputPress = null;
-    #endregion
-    #region GetKeyUp
-    OnKBYUpInputPress = null;
-    #endregion
-    #endregion
-    #region U
-    #region GetKey
-    OnKBUInputPress = null;
-    #endregion
-    #region GetKeyDown
-    OnKBUDownInputPress = null;
-    #endregion
-    #region GetKeyUp
-    OnKBUUpInputPress = null;
-    #endregion
-    #endregion
-    #region I
-    #region GetKey
-    OnKBIInputPress = null;
-    #endregion
-    #region GetKeyDown
-    OnKBIDownInputPress = null;
-    #endregion
-    #region GetKeyUp
-    OnKBIUpInputPress = null;
-    #endregion
-    #endregion
-    #region O
-    #region GetKey
-    OnKBOInputPress = null;
-    #endregion
-    #region GetKeyDown
-    OnKBODownInputPress = null;
-    #endregion
-    #region GetKeyUp
-    OnKBOUpInputPress = null;
-    #endregion
-    #endregion
-    #region P
-    #region GetKey
-    OnKBPInputPress = null;
-    #endregion
-    #region GetKeyDown
-    OnKBPDownInputPress = null;
-    #endregion
-    #region GetKeyUp
-    OnKBPUpInputPress = null;
-    #endregion
-    #endregion
-    #region Q
-    #region GetKey
-    OnKBQInputPress = null;
-    #endregion
-    #region GetKeyDown
-    OnKBQDownInputPress = null;
-    #endregion
-    #region GetKeyUp
-    OnKBQUpInputPress = null;
-    #endregion
-    #endregion
-    #region S
-    #region GetKey
-    OnKBSInputPress = null;
-    #endregion
-    #region GetKeyDown
-    OnKBSDownInputPress = null;
-    #endregion
-    #region GetKeyUp
-    OnKBSUpInputPress = null;
-    #endregion
-    #endregion
-    #region D
-    #region GetKey
-    OnKBDInputPress = null;
-    #endregion
-    #region GetKeyDown
-    OnKBDDownInputPress = null;
-    #endregion
-    #region GetKeyUp
-    OnKBDUpInputPress = null;
-    #endregion
-    #endregion
-    #region F
-    #region GetKey
-    OnKBFInputPress = null;
-    #endregion
-    #region GetKeyDown
-    OnKBFDownInputPress = null;
-    #endregion
-    #region GetKeyUp
-    OnKBFIUpnputPress = null;
-    #endregion
-    #endregion
-    #region G
-    #region GetKey
-    OnKBGInputPress = null;
-    #endregion
-    #region GetKeyDown
-    OnKBGDownInputPress = null;
-    #endregion
-    #region GetKeyUp
-    OnKBGUpInputPress = null;
-    #endregion
-    #endregion
-    #region H
-    #region GetKey
-    OnKBHInputPress = null;
-    #endregion
-    #region GetKeyDown
-    OnKBHDownInputPress = null;
-    #endregion
-    #region GetKeyUp
-    OnKBHUpInputPress = null;
-    #endregion
-    #endregion
-    #region J
-    #region GetKey
-    OnKBJInputPress = null;
-    #endregion
-    #region GetKeyDown
-    OnKBJDownInputPress = null;
-    #endregion
-    #region GetKeyUp
-    OnKBJUpInputPress = null;
-    #endregion
-    #endregion
-    #region K
-    #region GetKey
-    OnKBKInputPress = null;
-    #endregion
-    #region GetKeyDown
-    OnKBKDownInputPress = null;
-    #endregion
-    #region GetKeyUp
-    OnKBKUpInputPress = null;
-    #endregion
-    #endregion
-    #region L
-    #region GetKey
-    OnKBLInputPress = null;
-    #endregion
-    #region GetKeyDown
-    OnKBLDownInputPress = null;
-    #endregion
-    #region GetKeyUp
-    OnKBLUpInputPress = null;
-    #endregion
-    #endregion
-    #region M
-    #region GetKey
-    OnKBMInputPress = null;
-    #endregion
-    #region GetKeyDown
-    OnKBMDownInputPress = null;
-    #endregion
-    #region GetKeyUp
-    OnKBMUpInputPress = null;
-    #endregion
-    #endregion
-    #region W
-    #region GetKey
-    OnKBWInputPress = null;
-    #endregion
-    #region GetKeyDown
-    OnKBWDownInputPress = null;
-    #endregion
-    #region GetKeyUp
-    OnKBWUpInputPress = null;
-    #endregion
-    #endregion
-    #region X
-    #region GetKey
-    OnKBXInputPress = null;
-    #endregion
-    #region GetKeyDown
-    OnKBXDownInputPress = null;
-    #endregion
-    #region GetKeyUp
-    OnKBXUpInputPress = null;
-    #endregion
-    #endregion
-    #region C
-    #region GetKey
-    OnKBCInputPress = null;
-    #endregion
-    #region GetKeyDown
-    OnKBCDownInputPress = null;
-    #endregion
-    #region GetKeyUp
-    OnKBCUpInputPress = null;
-    #endregion
-    #endregion
-    #region V
-    #region GetKey
-    OnKBVInputPress = null;
-    #endregion
-    #region GetKeyDown
-    OnKBVDownInputPress = null;
-    #endregion
-    #region GetKeyUp
-    OnKBVUpInputPress = null;
-    #endregion
-    #endregion
-    #region B
-    #region GetKey
-    OnKBBInputPress = null;
-    #endregion
-    #region GetKeyDown
-    OnKBBDownInputPress = null;
-    #endregion
-    #region GetKeyUp
-    OnKBBUpInputPress = null;
-    #endregion
-    #endregion
-    #region N
-    #region GetKey
-    OnKBNInputPress = null;
-    #endregion
-    #region GetKeyDown
-    OnKBNDownInputPress = null;
-    #endregion
-    #region GetKeyUp
-    OnKBNUpInputPress = null;
-    #endregion
-    #endregion
-    #endregion
-    #region Keypad
-    #region 0
-    #region GetKey
-    OnKPZeroInputPress = null;
-    #endregion
-    #region GetKeyDown
-    OnKPAZeroDownInputPress = null;
-    #endregion
-    #region GetKeyUp
-    OnKPAZeroUpInputPress = null;
-    #endregion
-    #endregion    
-    #region 1
-    #region GetKey
-    OnKPOneInputPress = null;
-    #endregion
-    #region GetKeyDown
-    OnKPAOneDownInputPress = null;
-    #endregion
-    #region GetKeyUp
-    OnKPAOneUpInputPress = null;
-    #endregion
-    #endregion
-    #region 2
-    #region GetKey
-    OnKPTwoInputPress = null;
-    #endregion
-    #region GetKeyDown
-    OnKPATwoDownInputPress = null;
-    #endregion
-    #region GetKeyUp
-    OnKPATwoUpInputPress = null;
-    #endregion
-    #endregion
-    #region 3
-    #region GetKey
-    OnKPThreeInputPress = null;
-    #endregion
-    #region GetKeyDown
-    OnKPAThreeDownInputPress = null;
-    #endregion
-    #region GetKeyUp
-    OnKPAThreeUpInputPress = null;
-    #endregion
-    #endregion
-    #region 4
-    #region GetKey
-    OnKPFourInputPress = null;
-    #endregion
-    #region GetKeyDown
-    OnKPAFourDownInputPress = null;
-    #endregion
-    #region GetKeyUp
-    OnKPAFourUpInputPress = null;
-    #endregion
-    #endregion    
-    #region 5
-    #region GetKey
-    OnKPFiveInputPress = null;
-    #endregion
-    #region GetKeyDown
-    OnKPAFiveDownInputPress = null;
-    #endregion
-    #region GetKeyUp
-    OnKPAFiveUpInputPress = null;
-    #endregion
-    #endregion
-    #region 6
-    #region GetKey
-    OnKPSixInputPress = null;
-    #endregion
-    #region GetKeyDown
-    OnKPASixDownInputPress = null;
-    #endregion
-    #region GetKeyUp
-    OnKPASixUpInputPress = null;
-    #endregion
-    #endregion
-    #region 7
-    #region GetKey
-    OnKPSevenInputPress = null;
-    #endregion
-    #region GetKeyDown
-    OnKPSevenDownInputPress = null;
-    #endregion
-    #region GetKeyUp
-    OnKPASevenUpInputPress = null;
-    #endregion
-    #endregion
-    #region 8
-    #region GetKey
-    OnKPEightInputPress = null;
-    #endregion
-    #region GetKeyDown
-    OnKPEightDownInputPress = null;
-    #endregion
-    #region GetKeyUp
-    OnKPAEightUpInputPress = null;
-    #endregion
-    #endregion
-    #region 9
-    #region GetKey
-    OnKPNineInputPress = null;
-    #endregion
-    #region GetKeyDown
-    OnKPNineDownInputPress = null;
-    #endregion
-    #region GetKeyUp
-    OnKPANineUpInputPress = null;
+        #endregion
+        #region GetKeyDown
+        OnKBADownInputPress = null;
+        #endregion
+        #region GetKeyUp
+        OnKBAUpInputPress = null;
+        #endregion
+        #endregion
+        #region Z
+        #region GetKey
+        OnKBZInputPress = null;
+        #endregion
+        #region GetKeyDown
+        OnKBZDownInputPress = null;
+        #endregion
+        #region GetKeyUp
+        OnKBZUpInputPress = null;
+        #endregion
+        #endregion
+        #region E
+        #region GetKey
+        OnKBEInputPress = null;
+        #endregion
+        #region GetKeyDown
+        OnKBEDownInputPress = null;
+        #endregion
+        #region GetKeyUp
+        OnKBEUpInputPress = null;
+        #endregion
+        #endregion
+        #region R
+        #region GetKey
+        OnKBRInputPress = null;
+        #endregion
+        #region GetKeyDown
+        OnKBRDownInputPress = null;
+        #endregion
+        #region GetKeyUp
+        OnKBRUpInputPress = null;
+        #endregion
+        #endregion
+        #region T
+        #region GetKey
+        OnKBTInputPress = null;
+        #endregion
+        #region GetKeyDown
+        OnKBTDownInputPress = null;
+        #endregion
+        #region GetKeyUp
+        OnKBTUpInputPress = null;
+        #endregion
+        #endregion
+        #region Y
+        #region GetKey
+        OnKBYInputPress = null;
+        #endregion
+        #region GetKeyDown
+        OnKBYDownInputPress = null;
+        #endregion
+        #region GetKeyUp
+        OnKBYUpInputPress = null;
+        #endregion
+        #endregion
+        #region U
+        #region GetKey
+        OnKBUInputPress = null;
+        #endregion
+        #region GetKeyDown
+        OnKBUDownInputPress = null;
+        #endregion
+        #region GetKeyUp
+        OnKBUUpInputPress = null;
+        #endregion
+        #endregion
+        #region I
+        #region GetKey
+        OnKBIInputPress = null;
+        #endregion
+        #region GetKeyDown
+        OnKBIDownInputPress = null;
+        #endregion
+        #region GetKeyUp
+        OnKBIUpInputPress = null;
+        #endregion
+        #endregion
+        #region O
+        #region GetKey
+        OnKBOInputPress = null;
+        #endregion
+        #region GetKeyDown
+        OnKBODownInputPress = null;
+        #endregion
+        #region GetKeyUp
+        OnKBOUpInputPress = null;
+        #endregion
+        #endregion
+        #region P
+        #region GetKey
+        OnKBPInputPress = null;
+        #endregion
+        #region GetKeyDown
+        OnKBPDownInputPress = null;
+        #endregion
+        #region GetKeyUp
+        OnKBPUpInputPress = null;
+        #endregion
+        #endregion
+        #region Q
+        #region GetKey
+        OnKBQInputPress = null;
+        #endregion
+        #region GetKeyDown
+        OnKBQDownInputPress = null;
+        #endregion
+        #region GetKeyUp
+        OnKBQUpInputPress = null;
+        #endregion
+        #endregion
+        #region S
+        #region GetKey
+        OnKBSInputPress = null;
+        #endregion
+        #region GetKeyDown
+        OnKBSDownInputPress = null;
+        #endregion
+        #region GetKeyUp
+        OnKBSUpInputPress = null;
+        #endregion
+        #endregion
+        #region D
+        #region GetKey
+        OnKBDInputPress = null;
+        #endregion
+        #region GetKeyDown
+        OnKBDDownInputPress = null;
+        #endregion
+        #region GetKeyUp
+        OnKBDUpInputPress = null;
+        #endregion
+        #endregion
+        #region F
+        #region GetKey
+        OnKBFInputPress = null;
+        #endregion
+        #region GetKeyDown
+        OnKBFDownInputPress = null;
+        #endregion
+        #region GetKeyUp
+        OnKBFIUpnputPress = null;
+        #endregion
+        #endregion
+        #region G
+        #region GetKey
+        OnKBGInputPress = null;
+        #endregion
+        #region GetKeyDown
+        OnKBGDownInputPress = null;
+        #endregion
+        #region GetKeyUp
+        OnKBGUpInputPress = null;
+        #endregion
+        #endregion
+        #region H
+        #region GetKey
+        OnKBHInputPress = null;
+        #endregion
+        #region GetKeyDown
+        OnKBHDownInputPress = null;
+        #endregion
+        #region GetKeyUp
+        OnKBHUpInputPress = null;
+        #endregion
+        #endregion
+        #region J
+        #region GetKey
+        OnKBJInputPress = null;
+        #endregion
+        #region GetKeyDown
+        OnKBJDownInputPress = null;
+        #endregion
+        #region GetKeyUp
+        OnKBJUpInputPress = null;
+        #endregion
+        #endregion
+        #region K
+        #region GetKey
+        OnKBKInputPress = null;
+        #endregion
+        #region GetKeyDown
+        OnKBKDownInputPress = null;
+        #endregion
+        #region GetKeyUp
+        OnKBKUpInputPress = null;
+        #endregion
+        #endregion
+        #region L
+        #region GetKey
+        OnKBLInputPress = null;
+        #endregion
+        #region GetKeyDown
+        OnKBLDownInputPress = null;
+        #endregion
+        #region GetKeyUp
+        OnKBLUpInputPress = null;
+        #endregion
+        #endregion
+        #region M
+        #region GetKey
+        OnKBMInputPress = null;
+        #endregion
+        #region GetKeyDown
+        OnKBMDownInputPress = null;
+        #endregion
+        #region GetKeyUp
+        OnKBMUpInputPress = null;
+        #endregion
+        #endregion
+        #region W
+        #region GetKey
+        OnKBWInputPress = null;
+        #endregion
+        #region GetKeyDown
+        OnKBWDownInputPress = null;
+        #endregion
+        #region GetKeyUp
+        OnKBWUpInputPress = null;
+        #endregion
+        #endregion
+        #region X
+        #region GetKey
+        OnKBXInputPress = null;
+        #endregion
+        #region GetKeyDown
+        OnKBXDownInputPress = null;
+        #endregion
+        #region GetKeyUp
+        OnKBXUpInputPress = null;
+        #endregion
+        #endregion
+        #region C
+        #region GetKey
+        OnKBCInputPress = null;
+        #endregion
+        #region GetKeyDown
+        OnKBCDownInputPress = null;
+        #endregion
+        #region GetKeyUp
+        OnKBCUpInputPress = null;
+        #endregion
+        #endregion
+        #region V
+        #region GetKey
+        OnKBVInputPress = null;
+        #endregion
+        #region GetKeyDown
+        OnKBVDownInputPress = null;
+        #endregion
+        #region GetKeyUp
+        OnKBVUpInputPress = null;
+        #endregion
+        #endregion
+        #region B
+        #region GetKey
+        OnKBBInputPress = null;
+        #endregion
+        #region GetKeyDown
+        OnKBBDownInputPress = null;
+        #endregion
+        #region GetKeyUp
+        OnKBBUpInputPress = null;
+        #endregion
+        #endregion
+        #region N
+        #region GetKey
+        OnKBNInputPress = null;
+        #endregion
+        #region GetKeyDown
+        OnKBNDownInputPress = null;
+        #endregion
+        #region GetKeyUp
+        OnKBNUpInputPress = null;
         #endregion
         #endregion
         #endregion
-    #region SpecialKey
-    #region Escape
-    #region GetKey
-    OnEscapeClickInputPress = null;
-    #endregion
-    #region GetKeyDown
-    OnEscapeClickDownInputPress = null;
-    #endregion
-    #region GetKeyUp
-    OnEscapeClickUpInputPress = null;
-    #endregion
-    #endregion
-    #endregion
-    #endregion
-     #region Buttons mouse
-     #region LeftClick
+        #region Keypad
+        #region 0
+        #region GetKey
+        OnKPZeroInputPress = null;
+        #endregion
+        #region GetKeyDown
+        OnKPAZeroDownInputPress = null;
+        #endregion
+        #region GetKeyUp
+        OnKPAZeroUpInputPress = null;
+        #endregion
+        #endregion
+        #region 1
+        #region GetKey
+        OnKPOneInputPress = null;
+        #endregion
+        #region GetKeyDown
+        OnKPAOneDownInputPress = null;
+        #endregion
+        #region GetKeyUp
+        OnKPAOneUpInputPress = null;
+        #endregion
+        #endregion
+        #region 2
+        #region GetKey
+        OnKPTwoInputPress = null;
+        #endregion
+        #region GetKeyDown
+        OnKPATwoDownInputPress = null;
+        #endregion
+        #region GetKeyUp
+        OnKPATwoUpInputPress = null;
+        #endregion
+        #endregion
+        #region 3
+        #region GetKey
+        OnKPThreeInputPress = null;
+        #endregion
+        #region GetKeyDown
+        OnKPAThreeDownInputPress = null;
+        #endregion
+        #region GetKeyUp
+        OnKPAThreeUpInputPress = null;
+        #endregion
+        #endregion
+        #region 4
+        #region GetKey
+        OnKPFourInputPress = null;
+        #endregion
+        #region GetKeyDown
+        OnKPAFourDownInputPress = null;
+        #endregion
+        #region GetKeyUp
+        OnKPAFourUpInputPress = null;
+        #endregion
+        #endregion
+        #region 5
+        #region GetKey
+        OnKPFiveInputPress = null;
+        #endregion
+        #region GetKeyDown
+        OnKPAFiveDownInputPress = null;
+        #endregion
+        #region GetKeyUp
+        OnKPAFiveUpInputPress = null;
+        #endregion
+        #endregion
+        #region 6
+        #region GetKey
+        OnKPSixInputPress = null;
+        #endregion
+        #region GetKeyDown
+        OnKPASixDownInputPress = null;
+        #endregion
+        #region GetKeyUp
+        OnKPASixUpInputPress = null;
+        #endregion
+        #endregion
+        #region 7
+        #region GetKey
+        OnKPASevenInputPress = null;
+        #endregion
+        #region GetKeyDown
+        OnKPASevenDownInputPress = null;
+        #endregion
+        #region GetKeyUp
+        OnKPASevenUpInputPress = null;
+        #endregion
+        #endregion
+        #region 8
+        #region GetKey
+        OnKPAEightInputPress = null;
+        #endregion
+        #region GetKeyDown
+        OnKPAEightDownInputPress = null;
+        #endregion
+        #region GetKeyUp
+        OnKPAEightUpInputPress = null;
+        #endregion
+        #endregion
+        #region 9
+        #region GetKey
+        OnKPANineInputPress = null;
+        #endregion
+        #region GetKeyDown
+        OnKPANineDownInputPress = null;
+        #endregion
+        #region GetKeyUp
+        OnKPANineUpInputPress = null;
+        #endregion
+        #endregion
+        #endregion
+        #region SpecialKey
+        #region Escape
+        #region GetKey
+        OnEscapeClickInputPress = null;
+        #endregion
+        #region GetKeyDown
+        OnEscapeClickDownInputPress = null;
+        #endregion
+        #region GetKeyUp
+        OnEscapeClickUpInputPress = null;
+        #endregion
+        #endregion
+        #endregion
+        #endregion
+        #region Buttons mouse
+        #region LeftClick
         #region GetKey
         OnLeftClickInputPress = null;
-    #endregion
-    #region GetKeyDown
-    OnLeftClickDownInputPress = null;
-    #endregion
-    #region GetKeyUp
-    OnLeftClickUpInputPress = null;
-    #endregion
-    #endregion
-     #region RightClick
-    #region GetKey
-    OnRightClickInputPress = null;
-    #endregion
-    #region GetKeyDown
-    OnRightClickDownInputPress = null;
-    #endregion
-    #region GetKeyUp
-    OnRightClickUpInputPress = null;
-    #endregion
-    #endregion
-     #region WheelClick
-    #region GetKey
-    OnWheelClickInputPress = null;
-    #endregion
-    #region GetKeyDown
-    OnWheelClickDownInputPress = null;
-    #endregion
-    #region GetKeyUp
-    OnWheelClickUpInputPress = null;
-    #endregion
-    #endregion
-    #endregion
-    #endregion
-     #endregion
-    Instance = null;
+        #endregion
+        #region GetKeyDown
+        OnLeftClickDownInputPress = null;
+        #endregion
+        #region GetKeyUp
+        OnLeftClickUpInputPress = null;
+        #endregion
+        #endregion
+        #region RightClick
+        #region GetKey
+        OnRightClickInputPress = null;
+        #endregion
+        #region GetKeyDown
+        OnRightClickDownInputPress = null;
+        #endregion
+        #region GetKeyUp
+        OnRightClickUpInputPress = null;
+        #endregion
+        #endregion
+        #region WheelClick
+        #region GetKey
+        OnWheelClickInputPress = null;
+        #endregion
+        #region GetKeyDown
+        OnWheelClickDownInputPress = null;
+        #endregion
+        #region GetKeyUp
+        OnWheelClickUpInputPress = null;
+        #endregion
+        #endregion
+        #endregion
+        #endregion
+        #endregion
+        Instance = null;
     }
-    #endregion
 
-    #region UniMeths 
-    void Awake()
-    {
-        if (!Instance)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Debug.Log("Already an Input Manager in the Scene !");
-            Destroy(this);
-        }
-    }
-    
     public void Update()
     {       
         #region Xbox Controller
@@ -3048,7 +3048,7 @@ public class InputsManager : MonoBehaviour
         #endregion
         #region 7
         #region GetKey
-        OnKPSevenInputPress?.Invoke(KeypadSevenKeyboard);
+        OnKPASevenInputPress?.Invoke(KeypadSevenKeyboard);
         #endregion
         #region GetKeyDown
         OnKBASevenDownInputPress?.Invoke(KeypadSevenKeyboardDown);
@@ -3059,7 +3059,7 @@ public class InputsManager : MonoBehaviour
         #endregion
         #region 8
         #region GetKey
-        OnKPEightInputPress?.Invoke(KeypadEightKeyboard);
+        OnKPAEightInputPress?.Invoke(KeypadEightKeyboard);
         #endregion
         #region GetKeyDown
         OnKBAEightDownInputPress?.Invoke(KeypadEightKeyboardDown);
@@ -3070,7 +3070,7 @@ public class InputsManager : MonoBehaviour
         #endregion
         #region 9
         #region GetKey
-        OnKPNineInputPress?.Invoke(KeypadNineKeyboard);
+        OnKPANineInputPress?.Invoke(KeypadNineKeyboard);
         #endregion
         #region GetKeyDown
         OnKBANineDownInputPress?.Invoke(KeypadNineKeyboardDown);
@@ -3381,7 +3381,6 @@ public class InputsManager : MonoBehaviour
         #endregion
         #endregion
         #endregion
-
         #endregion
         #endregion
     }
