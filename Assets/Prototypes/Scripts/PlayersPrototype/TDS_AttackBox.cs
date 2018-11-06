@@ -46,6 +46,10 @@ public class TDS_AttackBox
     #endregion
     
     #region Methods
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
     public Dictionary<int, int> RayCastAttack()
     {
         int[] _elements =  Physics.OverlapBox(centerPosition, extendPosition).Select(c => c.GetComponent<TDS_DamageableElement>()).ToArray().Where(e => e != null).Select(e => e.PhotonViewElementID).ToArray();
@@ -58,8 +62,26 @@ public class TDS_AttackBox
         }
         return _characterDamages; 
     }
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
+    public Dictionary<int, int> RayCastAttack(float _offset)
+    {
+        Vector3 _offsetedCenterPosition = new Vector3(centerPosition.x * _offset, centerPosition.y, centerPosition.z);
+        Vector3 _offsetedExtendedPosition = new Vector3(extendPosition.x * _offset, extendPosition.y, extendPosition.z);
+        int[] _elements = Physics.OverlapBox(_offsetedCenterPosition, _offsetedExtendedPosition).Select(c => c.GetComponent<TDS_DamageableElement>()).ToArray().Where(e => e != null).Select(e => e.PhotonViewElementID).ToArray();
+        int _damages;
+        Dictionary<int, int> _characterDamages = new Dictionary<int, int>();
+        foreach (int id in _elements)
+        {
+            _damages = Random.Range(minDamages, maxDamages);
+            _characterDamages.Add(id, _damages);
+        }
+        return _characterDamages;
+    }
     #endregion
-    
+
     #region UnityMethods
 
     #endregion
