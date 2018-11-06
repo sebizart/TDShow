@@ -70,8 +70,6 @@ public class TDS_Networking : PunBehaviour
         PhotonView _playerId = PhotonNetwork.Instantiate(_player.ToString(), Vector3.zero + Vector3.up, Quaternion.identity, 0).GetComponent<PhotonView>();
         OwnerID = _playerId.viewID;
 
-        TDS_PlayerRPCManager.Instance.AddPlayer(_playerId.viewID, true);
-
         localPlayer = _player;
     }
     #endregion
@@ -118,8 +116,6 @@ public class TDS_Networking : PunBehaviour
     public override void OnJoinedRoom()
     {
         base.OnJoinedRoom();
-
-        TDS_PlayerRPCManager.Instance.AllPlayers = FindObjectsOfType<TDS_Controller>().ToList();
 
         if (!PhotonNetwork.isMasterClient)
         {

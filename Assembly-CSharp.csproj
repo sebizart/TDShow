@@ -9,7 +9,7 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{AAE99626-028F-D06D-2B74-32BE995C5F92}</ProjectGuid>
+    <ProjectGuid>{0B0F8349-DA4A-EEAD-E789-0DF75C1E4226}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Assembly-CSharp</AssemblyName>
@@ -135,29 +135,26 @@
     <Compile Include="Assets\Prototypes\Scripts\Camera\TDS_Camera.cs" />
     <Compile Include="Assets\Prototypes\Scripts\Camera\TDS_SpriteBehaviour.cs" />
     <Compile Include="Assets\Prototypes\Scripts\Commun\TDS_GroundedElement.cs" />
-    <Compile Include="Assets\Prototypes\Scripts\Commun\TDS_IInterractible.cs" />
-    <Compile Include="Assets\Prototypes\Scripts\Controller\TDS_Controller.cs" />
-    <Compile Include="Assets\Prototypes\Scripts\Controller\TDS_OLDAttackBox.cs" />
-    <Compile Include="Assets\Prototypes\Scripts\Enemies\TDS_Enemy.cs" />
-    <Compile Include="Assets\Prototypes\Scripts\Enemies\TDS_EnemyLifeBar.cs" />
     <Compile Include="Assets\Prototypes\Scripts\Networking\TDS_Networking.cs" />
+    <Compile Include="Assets\Prototypes\Scripts\PlayersPrototype\Enemies\TDS_DetectionArea.cs" />
+    <Compile Include="Assets\Prototypes\Scripts\PlayersPrototype\Enemies\TDS_Enemy.cs" />
+    <Compile Include="Assets\Prototypes\Scripts\PlayersPrototype\Enemies\TDS_FightingArea.cs" />
+    <Compile Include="Assets\Prototypes\Scripts\PlayersPrototype\Enemies\TDS_SpawnPoint.cs" />
+    <Compile Include="Assets\Prototypes\Scripts\PlayersPrototype\Players\TDS_BeardLady.cs" />
+    <Compile Include="Assets\Prototypes\Scripts\PlayersPrototype\Players\TDS_FatLady.cs" />
+    <Compile Include="Assets\Prototypes\Scripts\PlayersPrototype\Players\TDS_FireEater.cs" />
+    <Compile Include="Assets\Prototypes\Scripts\PlayersPrototype\Players\TDS_Juggler.cs" />
+    <Compile Include="Assets\Prototypes\Scripts\PlayersPrototype\Players\TDS_Player.cs" />
     <Compile Include="Assets\Prototypes\Scripts\PlayersPrototype\TDS_AttackBox.cs" />
-    <Compile Include="Assets\Prototypes\Scripts\PlayersPrototype\TDS_BeardLady.cs" />
     <Compile Include="Assets\Prototypes\Scripts\PlayersPrototype\TDS_Character.cs" />
     <Compile Include="Assets\Prototypes\Scripts\PlayersPrototype\TDS_DamageableElement.cs" />
-    <Compile Include="Assets\Prototypes\Scripts\PlayersPrototype\TDS_FatLady.cs" />
-    <Compile Include="Assets\Prototypes\Scripts\PlayersPrototype\TDS_FireEater.cs" />
     <Compile Include="Assets\Prototypes\Scripts\PlayersPrototype\TDS_GameManager.cs" />
     <Compile Include="Assets\Prototypes\Scripts\PlayersPrototype\TDS_Item.cs" />
-    <Compile Include="Assets\Prototypes\Scripts\PlayersPrototype\TDS_Juggler.cs" />
-    <Compile Include="Assets\Prototypes\Scripts\PlayersPrototype\TDS_Player.cs" />
     <Compile Include="Assets\Prototypes\Scripts\PlayersPrototype\TDS_PunInheritance.cs" />
     <Compile Include="Assets\Prototypes\Scripts\PlayersPrototype\TDS_Usable.cs" />
     <Compile Include="Assets\Prototypes\Scripts\PlayersPrototype\Throwavles &amp; Trajectories\LineRendererExtension.cs" />
     <Compile Include="Assets\Prototypes\Scripts\PlayersPrototype\Throwavles &amp; Trajectories\TDS_ProjectileUtils.cs" />
     <Compile Include="Assets\Prototypes\Scripts\PlayersPrototype\Throwavles &amp; Trajectories\TDS_Throwable.cs" />
-    <Compile Include="Assets\Prototypes\Scripts\RPCManagers\TDS_EnemyRPCManager.cs" />
-    <Compile Include="Assets\Prototypes\Scripts\RPCManagers\TDS_PlayerRPCManager.cs" />
     <Compile Include="Assets\Prototypes\Scripts\RPCManagers\TDS_RPCManager.cs" />
     <Compile Include="Assets\Prototypes\Scripts\TDS_DamageBehaviour.cs" />
     <Compile Include="Assets\Prototypes\Scripts\TDS_UIManager.cs" />
@@ -193,37 +190,37 @@
     <None Include="Assets\Photon\Photon Unity Networking\changelog.txt" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Surface.shader" />
     <Reference Include="Unity.2D.Animation.Runtime">
-      <HintPath>C:/Users/EPIIC - Etudiant/Desktop/The Dreadful Show/TDShow - GitHub/Library/ScriptAssemblies/Unity.2D.Animation.Runtime.dll</HintPath>
+      <HintPath>C:/Users/EPIIC - Etudiant/Desktop/The Dreadful Show/TDShow - GitHub/TDShow/Library/ScriptAssemblies/Unity.2D.Animation.Runtime.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.StandardEvents">
-      <HintPath>C:/Users/EPIIC - Etudiant/Desktop/The Dreadful Show/TDShow - GitHub/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
+      <HintPath>C:/Users/EPIIC - Etudiant/Desktop/The Dreadful Show/TDShow - GitHub/TDShow/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro.Editor">
-      <HintPath>C:/Users/EPIIC - Etudiant/Desktop/The Dreadful Show/TDShow - GitHub/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
+      <HintPath>C:/Users/EPIIC - Etudiant/Desktop/The Dreadful Show/TDShow - GitHub/TDShow/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.PackageManagerUI.Editor">
-      <HintPath>C:/Users/EPIIC - Etudiant/Desktop/The Dreadful Show/TDShow - GitHub/Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll</HintPath>
+      <HintPath>C:/Users/EPIIC - Etudiant/Desktop/The Dreadful Show/TDShow - GitHub/TDShow/Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.InternalAPIEngineBridge.001">
-      <HintPath>C:/Users/EPIIC - Etudiant/Desktop/The Dreadful Show/TDShow - GitHub/Library/ScriptAssemblies/Unity.InternalAPIEngineBridge.001.dll</HintPath>
+      <HintPath>C:/Users/EPIIC - Etudiant/Desktop/The Dreadful Show/TDShow - GitHub/TDShow/Library/ScriptAssemblies/Unity.InternalAPIEngineBridge.001.dll</HintPath>
     </Reference>
     <Reference Include="Unity.2D.Common.Runtime">
-      <HintPath>C:/Users/EPIIC - Etudiant/Desktop/The Dreadful Show/TDShow - GitHub/Library/ScriptAssemblies/Unity.2D.Common.Runtime.dll</HintPath>
+      <HintPath>C:/Users/EPIIC - Etudiant/Desktop/The Dreadful Show/TDShow - GitHub/TDShow/Library/ScriptAssemblies/Unity.2D.Common.Runtime.dll</HintPath>
     </Reference>
     <Reference Include="Unity.2D.Animation.Editor">
-      <HintPath>C:/Users/EPIIC - Etudiant/Desktop/The Dreadful Show/TDShow - GitHub/Library/ScriptAssemblies/Unity.2D.Animation.Editor.dll</HintPath>
+      <HintPath>C:/Users/EPIIC - Etudiant/Desktop/The Dreadful Show/TDShow - GitHub/TDShow/Library/ScriptAssemblies/Unity.2D.Animation.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.2D.Triangle.Runtime">
-      <HintPath>C:/Users/EPIIC - Etudiant/Desktop/The Dreadful Show/TDShow - GitHub/Library/ScriptAssemblies/Unity.2D.Triangle.Runtime.dll</HintPath>
+      <HintPath>C:/Users/EPIIC - Etudiant/Desktop/The Dreadful Show/TDShow - GitHub/TDShow/Library/ScriptAssemblies/Unity.2D.Triangle.Runtime.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro">
-      <HintPath>C:/Users/EPIIC - Etudiant/Desktop/The Dreadful Show/TDShow - GitHub/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
+      <HintPath>C:/Users/EPIIC - Etudiant/Desktop/The Dreadful Show/TDShow - GitHub/TDShow/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
     </Reference>
     <Reference Include="Unity.2D.Common.Editor">
-      <HintPath>C:/Users/EPIIC - Etudiant/Desktop/The Dreadful Show/TDShow - GitHub/Library/ScriptAssemblies/Unity.2D.Common.Editor.dll</HintPath>
+      <HintPath>C:/Users/EPIIC - Etudiant/Desktop/The Dreadful Show/TDShow - GitHub/TDShow/Library/ScriptAssemblies/Unity.2D.Common.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.InternalAPIEditorBridge.001">
-      <HintPath>C:/Users/EPIIC - Etudiant/Desktop/The Dreadful Show/TDShow - GitHub/Library/ScriptAssemblies/Unity.InternalAPIEditorBridge.001.dll</HintPath>
+      <HintPath>C:/Users/EPIIC - Etudiant/Desktop/The Dreadful Show/TDShow - GitHub/TDShow/Library/ScriptAssemblies/Unity.InternalAPIEditorBridge.001.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AIModule">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2018.2.14f1/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>
@@ -424,13 +421,13 @@
       <HintPath>C:/Program Files/Unity/Hub/Editor/2018.2.14f1/Editor/Data/UnityExtensions/Unity/UnitySpatialTracking/RuntimeEditor/UnityEngine.SpatialTracking.dll</HintPath>
     </Reference>
     <Reference Include="Photon3Unity3D">
-      <HintPath>C:/Users/EPIIC - Etudiant/Desktop/The Dreadful Show/TDShow - GitHub/Assets/Photon/Plugins/Photon3Unity3D.dll</HintPath>
+      <HintPath>C:/Users/EPIIC - Etudiant/Desktop/The Dreadful Show/TDShow - GitHub/TDShow/Assets/Photon/Plugins/Photon3Unity3D.dll</HintPath>
     </Reference>
     <Reference Include="websocket-sharp">
-      <HintPath>C:/Users/EPIIC - Etudiant/Desktop/The Dreadful Show/TDShow - GitHub/Assets/Photon/Plugins/WebSocket/websocket-sharp.dll</HintPath>
+      <HintPath>C:/Users/EPIIC - Etudiant/Desktop/The Dreadful Show/TDShow - GitHub/TDShow/Assets/Photon/Plugins/WebSocket/websocket-sharp.dll</HintPath>
     </Reference>
     <Reference Include="UtilsLibrary">
-      <HintPath>C:/Users/EPIIC - Etudiant/Desktop/The Dreadful Show/TDShow - GitHub/Assets/Plugins/UtilsLibrary.dll</HintPath>
+      <HintPath>C:/Users/EPIIC - Etudiant/Desktop/The Dreadful Show/TDShow - GitHub/TDShow/Assets/Plugins/UtilsLibrary.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.Analytics">
       <HintPath>C:/Users/EPIIC - Etudiant/AppData/Local/Unity/cache/packages/packages.unity.com/com.unity.analytics@2.0.16/UnityEngine.Analytics.dll</HintPath>

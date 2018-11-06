@@ -641,12 +641,6 @@ Prefab:
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b309a475e4bd6b241916b1a9d167ae25, type: 2}
   m_IsPrefabAsset: 0
---- !u!114 &372694826 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 114444382402338456, guid: b309a475e4bd6b241916b1a9d167ae25,
-    type: 2}
-  m_PrefabInternal: {fileID: 372694825}
-  m_Script: {fileID: 11500000, guid: 20fa6631d0662494496bf6aaeb069578, type: 3}
 --- !u!1 &434990415
 GameObject:
   m_ObjectHideFlags: 0
@@ -1727,8 +1721,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1032854175}
   - component: {fileID: 1032854174}
-  - component: {fileID: 1032854177}
-  - component: {fileID: 1032854178}
   - component: {fileID: 1032854176}
   - component: {fileID: 1032854179}
   - component: {fileID: 1032854180}
@@ -1793,34 +1785,6 @@ MonoBehaviour:
   instantiationId: 4
   currentMasterID: -1
   isRuntimeInstantiated: 0
---- !u!114 &1032854177
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1032854173}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d61234cd093201446aab22567cd76f12, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  EnemyRPCManagerPhotonView: {fileID: 1032854176}
-  AllEnemies:
-  - {fileID: 1989968285}
-  - {fileID: 372694826}
---- !u!114 &1032854178
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1032854173}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62d4122cfa3873f4a8aa9fcf61bfb7c1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  photonID: {fileID: 1032854176}
-  AllPlayers: []
 --- !u!114 &1032854179
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4457,12 +4421,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed41d0611575d4d4e9480d62e2850dc3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1989968285 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 114444382402338456, guid: b309a475e4bd6b241916b1a9d167ae25,
-    type: 2}
-  m_PrefabInternal: {fileID: 1771944237}
-  m_Script: {fileID: 11500000, guid: 20fa6631d0662494496bf6aaeb069578, type: 3}
 --- !u!1 &2082041162
 GameObject:
   m_ObjectHideFlags: 0
