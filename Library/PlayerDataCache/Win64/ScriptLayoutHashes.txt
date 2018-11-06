@@ -218,11 +218,14 @@ ac4015b3f9c2f9a8f87357544349e470 Assembly-CSharp.dll:.InRoomChat
 93307bd34e39d73fd24e00ec39c25a91 Unity.TextMeshPro.dll:TMPro.TMP_SubMesh
 486cd95c82d8305219c352c06b776e1f Assembly-CSharp.dll:.SpritesBehaviour
 <<<<<<< HEAD
+<<<<<<< HEAD
 fafb39b1988ed9a79c3e3d79a2b59807 Assembly-CSharp.dll:.TDS_UIManager
 4c74ffa9d7bcd158daa18395023f996b Assembly-CSharp.dll:.TDS_BeardLady
 4c74ffa9d7bcd158daa18395023f996b Assembly-CSharp.dll:.TDS_FatLady
 4c74ffa9d7bcd158daa18395023f996b Assembly-CSharp.dll:.TDS_FireEater
 486cd95c82d8305219c352c06b776e1f Assembly-CSharp.dll:.TDS_GameManager
 486cd95c82d8305219c352c06b776e1f Assembly-CSharp.dll:.SwitchControllerManager
+=======
+>>>>>>> parent of d156084... Sélection de Personnage
 =======
 >>>>>>> parent of d156084... Sélection de Personnage
