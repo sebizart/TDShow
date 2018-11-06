@@ -24,7 +24,10 @@ GameObject:
   - component: {fileID: 212062050800282004}
   - component: {fileID: 195893754861657854}
   - component: {fileID: 95655269983918416}
+<<<<<<< HEAD:Assets/Prototypes/Resources/Juggler.prefab
   - component: {fileID: 120058612965814062}
+=======
+>>>>>>> parent of a5cd8ac... Projectile Prediction:Assets/Prototypes/Resources/Player.prefab
   m_Layer: 0
   m_Name: Juggler
   m_TagString: Untagged
@@ -119,16 +122,14 @@ MonoBehaviour:
   dodgeKey: 306
   catchKey: 324
   superKey: 120
-  isPreparingThrow: 0
   projectileMaxAmount: 3
+<<<<<<< HEAD:Assets/Prototypes/Resources/Juggler.prefab
   throwOneAngle: 70
   throwTwoAngle: 40
   trajectoryPointsAmount: 10
+=======
+>>>>>>> parent of a5cd8ac... Projectile Prediction:Assets/Prototypes/Resources/Player.prefab
   projectiles: []
-  currentThrow: 0
-  projectileDestination: {x: 0, y: 0, z: 0}
-  projectileVelocity: {x: 1, y: 1, z: 1}
-  trajectoryPositions: []
 --- !u!114 &114918765745383700
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -155,6 +156,7 @@ MonoBehaviour:
   instantiationId: -1
   currentMasterID: -1
   isRuntimeInstantiated: 0
+<<<<<<< HEAD:Assets/Prototypes/Resources/Juggler.prefab
 --- !u!120 &120058612965814062
 LineRenderer:
   m_ObjectHideFlags: 1
@@ -247,6 +249,8 @@ LineRenderer:
     generateLightingData: 0
   m_UseWorldSpace: 1
   m_Loop: 0
+=======
+>>>>>>> parent of a5cd8ac... Projectile Prediction:Assets/Prototypes/Resources/Player.prefab
 --- !u!195 &195893754861657854
 NavMeshAgent:
   m_ObjectHideFlags: 1

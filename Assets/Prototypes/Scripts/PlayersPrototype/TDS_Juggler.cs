@@ -130,8 +130,8 @@ public class TDS_Juggler : TDS_Player
         while (Input.GetKey(_throwType == ThrowType.One ? attackOneKey : attackTwoKey))
         {
             // Get the horizontal & vertical movement
-            float _horizontal = Input.GetAxis("Mouse X");
-            float _vertical = Input.GetAxis("Mouse Y");
+            float _horizontal = Input.GetAxis("MouseX");
+            float _vertical = Input.GetAxis("MouseY");
 
             // If the projectile destination has been changed, update it & the trajectory
             if (_horizontal != 0 || _vertical != 0)
