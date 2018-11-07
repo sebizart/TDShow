@@ -175,6 +175,9 @@ public abstract class TDS_Character : TDS_DamageableElement
     #endregion
 
     #region NET methods
+    /// <summary>
+    /// Set the online position for instance of a character
+    /// </summary>
     protected void NetSetOnlinePosition()
     {
         if (photonViewElement.isMine) return; 

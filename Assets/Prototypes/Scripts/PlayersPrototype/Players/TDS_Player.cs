@@ -88,7 +88,7 @@ public abstract class TDS_Player : TDS_Character
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            TDS_GameManager.Instance.LeftParty(character);
+            TDS_GameManager.Instance.LeaveParty(character);
             PhotonNetwork.Destroy(photonViewElement);
             Destroy(gameObject);
             return;
@@ -185,10 +185,14 @@ public abstract class TDS_Player : TDS_Character
         OnHeal?.Invoke();
     }
 
-    public override void Action(int _attackId)
+    /// <summary>
+    /// Executes an action based on an action ID
+    /// </summary>
+    /// <param name="_actionID">ID of the action to execute</param>
+    public override void Action(int _actionID)
     {
         // Triggers the right attack depending on the attack id
-        switch ((PlayerAttacks)_attackId)
+        switch ((PlayerAttacks)_actionID)
         {
             case PlayerAttacks.AttackOne:
                 AttackOne();
@@ -218,7 +222,7 @@ public abstract class TDS_Player : TDS_Character
                 Super();
                 break;
             default:
-                TDS_CustomDebug.CustomDebugLogWarning($"The Player's attack ID \"{_attackId}\" is unknown, sorry miss");
+                TDS_CustomDebug.CustomDebugLogWarning($"The Player's attack ID \"{_actionID}\" is unknown, sorry miss");
                 break;
         }
     }

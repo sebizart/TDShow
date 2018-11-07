@@ -51,6 +51,9 @@ public class TDS_UIManager : MonoBehaviour
     #region Methods
     #region Original Methods
     #region Menu
+    /// <summary>
+    /// Refreshes the character selection choice possibilities
+    /// </summary>
     public void RefreshCharacterSelection()
     {
         bool _beardLadyEnabled = !TDS_GameManager.Instance.InGamePlayers[PlayerCharacter.BeardLady];
@@ -64,6 +67,10 @@ public class TDS_UIManager : MonoBehaviour
         jugglerSB.interactable = _jugglerEnabled;
     }
 
+    /// <summary>
+    /// (Des)Activate the menu of character selection
+    /// </summary>
+    /// <param name="_isActive"></param>
     public void ActiveMenu(bool _isActive)
     {
         isInMenu = _isActive;
@@ -75,7 +82,7 @@ public class TDS_UIManager : MonoBehaviour
     /// <summary>
     /// Adds a player to the UI
     /// </summary>
-    /// <param name="_player">Player to add</param>
+    /// <param name="_player">Player type to add</param>
     public void AddPlayer(PlayerCharacter _player)
     {
         Color _playerColor = Color.white;
@@ -107,9 +114,9 @@ public class TDS_UIManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Enables the player selection menu
+    /// Makes the main player leave the game (in UI)
     /// </summary>
-    public void LeftParty()
+    public void LeaveParty()
     {
         RefreshCharacterSelection();
         ActiveMenu(true);
@@ -118,7 +125,7 @@ public class TDS_UIManager : MonoBehaviour
     /// <summary>
     /// Removes a player from the UI
     /// </summary>
-    /// <param name="_player">Player to remove</param>
+    /// <param name="_player">Player type to remove</param>
     public void RemovePlayer(PlayerCharacter _player)
     {
         Destroy(OtherPlayersHealth[_player].gameObject);
@@ -128,9 +135,9 @@ public class TDS_UIManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Set the main player for the UI
+    /// Set the main player (for the UI)
     /// </summary>
-    /// <param name="_player">Player to set as main</param>
+    /// <param name="_player">Player type to set as main</param>
     public void SetMainPlayer(PlayerCharacter _player)
     {
         Color _playerColor = Color.white;

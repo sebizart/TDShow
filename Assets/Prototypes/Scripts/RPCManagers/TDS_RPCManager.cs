@@ -241,6 +241,10 @@ public class TDS_RPCManager : PunBehaviour
     #endregion
 
     #region Spawn
+    /// <summary>
+    /// Adds an other player in game settings
+    /// </summary>
+    /// <param name="_playerCharacter">Player type to add</param>
     [PunRPC]
     public void AddPlayer(int _playerCharacter)
     {
@@ -248,6 +252,10 @@ public class TDS_RPCManager : PunBehaviour
         TDS_UIManager.Instance.AddPlayer((PlayerCharacter)_playerCharacter);
     }
 
+    /// <summary>
+    /// Receives informations about in-game players
+    /// </summary>
+    /// <param name="_players">String containing all in-game player types as int</param>
     [PunRPC]
     public void ReceiveInGamePlayers(string _players)
     {
@@ -267,6 +275,10 @@ public class TDS_RPCManager : PunBehaviour
         TDS_UIManager.Instance.RefreshCharacterSelection();
     }
 
+    /// <summary>
+    /// Removes a player from game's settings
+    /// </summary>
+    /// <param name="_playerCharacter">Player type to remove</param>
     [PunRPC]
     public void RemovePlayer(int _playerCharacter)
     {
@@ -274,6 +286,9 @@ public class TDS_RPCManager : PunBehaviour
         TDS_UIManager.Instance.RemovePlayer((PlayerCharacter)_playerCharacter);
     }
 
+    /// <summary>
+    /// Send in-game player's informations to all other clients
+    /// </summary>
     [PunRPC]
     public void SendInGamePlayers()
     {

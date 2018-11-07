@@ -20,14 +20,22 @@ public class TDS_GameManager : MonoBehaviour
 
     #region Methods
     #region Original Methods
-    public void LeftParty(PlayerCharacter _player)
+    /// <summary>
+    /// Makes the main player leave the game
+    /// </summary>
+    /// <param name="_player">Player type who leave</param>
+    public void LeaveParty(PlayerCharacter _player)
     {
         InGamePlayers[_player] = false;
 
         TDS_RPCManager.Instance.RPCManagerPhotonView.RPC("RemovePlayer", PhotonTargets.Others, (int)_player);
-        TDS_UIManager.Instance.LeftParty();
+        TDS_UIManager.Instance.LeaveParty();
     }
 
+    /// <summary>
+    /// Spawns the main player in the game
+    /// </summary>
+    /// <param name="_player">Player type to spawn</param>
     public void Spawn(PlayerCharacter _player)
     {
         InGamePlayers[_player] = true;
