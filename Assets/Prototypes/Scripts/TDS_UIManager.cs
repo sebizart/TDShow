@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -25,16 +26,20 @@ public class TDS_UIManager : MonoBehaviour
     #region In-Game
     [Header("In-Game")]
     // Dictionary containing in-game player's type associated with their health image
-    [SerializeField] private Dictionary<PlayerCharacter, Image> playersHealth = new Dictionary<PlayerCharacter, Image>();
+    [SerializeField]
+    public Dictionary<PlayerCharacter, Image> OtherPlayersHealth = new Dictionary<PlayerCharacter, Image>();
 
-    // All player's health images
-    [SerializeField] private Image mainPlayerH, secondPlayerH, thirdPlayerH, fourthPlayerH = null;
+    // Main player's health & portrait images
+    [SerializeField] private Image mainPlayerH, mainPlayerP = null;
 
-    // All player's portrait
-    [SerializeField] private Image mainPlayerP, secondPlayerP, thirdPlayerP, fourthPlayerP = null;
+    // The prefab of the other player's UI health
+    [SerializeField] private Image otherPlayerUIPrefab = null;
 
     // The canvas transform of the UI
     [SerializeField] private Transform canvasTransform = null;
+
+    // The transform of the other player's health's parent
+    [SerializeField] private Transform otherPlayersHParent = null;
     #endregion
     #endregion
 
@@ -46,24 +51,23 @@ public class TDS_UIManager : MonoBehaviour
     #region Methods
     #region Original Methods
     #region Menu
-    private void RefreshCharacterSelection()
+    public void RefreshCharacterSelection()
     {
         bool _beardLadyEnabled = !TDS_GameManager.Instance.InGamePlayers[PlayerCharacter.BeardLady];
         bool _fatLadyEnabled = !TDS_GameManager.Instance.InGamePlayers[PlayerCharacter.FatLady];
         bool _fireEaterEnabled = !TDS_GameManager.Instance.InGamePlayers[PlayerCharacter.FireEater];
         bool _jugglerEnabled = !TDS_GameManager.Instance.InGamePlayers[PlayerCharacter.Juggler];
 
-        beardLadySB.enabled = _beardLadyEnabled;
-        fatLadySB.enabled = _fatLadyEnabled;
-        fireEaterSB.enabled = _fireEaterEnabled;
-        jugglerSB.enabled = _jugglerEnabled;
+        beardLadySB.interactable = _beardLadyEnabled;
+        fatLadySB.interactable = _fatLadyEnabled;
+        fireEaterSB.interactable = _fireEaterEnabled;
+        jugglerSB.interactable = _jugglerEnabled;
     }
 
-    public void Spawn(PlayerCharacter _player)
+    public void ActiveMenu(bool _isActive)
     {
-        isInMenu = false;
-        playerSelectMenu.SetActive(false);
-        TDS_GameManager.Instance.InGamePlayers[_player] = true;
+        isInMenu = _isActive;
+        playerSelectMenu.SetActive(_isActive);
     }
     #endregion
 
@@ -75,25 +79,6 @@ public class TDS_UIManager : MonoBehaviour
     public void AddPlayer(PlayerCharacter _player)
     {
         Color _playerColor = Color.white;
-        Image _playerH = null;
-        Image _playerP = null;
-
-       
-        if (!playersHealth.ContainsValue(secondPlayerH))
-        {
-            _playerH = secondPlayerH;
-            _playerP = secondPlayerP;
-        }
-        else if (!playersHealth.ContainsValue(thirdPlayerH))
-        {
-            _playerH = thirdPlayerH;
-            _playerP = thirdPlayerP;
-        }
-        else if (!playersHealth.ContainsValue(fourthPlayerH))
-        {
-            _playerH = fourthPlayerH;
-            _playerP = fourthPlayerP;
-        }
 
         switch (_player)
         {
@@ -113,19 +98,21 @@ public class TDS_UIManager : MonoBehaviour
                 break;
         }
 
-        _playerH.gameObject.SetActive(true);
-        _playerP.color = _playerColor;
-        playersHealth.Add(_player, _playerH);
+        Image _playerH = Instantiate(otherPlayerUIPrefab, otherPlayersHParent) as Image;
+        _playerH.transform.GetChild(0).GetComponent<Image>().color = _playerColor;
+
+        OtherPlayersHealth.Add(_player, _playerH);
+
+        RefreshCharacterSelection();
     }
 
     /// <summary>
     /// Enables the player selection menu
     /// </summary>
-    public void LeftParty(PlayerCharacter _player)
+    public void LeftParty()
     {
-        playersHealth.Remove(_player);
-        playerSelectMenu.SetActive(true);
-        isInMenu = true;
+        RefreshCharacterSelection();
+        ActiveMenu(true);
     }
 
     /// <summary>
@@ -134,33 +121,10 @@ public class TDS_UIManager : MonoBehaviour
     /// <param name="_player">Player to remove</param>
     public void RemovePlayer(PlayerCharacter _player)
     {
-        if (playersHealth[_player] == secondPlayerH && playersHealth.Count > 2)
-        {
-            secondPlayerH.fillAmount = thirdPlayerH.fillAmount;
-            secondPlayerP.color = thirdPlayerP.color;
+        Destroy(OtherPlayersHealth[_player].gameObject);
+        OtherPlayersHealth.Remove(_player);
 
-            if (playersHealth.Count > 3)
-            {
-                thirdPlayerH.fillAmount = fourthPlayerH.fillAmount;
-                thirdPlayerP.color = fourthPlayerP.color;
-                fourthPlayerH.gameObject.SetActive(false);
-            }
-            else
-            {
-                thirdPlayerH.gameObject.SetActive(false);
-            }
-        }
-        else if (playersHealth[_player] == thirdPlayerH && playersHealth.Count > 3)
-        {
-            thirdPlayerH.fillAmount = fourthPlayerH.fillAmount;
-            thirdPlayerP.color = fourthPlayerP.color;
-            fourthPlayerH.gameObject.SetActive(false);
-        }
-        else
-        {
-            playersHealth[_player].gameObject.SetActive(false);
-            playersHealth.Remove(_player);
-        }
+        RefreshCharacterSelection();
     }
 
     /// <summary>
@@ -189,7 +153,7 @@ public class TDS_UIManager : MonoBehaviour
                 break;
         }
         mainPlayerP.color = _playerColor;
-        playersHealth.Add(_player, mainPlayerH);
+        mainPlayerH.fillAmount = 1;
     }
 
     /// <summary>
@@ -199,7 +163,7 @@ public class TDS_UIManager : MonoBehaviour
     /// <param name="_healthPerCent">Health of the player per cent</param>
     public void UpdatePlayerHealth(PlayerCharacter _player, float _healthPerCent)
     {
-        playersHealth[_player].fillAmount = _healthPerCent;
+        OtherPlayersHealth[_player].fillAmount = _healthPerCent;
     }
     #endregion
     #endregion
@@ -216,9 +180,9 @@ public class TDS_UIManager : MonoBehaviour
             Destroy(this);
         }
 
-        if (!mainPlayerH || !secondPlayerH || !thirdPlayerH || !fourthPlayerH)
+        if (!mainPlayerH || !mainPlayerP || !otherPlayersHParent)
         {
-            TDS_CustomDebug.CustomDebugLogError("Missing player's health image ! Self-destruction of the UIManager");
+            TDS_CustomDebug.CustomDebugLogError("Missing player's health refrence ! Self-destruction of the UIManager");
             Destroy(this);
         }
 
@@ -230,10 +194,6 @@ public class TDS_UIManager : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (isInMenu)
-        {
-            RefreshCharacterSelection();
-        }
     }
 
     private void Start()

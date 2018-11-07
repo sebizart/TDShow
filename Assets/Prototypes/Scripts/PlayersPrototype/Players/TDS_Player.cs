@@ -276,11 +276,10 @@ public abstract class TDS_Player : TDS_Character
 
         if (photonViewElement.isMine)
         {
-            TDS_UIManager.Instance.SetMainPlayer(character);
+            TDS_Camera.Instance.SetPlayer(this);
         }
         else
         {
-            TDS_UIManager.Instance.AddPlayer(character);
         }
     }
     

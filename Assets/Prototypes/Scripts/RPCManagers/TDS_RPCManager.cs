@@ -191,6 +191,27 @@ public class TDS_RPCManager : PunBehaviour
         }
         _char.ThrowObject();
     }
+    /// <summary>
+    /// Makes a character throw its weired object
+    /// </summary>
+    /// <param name="_characterID">ID of the character throwing the object</param>
+    /// <param name="_velocity">Velocity to give to the object</param>
+    [PunRPC]
+    public void ThrowObject(int _characterID, Vector3 _velocity)
+    {
+        TDS_Character _char = GetCharacterByID(_characterID);
+        if (_char == null)
+        {
+            TDS_CustomDebug.CustomDebugLog($"No Character found with the ID {_characterID}");
+            return;
+        }
+        TDS_Juggler _juggler = _char.GetComponent<TDS_Juggler>();
+
+        if (_juggler)
+        {
+            _juggler.ThrowObject(_velocity);
+        }
+    }
 
     /// <summary>
     /// Calculate the first object a character can grab, and if found an object grab it by RPC
@@ -224,6 +245,7 @@ public class TDS_RPCManager : PunBehaviour
     public void AddPlayer(int _playerCharacter)
     {
         TDS_GameManager.Instance.InGamePlayers[(PlayerCharacter)_playerCharacter] = true;
+        TDS_UIManager.Instance.AddPlayer((PlayerCharacter)_playerCharacter);
     }
 
     [PunRPC]
@@ -234,9 +256,15 @@ public class TDS_RPCManager : PunBehaviour
         string[] _split = _players.Split('|');
         foreach (string _inGamePlayer in _split)
         {
-            int _type = int.Parse(_inGamePlayer);
-            TDS_GameManager.Instance.InGamePlayers[(PlayerCharacter)_type] = true;
+            int _character = int.Parse(_inGamePlayer);
+            if (TDS_GameManager.Instance.InGamePlayers[(PlayerCharacter)_character] == false)
+            {
+                TDS_GameManager.Instance.InGamePlayers[(PlayerCharacter)_character] = true;
+                TDS_UIManager.Instance.AddPlayer((PlayerCharacter)_character);
+            }
         }
+
+        TDS_UIManager.Instance.RefreshCharacterSelection();
     }
 
     [PunRPC]

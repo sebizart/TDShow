@@ -10,7 +10,7 @@ public class TDS_GameManager : MonoBehaviour
 
     #region Fields / Properties
     // All available player characters associated with a bool indicating if their are already in game
-    [SerializeField] public Dictionary<PlayerCharacter, bool> InGamePlayers = new Dictionary<PlayerCharacter, bool>();
+    public Dictionary<PlayerCharacter, bool> InGamePlayers = new Dictionary<PlayerCharacter, bool>();
     #endregion
 
     #region Singleton
@@ -23,17 +23,20 @@ public class TDS_GameManager : MonoBehaviour
     public void LeftParty(PlayerCharacter _player)
     {
         InGamePlayers[_player] = false;
-        TDS_RPCManager.Instance.RPCManagerPhotonView.RPC("RemovePlayer", PhotonTargets.Others, (int)_player);
 
-        TDS_UIManager.Instance.LeftParty(_player);
+        TDS_RPCManager.Instance.RPCManagerPhotonView.RPC("RemovePlayer", PhotonTargets.Others, (int)_player);
+        TDS_UIManager.Instance.LeftParty();
     }
 
     public void Spawn(PlayerCharacter _player)
     {
         InGamePlayers[_player] = true;
+        TDS_UIManager.Instance.ActiveMenu(false);
+        TDS_UIManager.Instance.SetMainPlayer(_player);
+
         TDS_RPCManager.Instance.RPCManagerPhotonView.RPC("AddPlayer", PhotonTargets.Others, (int)_player);
         TDS_Networking.Instance.Spawn(_player);
-        TDS_UIManager.Instance.Spawn(_player);
+
     }
     #endregion
 

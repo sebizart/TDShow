@@ -152,9 +152,9 @@
     <Compile Include="Assets\Prototypes\Scripts\PlayersPrototype\TDS_Item.cs" />
     <Compile Include="Assets\Prototypes\Scripts\PlayersPrototype\TDS_PunInheritance.cs" />
     <Compile Include="Assets\Prototypes\Scripts\PlayersPrototype\TDS_Usable.cs" />
-    <Compile Include="Assets\Prototypes\Scripts\PlayersPrototype\Throwavles &amp; Trajectories\LineRendererExtension.cs" />
-    <Compile Include="Assets\Prototypes\Scripts\PlayersPrototype\Throwavles &amp; Trajectories\TDS_ProjectileUtils.cs" />
-    <Compile Include="Assets\Prototypes\Scripts\PlayersPrototype\Throwavles &amp; Trajectories\TDS_Throwable.cs" />
+    <Compile Include="Assets\Prototypes\Scripts\PlayersPrototype\Throwables &amp; Trajectories\LineRendererExtension.cs" />
+    <Compile Include="Assets\Prototypes\Scripts\PlayersPrototype\Throwables &amp; Trajectories\TDS_ProjectileUtils.cs" />
+    <Compile Include="Assets\Prototypes\Scripts\PlayersPrototype\Throwables &amp; Trajectories\TDS_Throwable.cs" />
     <Compile Include="Assets\Prototypes\Scripts\RPCManagers\TDS_RPCManager.cs" />
     <Compile Include="Assets\Prototypes\Scripts\TDS_DamageBehaviour.cs" />
     <Compile Include="Assets\Prototypes\Scripts\TDS_UIManager.cs" />

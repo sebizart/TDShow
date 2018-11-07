@@ -43,7 +43,7 @@ public class TDS_Networking : PunBehaviour
     void InitConnection()
     {
         //Connect the player to Photon
-        PhotonNetwork.ConnectUsingSettings("1.0"); 
+        PhotonNetwork.ConnectUsingSettings("1.25");
     }
 
     /// <summary>

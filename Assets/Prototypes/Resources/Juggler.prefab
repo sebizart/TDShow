@@ -39,7 +39,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1823587953247330}
   m_LocalRotation: {x: 0.3431679, y: 0, z: 0, w: 0.9392741}
-  m_LocalPosition: {x: -0.6024584, y: 0.319, z: -0.30680844}
+  m_LocalPosition: {x: -3.2274919, y: 0.32, z: -2.9426548}
   m_LocalScale: {x: 6.1098957, y: 6.1098957, z: 6.1098957}
   m_Children: []
   m_Father: {fileID: 0}
@@ -120,10 +120,12 @@ MonoBehaviour:
   catchKey: 324
   superKey: 120
   isPreparingThrow: 0
+  cross: {fileID: 1285099569895668, guid: ecff5f443eabf8348b01e9d23f3afcbc, type: 2}
   projectileMaxAmount: 3
   throwOneAngle: 70
-  throwTwoAngle: 40
+  throwTwoAngle: 25
   trajectoryPointsAmount: 10
+  lineRenderer: {fileID: 120058612965814062}
   projectiles: []
   currentThrow: 0
   projectileDestination: {x: 0, y: 0, z: 0}
@@ -170,7 +172,7 @@ LineRenderer:
   m_ReflectionProbeUsage: 0
   m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 2100000, guid: 87042d6a5d8fc8041a6900978a6899d3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -190,9 +192,7 @@ LineRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Positions:
-  - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 0, z: 1}
+  m_Positions: []
   m_Parameters:
     serializedVersion: 2
     widthMultiplier: 1
@@ -201,7 +201,7 @@ LineRenderer:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 1
+        value: 0.2967739
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -243,8 +243,8 @@ LineRenderer:
     numCornerVertices: 0
     numCapVertices: 0
     alignment: 0
-    textureMode: 0
-    generateLightingData: 0
+    textureMode: 3
+    generateLightingData: 1
   m_UseWorldSpace: 1
   m_Loop: 0
 --- !u!195 &195893754861657854
