@@ -34,7 +34,9 @@ public class TDS_Networking : PunBehaviour
     private bool isHost = false; 
     public bool IsHost { get { return isHost; } }
 
-    public PhotonView networkId; 
+    public PhotonView networkId;
+
+    PlayerCharacter localPlayer = PlayerCharacter.BeardLady;
     #endregion
 
     #region Methods
@@ -59,7 +61,17 @@ public class TDS_Networking : PunBehaviour
         PhotonNetwork.JoinOrCreateRoom("CATA_EPIIC", _options, null); 
     }
 
-    
+    /// <summary>
+    /// Spawns local's player based on a character type
+    /// </summary>
+    /// <param name="_player">Player character type to spawn</param>
+    public void Spawn(PlayerCharacter _player)
+    {
+        PhotonView _playerId = PhotonNetwork.Instantiate(_player.ToString(), Vector3.zero + Vector3.up, Quaternion.identity, 0).GetComponent<PhotonView>();
+        OwnerID = _playerId.viewID;
+
+        localPlayer = _player;
+    }
     #endregion
 
     #region UnityMethods
@@ -104,13 +116,11 @@ public class TDS_Networking : PunBehaviour
     public override void OnJoinedRoom()
     {
         base.OnJoinedRoom();
-        PhotonView _playerId = PhotonNetwork.Instantiate(playerName, Vector3.zero + Vector3.up, Quaternion.identity,0).GetComponent<PhotonView>();
-        if (_playerId.isMine)
+
+        if (!PhotonNetwork.isMasterClient)
         {
-            OwnerID = _playerId.viewID;
+            TDS_RPCManager.Instance.RPCManagerPhotonView.RPC("SendInGamePlayers", PhotonTargets.MasterClient);
         }
-        //List<TDS_Controller> _players = FindObjectsOfType<TDS_Controller>().ToList();
-        //TDS_PlayerRPCManager.Instance.AllPlayers = _players; 
     }
 
     /// <summary>
@@ -120,6 +130,12 @@ public class TDS_Networking : PunBehaviour
     {
         base.OnCreatedRoom();
         isHost = true; 
+    }
+
+    public override void OnLeftRoom()
+    {
+        base.OnLeftRoom();
+        TDS_RPCManager.Instance.RPCManagerPhotonView.RPC("RemovePlayer", PhotonTargets.Others, (int)localPlayer);
     }
     #endregion
 }

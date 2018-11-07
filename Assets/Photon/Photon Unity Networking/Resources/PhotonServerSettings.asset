@@ -44,16 +44,21 @@ MonoBehaviour:
   - UpdatePlayerList
   - AddNewPlayer
   - CheckHitBox
-  - CheckProjectionBox
-  - SendInfosToPlayer
-  - SendHitInfosToPlayer
-  - SendProjectionInfosToPlayer
-  - LaunchAttack
+  - Hit
+  - HitCheck
+  - Project
+  - ProjectCheck
+  - AddPlayer
   - ApplyInfoDamages
+  - LaunchAttack
   - GrabObject
-  - LaunchAction
   - ThrowObject
   - TryToGrabObject
+  - LaunchAction
+  - CheckAvailableSpawn
+  - RemovePlayer
+  - Spawn
+  - ReceiveInGamePlayers
+  - SendInGamePlayers
   - ApplyAreaInformations
-  - InformationsReceive
   DisableAutoOpenWizard: 1

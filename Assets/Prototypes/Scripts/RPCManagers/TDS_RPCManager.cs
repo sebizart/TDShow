@@ -21,16 +21,12 @@ Description:
 
 public class TDS_RPCManager : PunBehaviour 
 {
-
     #region Fields/Properties
     public static TDS_RPCManager Instance;
     public PhotonView RPCManagerPhotonView;
-
-
     #endregion
 
     #region Methods
-
     // TRY TO GLOBALIZE THE METHODS IN ONE 
 
     /// <summary>
@@ -149,6 +145,18 @@ public class TDS_RPCManager : PunBehaviour
     }
     #endregion
 
+    #region FightingAreaInformations
+    [PunRPC]
+    public void ApplyAreaInformations(string _areaInfo)
+    {
+        if (!PhotonNetwork.isMasterClient) return;
+        TDS_FightingAreaInfo _infos = new TDS_FightingAreaInfo(_areaInfo);
+        TDS_FightingArea _area = GetFightingAreaByID(_infos.FightingAreaID);
+        if (_area == null) return;
+        _area.SpawnEnemiesUsingInfos(_infos.EnemiesInfos);
+    }
+    #endregion
+
     #region Grab & Throw Object
     /// <summary>
     /// Makes a character grab an object
@@ -211,20 +219,55 @@ public class TDS_RPCManager : PunBehaviour
     }
     #endregion
 
-    #region FightingAreaInformations
+    #region Spawn
     [PunRPC]
-    public void ApplyAreaInformations(string _areaInfo)
+    public void AddPlayer(int _playerCharacter)
+    {
+        TDS_GameManager.Instance.InGamePlayers[(PlayerCharacter)_playerCharacter] = true;
+    }
+
+    [PunRPC]
+    public void ReceiveInGamePlayers(string _players)
+    {
+        if (_players == string.Empty) return;
+
+        string[] _split = _players.Split('|');
+        foreach (string _inGamePlayer in _split)
+        {
+            int _type = int.Parse(_inGamePlayer);
+            TDS_GameManager.Instance.InGamePlayers[(PlayerCharacter)_type] = true;
+        }
+    }
+
+    [PunRPC]
+    public void RemovePlayer(int _playerCharacter)
+    {
+        TDS_GameManager.Instance.InGamePlayers[(PlayerCharacter)_playerCharacter] = false;
+        TDS_UIManager.Instance.RemovePlayer((PlayerCharacter)_playerCharacter);
+    }
+
+    [PunRPC]
+    public void SendInGamePlayers()
     {
         if (!PhotonNetwork.isMasterClient) return;
-        TDS_FightingAreaInfo _infos = new TDS_FightingAreaInfo(_areaInfo);
-        TDS_FightingArea _area = GetFightingAreaByID(_infos.FightingAreaID);
-        if (_area == null) return; 
-        _area.SpawnEnemiesUsingInfos(_infos.EnemiesInfos);
+
+        string _toSend = string.Empty;
+
+        foreach (KeyValuePair<PlayerCharacter, bool> _player in TDS_GameManager.Instance.InGamePlayers)
+        {
+            if (_player.Value == true)
+            {
+                if (_toSend != string.Empty) _toSend += '|';
+                int _type = (int)_player.Key;
+                _toSend += _type;
+            }
+        }
+
+        RPCManagerPhotonView.RPC("ReceiveInGamePlayers", PhotonTargets.Others, _toSend);
     }
     #endregion
     #endregion
     #endregion
-
 
     #region UnityMethods
     private void Awake()
@@ -244,8 +287,6 @@ public class TDS_RPCManager : PunBehaviour
     #endregion
 }
 
-
-#region AttackInfo
 public class TDS_AttackInfo
 {
     public int AttackerId;
@@ -273,8 +314,3 @@ public class TDS_AttackSubInfo
         Damages = int.Parse(_subInfo.Split('#')[1]); 
     }
 }
-#endregion
-
-
-
-

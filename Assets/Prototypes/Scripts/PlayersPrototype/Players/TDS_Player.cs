@@ -30,12 +30,23 @@ public enum PlayerAttacks
     Super
 }
 
+public enum PlayerCharacter
+{
+    BeardLady,
+    FatLady,
+    FireEater,
+    Juggler
+}
+
 public abstract class TDS_Player : TDS_Character
 {
     public event Action OnHeal;
 
     #region Fields/Properties
     [SerializeField, Header("Player", order = 0), Header("Bool", order = 1)] bool isGrounded = true;
+
+    [SerializeField, Header("Character")] protected PlayerCharacter character = PlayerCharacter.BeardLady;
+
     [SerializeField, Header("Int")] protected int comboMax = 3;
     [SerializeField] protected int comboResetTime = 1;
     [SerializeField] protected int currentComboValue = 0;
@@ -75,6 +86,14 @@ public abstract class TDS_Player : TDS_Character
     /// </summary>
     protected void CheckInputs()
     {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            TDS_GameManager.Instance.LeftParty(character);
+            PhotonNetwork.Destroy(photonViewElement);
+            Destroy(gameObject);
+            return;
+        }
+
         float _horizontal = Input.GetAxis("Horizontal");
         float _vertical = Input.GetAxis("Vertical");
 
@@ -116,47 +135,45 @@ public abstract class TDS_Player : TDS_Character
         {
             if (isGrounded)
             {
-                ExecuteAction(PlayerAttacks.AttackOne);
+                AttackOne();
             }
             else
             {
-                ExecuteAction(PlayerAttacks.AirAttack);
+                AirAttack();
             }
         }
         else if (Input.GetKeyDown(attackTwoKey))
         {
             if (isGrounded)
             {
-                ExecuteAction(PlayerAttacks.AttackTwo);
+                AttackTwo();
             }
             else
             {
-                ExecuteAction(PlayerAttacks.RodeoAttack);
+                RodeoAttack();
             }
         }
         else if (Input.GetKeyDown(attackThreeKey))
         {
-            ExecuteAction(PlayerAttacks.AttackThree);
+            AttackThree();
         }
         else if (Input.GetKeyDown(interactWithObjectKey))
         {
-            ExecuteAction(PlayerAttacks.InteractWithObject);
+            InteractWithObjects();
         }
         else if (Input.GetKeyDown(dodgeKey))
         {
-            ExecuteAction(PlayerAttacks.Dodge);
+            Dodge();
         }
         else if (Input.GetKeyDown(catchKey))
         {
-            ExecuteAction(PlayerAttacks.Catch);
+            Catch();
         }
         else if (Input.GetKeyDown(superKey))
         {
-            ExecuteAction(PlayerAttacks.Super);
+            Super();
         }
     }
-
-    protected abstract void ExecuteAction(PlayerAttacks _attack);
 
     /// <summary>
     /// Heal the player and so increases his life
@@ -189,7 +206,7 @@ public abstract class TDS_Player : TDS_Character
                 RodeoAttack();
                 break;
             case PlayerAttacks.InteractWithObject:
-                InterractWithObjects();
+                InteractWithObjects();
                 break;
             case PlayerAttacks.Dodge:
                 Dodge();
@@ -219,7 +236,7 @@ public abstract class TDS_Player : TDS_Character
     ///     - If the player does not have an object in hand, take the nearest of the objects that can be taken in range
     ///     - If he does have an object in hand, throw it in front of him
     /// </summary>
-    protected virtual void InterractWithObjects()
+    protected virtual void InteractWithObjects()
     {
         if (!projectile)
         {
@@ -233,7 +250,12 @@ public abstract class TDS_Player : TDS_Character
     #endregion
 
     #region UnityMethods
-    private void FixedUpdate()
+    protected virtual void Awake()
+    {
+
+    }
+
+    protected virtual void FixedUpdate()
     {
         // If it's the player's avatar : Checks the inputs of the player
         if (photonViewElement.isMine)
@@ -248,14 +270,23 @@ public abstract class TDS_Player : TDS_Character
 
     }
 
-    void Start () 
+    protected override void Start() 
     {
-    	
+        base.Start();
+
+        if (photonViewElement.isMine)
+        {
+            TDS_UIManager.Instance.SetMainPlayer(character);
+        }
+        else
+        {
+            TDS_UIManager.Instance.AddPlayer(character);
+        }
     }
     
-    void Update () 
+    protected override void Update () 
     {
-    	
+        base.Update();
     }
     #endregion
 }

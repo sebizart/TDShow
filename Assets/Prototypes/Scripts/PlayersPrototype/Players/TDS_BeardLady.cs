@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
-using System.Linq; 
+using System.Linq;
 using UnityEngine;
 
 /*
@@ -21,13 +20,16 @@ Description:
 // CHOSES A FAIRE POUR LE 23/10 
 // -> FAIRE DES ATTACK BOX POUR CHAQUE TAILLE DE LA BARBE
 // -> REGLER LES ANIMATIONS
-public class TDS_BeardLady : TDS_Player 
+public class TDS_BeardLady : TDS_Player
 {
+    #region Events
 
-    #region Fields/Properties
+    #endregion
+
+    #region Fields / Accessors
     [Header("BeardLady")]
     [SerializeField] BeardState currentBeardState = BeardState.Average;
-    [Header("Int"), SerializeField] int beardDurability = 0; 
+    [Header("Int"), SerializeField] int beardDurability = 0;
     public int BeardDurability
     {
         get
@@ -36,14 +38,14 @@ public class TDS_BeardLady : TDS_Player
         }
         private set
         {
-            if(value >= beardDurabilityMax)
+            if (value >= beardDurabilityMax)
             {
                 if (currentBeardState > BeardState.VeryShort)
                 {
                     currentBeardState = (BeardState)((int)currentBeardState - 1);
                     if (beardAnimator) beardAnimator.SetInteger("BeardState", (int)currentBeardState);
                 }
-                beardDurability = 0; 
+                beardDurability = 0;
             }
         }
     }
@@ -51,10 +53,73 @@ public class TDS_BeardLady : TDS_Player
     [SerializeField] int growingBeardCooldown = 5;
     [SerializeField] int growingBeardValue = 0;
     [Header("Animator"), SerializeField] Animator beardAnimator;
-
     #endregion
 
     #region Methods
+    #region Unity Methods
+    protected override void Awake()
+    {
+        base.Awake();
+        character = PlayerCharacter.BeardLady;
+    }
+
+    protected override void FixedUpdate()
+    {
+        base.FixedUpdate();
+    }
+
+    protected override void OnDrawGizmos()
+    {
+        base.OnDrawGizmos();
+    }
+
+    // Use this for initialization
+    protected override void Start()
+    {
+        base.Start();
+        InvokeRepeating("GrowBeard", 1, 1);
+    }
+
+    // Update is called once per frame
+    protected override void Update()
+    {
+        base.Update();
+    }
+    #endregion
+
+    #region Original Methods
+    #region Beard
+    /// <summary>
+    /// Call Every seconds, if the value is greater than the cooldown 
+    /// Set the value to zero
+    /// Add 1 to the current beard state
+    /// </summary>
+    private void GrowBeard()
+    {
+        if (currentBeardState == BeardState.VeryLong) return;
+        growingBeardValue++;
+        if (growingBeardValue >= growingBeardCooldown)
+        {
+            growingBeardValue = 0;
+            if (currentBeardState < BeardState.VeryLong)
+            {
+                currentBeardState = (BeardState)((int)currentBeardState + 1);
+                if (beardAnimator) beardAnimator.SetInteger("BeardState", (int)currentBeardState);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Reset the beard after the beard lady attacked. Call after every attack
+    /// Add one to the beard Durability
+    /// set growing beardValue to zero
+    /// </summary>
+    private void ResetBeardAfterAttack()
+    {
+        beardDurability++;
+        growingBeardValue = 0;
+    }
+    #endregion
 
     /// <summary>
     /// 
@@ -75,19 +140,19 @@ public class TDS_BeardLady : TDS_Player
         switch (currentBeardState)
         {
             case BeardState.VeryShort:
-                _beardOffset = .5f; 
+                _beardOffset = .5f;
                 break;
             case BeardState.Short:
-                _beardOffset = .75f; 
+                _beardOffset = .75f;
                 break;
             case BeardState.Average:
                 _beardOffset = 1;
                 break;
             case BeardState.Long:
-                _beardOffset = 1.5f; 
+                _beardOffset = 1.5f;
                 break;
             case BeardState.VeryLong:
-                _beardOffset = 2; 
+                _beardOffset = 2;
                 break;
             default:
                 _beardOffset = 1;
@@ -96,124 +161,56 @@ public class TDS_BeardLady : TDS_Player
         return _box.RayCastAttack(_beardOffset);
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
+    #region Combat
     protected override void AirAttack()
     {
-        ResetBeardAfterAttack();
+        throw new System.NotImplementedException();
     }
-    /// <summary>
-    /// 
-    /// </summary>
+
     protected override void AttackOne()
     {
-        ResetBeardAfterAttack();
+        throw new System.NotImplementedException();
     }
-    /// <summary>
-    /// 
-    /// </summary>
+
     protected override void AttackThree()
     {
-        ResetBeardAfterAttack();
+        throw new System.NotImplementedException();
     }
-    /// <summary>
-    /// 
-    /// </summary>
+
     protected override void AttackTwo()
     {
-        ResetBeardAfterAttack();
+        throw new System.NotImplementedException();
     }
-    /// <summary>
-    /// 
-    /// </summary>
+
     protected override void Catch()
     {
-        ResetBeardAfterAttack();
+        throw new System.NotImplementedException();
     }
-    /// <summary>
-    /// 
-    /// </summary>
+
     protected override void Dodge()
     {
-        ResetBeardAfterAttack();
+        throw new System.NotImplementedException();
     }
-    /// <summary>
-    /// 
-    /// </summary>
+
     protected override void RodeoAttack()
     {
-        ResetBeardAfterAttack();
+        throw new System.NotImplementedException();
     }
-    /// <summary>
-    /// 
-    /// </summary>
+
     protected override void Super()
     {
-        ResetBeardAfterAttack();
-    }
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="_attack"></param>
-    protected override void ExecuteAction(PlayerAttacks _attack)
-    {
-    }
-
-    #region Beard
-    /// <summary>
-    /// Call Every seconds, if the value is greater than the cooldown 
-    /// Set the value to zero
-    /// Add 1 to the current beard state
-    /// </summary>
-    private void GrowBeard()
-    {
-        if (currentBeardState == BeardState.VeryLong) return; 
-        growingBeardValue++; 
-        if(growingBeardValue >= growingBeardCooldown)
-        {
-            growingBeardValue = 0;
-            if (currentBeardState < BeardState.VeryLong)
-            {
-                currentBeardState = (BeardState)((int)currentBeardState + 1);
-                if (beardAnimator) beardAnimator.SetInteger("BeardState", (int)currentBeardState); 
-            }
-        }
-    }
-
-    /// <summary>
-    /// Reset the beard after the beard lady attacked. Call after every attack
-    /// Add one to the beard Durability
-    /// set growing beardValue to zero
-    /// </summary>
-    private void ResetBeardAfterAttack()
-    {
-        beardDurability++;
-        growingBeardValue = 0; 
+        throw new System.NotImplementedException();
     }
     #endregion
     #endregion
-
-    #region UnityMethods
-    void Start () 
-	{
-        InvokeRepeating("GrowBeard", 1, 1); 
-	}
-    
-    void Update () 
-	{
-		
-	}
-
-    
     #endregion
 }
 
 public enum BeardState
 {
-    VeryShort, 
-    Short, 
-    Average, 
-    Long, 
+    VeryShort,
+    Short,
+    Average,
+    Long,
     VeryLong
 }
