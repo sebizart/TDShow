@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Photon; 
 
@@ -20,13 +21,14 @@ Description:
 
 public class TDS_RPCManager : PunBehaviour 
 {
-
     #region Fields/Properties
     public static TDS_RPCManager Instance;
     public PhotonView RPCManagerPhotonView;
     #endregion
 
     #region Methods
+    // TRY TO GLOBALIZE THE METHODS IN ONE 
+
     /// <summary>
     /// Get the character with its photonView ID
     /// </summary>
@@ -54,6 +56,21 @@ public class TDS_RPCManager : PunBehaviour
         TDS_DamageableElement _elem = _playerPhotonView.GetComponent<TDS_DamageableElement>();
         return _elem;
     }
+
+    /// <summary>
+    /// Get the Fighting Area with its PhotonView ID
+    /// </summary>
+    /// <param name="_areaID"></param>
+    /// <returns></returns>
+    private TDS_FightingArea GetFightingAreaByID(int _areaID)
+    {
+        PhotonView _areaPhotonView = PhotonView.Find(_areaID);
+        if (!_areaPhotonView) return null;
+        TDS_FightingArea _elem = _areaPhotonView.GetComponent<TDS_FightingArea>();
+        return _elem;
+    }
+
+    // END GLOBALIZATION
 
     /// <summary>
     /// Set the info damages into a string
@@ -125,6 +142,18 @@ public class TDS_RPCManager : PunBehaviour
         TDS_AttackInfo _infos = new TDS_AttackInfo(_infoDamages);
         //TDS_Character _character = GetCharacterByID(_infos.AttackerId);
         _infos.AllSubInfos.ForEach(i => (GetDamageableElementByID(i.TargetId)).TakeDamage(i.Damages));
+    }
+    #endregion
+
+    #region FightingAreaInformations
+    [PunRPC]
+    public void ApplyAreaInformations(string _areaInfo)
+    {
+        if (!PhotonNetwork.isMasterClient) return;
+        TDS_FightingAreaInfo _infos = new TDS_FightingAreaInfo(_areaInfo);
+        TDS_FightingArea _area = GetFightingAreaByID(_infos.FightingAreaID);
+        if (_area == null) return;
+        _area.SpawnEnemiesUsingInfos(_infos.EnemiesInfos);
     }
     #endregion
 

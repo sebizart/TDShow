@@ -60,7 +60,7 @@ public class TDS_Camera : MonoBehaviour
     [SerializeField, Range(-50, 50)] private float xOffset, yOffset, zOffset = 0;
 
     // The player the camera is following
-    [SerializeField] private TDS_Controller player = null;
+    [SerializeField] private TDS_Player player = null;
 
     // The rigidbody of the player
     [SerializeField] private Rigidbody playerRigidbody = null;
@@ -76,11 +76,11 @@ public class TDS_Camera : MonoBehaviour
     private void FollowPlayer()
     {
         // Set the speed of the camera
-        if (player.XMovement == 0 && player.ZMovement == 0) speed = maxSpeed / 2;
-        else
-        {
-            speed += Mathf.Clamp(speed + (maxSpeed / speedInitTime), 0, maxSpeed);
-        }
+        //if (player.XMovement == 0 && player.ZMovement == 0) speed = maxSpeed / 2;
+        //else
+        //{
+        speed += Mathf.Clamp(speed + (maxSpeed / speedInitTime), 0, maxSpeed);
+        //}
 
         // Moves the camera to the player's position
         transform.position = Vector3.Lerp(transform.position, new Vector3 (player.transform.position.x + xOffset,
@@ -93,10 +93,10 @@ public class TDS_Camera : MonoBehaviour
 
 
     // Use this to set the player
-    public void SetPlayer(TDS_Controller _controller)
+    public void SetPlayer(TDS_Player _player)
     {
-        player = _controller;
-        playerRigidbody = _controller.gameObject.GetComponent<Rigidbody>();
+        player = _player;
+        playerRigidbody = _player.gameObject.GetComponent<Rigidbody>();
     }
 
     public void UpdateProperties()
