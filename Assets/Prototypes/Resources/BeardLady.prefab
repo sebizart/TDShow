@@ -19,8 +19,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4275470848602828}
-  - component: {fileID: 114178660620990094}
   - component: {fileID: 114443289932529606}
+  - component: {fileID: 114178660620990094}
   - component: {fileID: 195503702564668808}
   - component: {fileID: 95399694777790132}
   - component: {fileID: 65500382046086232}
@@ -265,7 +265,7 @@ MonoBehaviour:
   onSerializeRigidBodyOption: 2
   ownershipTransfer: 0
   ObservedComponents:
-  - {fileID: 0}
+  - {fileID: 114178660620990094}
   ObservedComponentsFoldoutOpen: 1
   viewIdField: 0
   instantiationId: -1

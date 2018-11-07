@@ -44,15 +44,12 @@ public class TDS_SpawnPoint
     #endregion
 
     #region Methods
-    public TDS_Enemy SpawnEnemy()
+    public TDS_Enemy GetEnemy()
     {
         if (!PhotonNetwork.isMasterClient) return null;
         //ESSAYER DE VOIR POUR FAIRE SPAWN UN TYPE D'ENEMY EN PARTICULIER
         //Pour le moment, random enemy
-        TDS_Enemy _enemy = EnemiesSpawnable[(int)UnityEngine.Random.Range(0, EnemiesSpawnable.Count - 1)];
-        PhotonView _enemyId = PhotonNetwork.Instantiate(_enemy.PrefabName.ToString(), spawnPosition + Vector3.up, Quaternion.identity, 0).GetComponent<PhotonView>();
-        return _enemy;
-
+        return EnemiesSpawnable[(int)UnityEngine.Random.Range(0, EnemiesSpawnable.Count - 1)];
     }
     #endregion 
 }

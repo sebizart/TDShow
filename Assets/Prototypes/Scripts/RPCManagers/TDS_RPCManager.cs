@@ -145,18 +145,6 @@ public class TDS_RPCManager : PunBehaviour
     }
     #endregion
 
-    #region FightingAreaInformations
-    [PunRPC]
-    public void ApplyAreaInformations(string _areaInfo)
-    {
-        if (!PhotonNetwork.isMasterClient) return;
-        TDS_FightingAreaInfo _infos = new TDS_FightingAreaInfo(_areaInfo);
-        TDS_FightingArea _area = GetFightingAreaByID(_infos.FightingAreaID);
-        if (_area == null) return;
-        _area.SpawnEnemiesUsingInfos(_infos.EnemiesInfos);
-    }
-    #endregion
-
     #region Grab & Throw Object
     /// <summary>
     /// Makes a character grab an object
@@ -216,6 +204,43 @@ public class TDS_RPCManager : PunBehaviour
         {
             TDS_CustomDebug.CustomDebugLog("No object found");
         }
+    }
+    #endregion
+
+    #region HostMigration
+    [PunRPC]
+    public void ReceiveMigrationsInformations(string _migrationInfos)
+    {
+        if (!PhotonNetwork.isMasterClient) return;
+        //Debug.Log(_migrationInfos); 
+        //SPLIT AT '@' TO GET EXMASTER ID AT 0, FIGHTING AREA INFO AT [1] AND PROPS INFORMATIONS AT [2]
+        string _areasInfos = _migrationInfos.Split('@')[1];
+        //string _propsInfos = _migrationInfos.Split('@')[2]; 
+        if(_areasInfos != string.Empty)
+        {
+            //SPLIT AGAIN AT '&' TO GET EVERY ACTIVE ZONE (NORMALLY JUST ONE BUT JUST IN CASE)
+            string[] _allAreasInfo = _areasInfos.Split('&');
+            for (int i = 0; i < _allAreasInfo.Length; i++)
+            {
+                TDS_FightingAreaInfo _infos = new TDS_FightingAreaInfo(_allAreasInfo[i]);
+                TDS_FightingArea _area = GetFightingAreaByID(_infos.FightingAreaID);
+                if (_area == null) return;
+                _area.SpawnEnemiesUsingInfos(_infos.EnemiesInfos);
+            }
+        }
+        // if(_propsInfos != string.Empty)
+        // {
+        //     // ADD PROPS PART
+        // }
+        int _exMasterID = int.Parse(_migrationInfos.Split('@')[0]);
+        PhotonPlayer _exMaster = PhotonPlayer.Find(_exMasterID); 
+        RPCManagerPhotonView.RPC("ReceptionFeeback", _exMaster); 
+    }
+
+    [PunRPC]
+    public void ReceptionFeeback()
+    {
+        TDS_HostingManager.Instance.GetMigrationFeedBack(); 
     }
     #endregion
 
