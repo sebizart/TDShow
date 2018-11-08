@@ -106,6 +106,15 @@ public class TDS_Throwable : PunBehaviour
         TDS_CustomDebug.CustomDebugLog($"Destroy throwable => {name}");
     }
 
+    public void Drop()
+    {
+        if (!isGrab) return;
+
+        rigidbody.isKinematic = false;
+        transform.SetParent(null);
+        isGrab = false;
+    }
+
     public virtual bool Grab(TDS_Character _bearer)
     {
         if (!isThrowable || isGrab || isThrown) return false;
@@ -145,7 +154,7 @@ public class TDS_Throwable : PunBehaviour
     /// <param name="_facingSide">Facing side to look at</param>
     public virtual void Throw(FacingSide _facingSide)
     {
-        if (!isGrab || !isThrowable) return;
+        if (!isGrab) return;
 
         rigidbody.isKinematic = false;
         transform.SetParent(null);

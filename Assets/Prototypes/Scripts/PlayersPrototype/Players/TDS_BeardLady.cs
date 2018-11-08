@@ -187,17 +187,17 @@ public class TDS_BeardLady : TDS_Player
         throw new System.NotImplementedException();
     }
 
-    protected override void Dodge()
-    {
-        throw new System.NotImplementedException();
-    }
-
     protected override void RodeoAttack()
     {
         throw new System.NotImplementedException();
     }
 
     protected override void Super()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    protected override IEnumerator Catching()
     {
         throw new System.NotImplementedException();
     }

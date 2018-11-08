@@ -140,6 +140,7 @@
     <Compile Include="Assets\Prototypes\Scripts\PlayersPrototype\Enemies\TDS_Enemy.cs" />
     <Compile Include="Assets\Prototypes\Scripts\PlayersPrototype\Enemies\TDS_FightingArea.cs" />
     <Compile Include="Assets\Prototypes\Scripts\PlayersPrototype\Enemies\TDS_SpawnPoint.cs" />
+    <Compile Include="Assets\Prototypes\Scripts\PlayersPrototype\MysteryBall.cs" />
     <Compile Include="Assets\Prototypes\Scripts\PlayersPrototype\Players\TDS_BeardLady.cs" />
     <Compile Include="Assets\Prototypes\Scripts\PlayersPrototype\Players\TDS_FatLady.cs" />
     <Compile Include="Assets\Prototypes\Scripts\PlayersPrototype\Players\TDS_FireEater.cs" />
@@ -161,6 +162,7 @@
     <Compile Include="Assets\Scripts\LogSaver\RunTime\TDS_CustomDebug.cs" />
     <Compile Include="Assets\Scripts\LogSaver\RunTime\TDS_LoggerManager.cs" />
     <Compile Include="Assets\Scripts\LogSaver\RunTime\TDS_LogSaver.cs" />
+    <Compile Include="Assets\Scripts\Team Tools\BuildsShortcuts\BuildsShortcuts.cs" />
     <Compile Include="Assets\Scripts\Team Tools\FPSCounter\Core\FPSCounter.cs" />
     <Compile Include="Assets\Scripts\Team Tools\InputManager\Core\InputsManager.cs" />
     <Compile Include="Assets\Scripts\Team Tools\InputManager\ReadMe.cs" />

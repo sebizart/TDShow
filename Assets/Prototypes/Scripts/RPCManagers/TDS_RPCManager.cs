@@ -79,7 +79,7 @@ public class TDS_RPCManager : PunBehaviour
     /// <param name="_charID">PhotonView ID of the attacking character</param>
     /// <param name="_attackID">ID of the attack</param>
     /// <returns></returns>
-    private string SetInfoDamages(Dictionary<int, int> _dico, int _charID, int _attackID)
+    public string SetInfoDamages(Dictionary<int, int> _dico, int _charID, int _attackID)
     {
         string _info = $"{_charID}#{_attackID}";
         foreach (KeyValuePair<int, int> _pair in _dico)
@@ -92,46 +92,24 @@ public class TDS_RPCManager : PunBehaviour
     #region RPC Requests
     #region Actions
     /// <summary>
-    /// Launch an action on a character by its ID
+    /// Launch an action with the character by the ID
     /// </summary>
-    /// <param name="_characterID">Id of the character</param>
+    /// <param name="_characterID">ID of the character</param>
     /// <param name="_actionID">ID of the action</param>
     [PunRPC]
-    public void LaunchAction(int _characterID, int _actionID)
+    public void LaunchAction(int _characterID, string _actionID)
     {
-        TDS_Character _character = GetCharacterByID(_characterID);
-        if (_character == null)
-        {
-            TDS_CustomDebug.CustomDebugLog($"No Character found with the ID {_characterID}");
-            return;
-        }
-        _character.Action(_actionID);
-    }
-    #endregion
-
-    #region Attacks
-    /// <summary>
-    /// Launch the attack with the character by the ID
-    /// Get this character
-    /// Check its attackBox
-    /// And Apply Info damages on every PhotonTarget
-    /// </summary>
-    /// <param name="_characterID"></param>
-    /// <param name="_attackID"></param>
-    [PunRPC]
-    public void LaunchAttack(int _characterID, int _attackID)
-    {
-        if (!PhotonNetwork.isMasterClient) return;
         TDS_Character _char = GetCharacterByID(_characterID);
         if (_char == null)
         {
             TDS_CustomDebug.CustomDebugLog($"No Character found with the ID {_characterID}");
             return;
         }
-        Dictionary<int, int> _allChars = _char.CheckHit(_attackID);
-        RPCManagerPhotonView.RPC("ApplyInfoDamages", PhotonTargets.All, SetInfoDamages(_allChars, _characterID, _attackID));
+        _char.ExecuteAction(_actionID);
     }
+    #endregion
 
+    #region Attacks
     /// <summary>
     /// Create a AttackInfo object which contains all the infos in the string
     /// </summary>
@@ -192,9 +170,9 @@ public class TDS_RPCManager : PunBehaviour
         _char.ThrowObject();
     }
     /// <summary>
-    /// Makes a character throw its weired object
+    /// Makes the juggler throw an object
     /// </summary>
-    /// <param name="_characterID">ID of the character throwing the object</param>
+    /// <param name="_characterID">ID of the juggler</param>
     /// <param name="_velocity">Velocity to give to the object</param>
     [PunRPC]
     public void ThrowObject(int _characterID, Vector3 _velocity)
@@ -210,6 +188,28 @@ public class TDS_RPCManager : PunBehaviour
         if (_juggler)
         {
             _juggler.ThrowObject(_velocity);
+        }
+    }
+
+    /// <summary>
+    /// Makes the juggler throw a mystery ball
+    /// </summary>
+    /// <param name="_characterID">ID of the juggler</param>
+    /// <param name="_velocity">Velocity of the mystery ball</param>
+    [PunRPC]
+    public void ThrowMysteryBall(int _characterID, Vector3 _velocity)
+    {
+        TDS_Character _char = GetCharacterByID(_characterID);
+        if (_char == null)
+        {
+            TDS_CustomDebug.CustomDebugLog($"No Character found with the ID {_characterID}");
+            return;
+        }
+        TDS_Juggler _juggler = _char.GetComponent<TDS_Juggler>();
+
+        if (_juggler)
+        {
+            _juggler.ThrowMysteryBall(_velocity);
         }
     }
 

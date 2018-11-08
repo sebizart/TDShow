@@ -34,7 +34,7 @@ public abstract class TDS_Character : TDS_DamageableElement
 
     [SerializeField, Header("Float")] protected float speed = 1;
 
-    [SerializeField, Header("Nav Mesh")] NavMeshAgent navMeshCharacter;
+    [SerializeField, Header("Nav Mesh")] protected NavMeshAgent navMeshCharacter;
     private Vector3 netOnlinePosition;
 
     [SerializeField, Header("Projectile")] protected TDS_Throwable projectile;
@@ -93,10 +93,12 @@ public abstract class TDS_Character : TDS_DamageableElement
     }
 
     /// <summary>
-    /// Apply effects of the action with the ID
+    /// Executes an action
     /// </summary>
     /// <param name="_actionID">ID of the action</param>
-    public abstract void Action(int _actionID);
+    public virtual void ExecuteAction(string _actionID)
+    {
+    }
 
     /// <summary>
     /// Set the destination of this character to a new position
@@ -114,6 +116,19 @@ public abstract class TDS_Character : TDS_DamageableElement
     #endregion
 
     #region Object Interaction
+    /// <summary>
+    /// Drop the graned object
+    /// </summary>
+    public virtual void DropObject()
+    {
+        // If the character doesn't have a projectile to drop, return
+        if (!projectile) return;
+
+        // Drop the projectile and remove it from the current weared object
+        projectile.Drop();
+        projectile = null;
+    }
+
     /// <summary>
     /// Grabs an object
     /// </summary>
@@ -236,9 +251,9 @@ public abstract class TDS_Character : TDS_DamageableElement
 
     protected virtual void Start () 
     {
-    	
+        transform.forward = Camera.main.transform.forward;
     }
-    
+
     protected virtual void Update () 
     {
     	

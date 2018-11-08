@@ -28,11 +28,6 @@ public class TDS_Enemy : TDS_Character
     #endregion
 
     #region Methods
-    public override void Action(int _actionId)
-    {
-        throw new NotImplementedException();
-    }
-
     protected override void AttackOne()
     {
         throw new NotImplementedException();

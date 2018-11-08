@@ -43,7 +43,9 @@ public abstract class TDS_Player : TDS_Character
     public event Action OnHeal;
 
     #region Fields/Properties
-    [SerializeField, Header("Player", order = 0), Header("Bool", order = 1)] bool isGrounded = true;
+    [SerializeField, Header("Player", order = 0), Header("Bool", order = 1)] protected bool isCatching = false;
+    [SerializeField] protected bool isDodging = false;
+    [SerializeField] protected bool isGrounded = true;
 
     [SerializeField, Header("Character")] protected PlayerCharacter character = PlayerCharacter.BeardLady;
 
@@ -66,27 +68,17 @@ public abstract class TDS_Player : TDS_Character
         }
     }
 
-    #region Key Codes
-    [Header("Key Codes")]
-    [SerializeField] protected KeyCode attackOneKey = KeyCode.Mouse0;
-    [SerializeField] protected KeyCode attackThreeKey = KeyCode.Mouse2;
-    [SerializeField] protected KeyCode attackTwoKey = KeyCode.Mouse1;
-    [SerializeField] protected KeyCode airAttackKey = KeyCode.Mouse0;
-    [SerializeField] protected KeyCode airRodeoKey = KeyCode.Mouse1;
-    [SerializeField] protected KeyCode interactWithObjectKey = KeyCode.E;
-    [SerializeField] protected KeyCode dodgeKey = KeyCode.LeftControl;
-    [SerializeField] protected KeyCode catchKey = KeyCode.F;
-    [SerializeField] protected KeyCode superKey = KeyCode.X;
-    #endregion
+    [SerializeField, Header("Float")] protected float dodgeTime = .5f; 
     #endregion
 
     #region Methods
     /// <summary>
-    /// Check the inputs of the player and executes actions in consequences
+    /// Checks inputs and executes related actions
     /// </summary>
-    protected void CheckInputs()
+    protected virtual void Actions()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        // Actions verifications
+        if (Input.GetButtonDown("Menu"))
         {
             TDS_GameManager.Instance.LeaveParty(character);
             PhotonNetwork.Destroy(photonViewElement);
@@ -94,6 +86,80 @@ public abstract class TDS_Player : TDS_Character
             return;
         }
 
+        if (Input.GetButtonDown("Jump"))
+        {
+            // JUMP
+        }
+        else if (Input.GetButtonDown("Fire1"))
+        {
+            if (isGrounded)
+            {
+                AttackOne();
+            }
+            else
+            {
+                AirAttack();
+            }
+        }
+        else if (Input.GetButtonDown("Fire2"))
+        {
+            if (isGrounded)
+            {
+                AttackTwo();
+            }
+            else
+            {
+                RodeoAttack();
+            }
+        }
+        else if (Input.GetButtonDown("Fire3"))
+        {
+            AttackThree();
+        }
+        else if (Input.GetButtonDown("Alt Fire1"))
+        {
+            InteractWithObjects();
+        }
+        else if (Input.GetButtonDown("Alt Fire2"))
+        {
+            Catch();
+        }
+        else
+        {
+            // Get the triggers pression
+            float _triggers = Input.GetAxis("Joystick Triggers");
+
+            if (_triggers > .5f)
+            {
+                ThrowObject();
+            }
+            else if (_triggers < -.5f)
+            {
+                StartCoroutine(Dodge());
+            }
+        }
+    }
+
+    public override void ExecuteAction(string _actionID)
+    {
+        base.ExecuteAction(_actionID);
+
+        switch (_actionID)
+        {
+            case "Catch":
+                StartCoroutine(Catching());
+                break;
+            default:
+                break;
+        }
+    }
+
+    /// <summary>
+    /// Moves the player
+    /// </summary>
+    protected void Move()
+    {
+        // Get the movement
         float _horizontal = Input.GetAxis("Horizontal");
         float _vertical = Input.GetAxis("Vertical");
 
@@ -129,50 +195,6 @@ public abstract class TDS_Player : TDS_Character
 
         // Set the destination of the player's inputs
         SetDestination(new Vector3(transform.position.x + _horizontal, transform.position.y, transform.position.z + _vertical));
-
-        // Attacks verifications
-        if (Input.GetKeyDown(attackOneKey))
-        {
-            if (isGrounded)
-            {
-                AttackOne();
-            }
-            else
-            {
-                AirAttack();
-            }
-        }
-        else if (Input.GetKeyDown(attackTwoKey))
-        {
-            if (isGrounded)
-            {
-                AttackTwo();
-            }
-            else
-            {
-                RodeoAttack();
-            }
-        }
-        else if (Input.GetKeyDown(attackThreeKey))
-        {
-            AttackThree();
-        }
-        else if (Input.GetKeyDown(interactWithObjectKey))
-        {
-            InteractWithObjects();
-        }
-        else if (Input.GetKeyDown(dodgeKey))
-        {
-            Dodge();
-        }
-        else if (Input.GetKeyDown(catchKey))
-        {
-            Catch();
-        }
-        else if (Input.GetKeyDown(superKey))
-        {
-            Super();
-        }
     }
 
     /// <summary>
@@ -185,55 +207,91 @@ public abstract class TDS_Player : TDS_Character
         OnHeal?.Invoke();
     }
 
-    /// <summary>
-    /// Executes an action based on an action ID
-    /// </summary>
-    /// <param name="_actionID">ID of the action to execute</param>
-    public override void Action(int _actionID)
-    {
-        // Triggers the right attack depending on the attack id
-        switch ((PlayerAttacks)_actionID)
-        {
-            case PlayerAttacks.AttackOne:
-                AttackOne();
-                break;
-            case PlayerAttacks.AttackTwo:
-                AttackTwo();
-                break;
-            case PlayerAttacks.AttackThree:
-                AttackThree();
-                break;
-            case PlayerAttacks.AirAttack:
-                AirAttack();
-                break;
-            case PlayerAttacks.RodeoAttack:
-                RodeoAttack();
-                break;
-            case PlayerAttacks.InteractWithObject:
-                InteractWithObjects();
-                break;
-            case PlayerAttacks.Dodge:
-                Dodge();
-                break;
-            case PlayerAttacks.Catch:
-                Catch();
-                break;
-            case PlayerAttacks.Super:
-                Super();
-                break;
-            default:
-                TDS_CustomDebug.CustomDebugLogWarning($"The Player's attack ID \"{_actionID}\" is unknown, sorry miss");
-                break;
-        }
-    }
-
-    #region Attacks
+    #region Actions
     protected abstract void AirAttack();
     protected abstract void Catch();
-    protected abstract void Dodge();
     protected abstract void RodeoAttack();
     protected abstract void Super();
     #endregion
+    protected abstract IEnumerator Catching();
+
+    protected virtual IEnumerator Dodge()
+    {
+        float _timer = 0;
+        Vector3 _movement = Vector3.zero;
+        float _originalSpeed = navMeshCharacter.speed;
+
+        isDodging = true;
+        navMeshCharacter.speed *= 1.5f;
+
+        switch (facingSide)
+        {
+            case FacingSide.Bottom:
+                _movement = -Vector3.forward;
+                break;
+            case FacingSide.Left:
+                _movement = -Vector3.right;
+                break;
+            case FacingSide.Right:
+                _movement = Vector3.right;
+                break;
+            case FacingSide.Top:
+                _movement = Vector3.forward;
+                break;
+            default:
+                break;
+        }
+
+        while (_timer < dodgeTime)
+        {
+            // Get the movement
+            float _horizontal = Input.GetAxis("Horizontal");
+            float _vertical = Input.GetAxis("Vertical");
+            
+            if (_horizontal != 0 || _vertical != 0)
+            {
+                _movement = new Vector3(_horizontal, 0, _vertical);
+            }
+
+            // Set the orientation side of the player
+            if (_horizontal >= .5F)
+            {
+                if (facingSide != FacingSide.Right)
+                {
+                    ChangeSide(FacingSide.Right);
+                }
+            }
+            else if (_horizontal <= -.5f)
+            {
+                if (facingSide != FacingSide.Left)
+                {
+                    ChangeSide(FacingSide.Left);
+                }
+            }
+            else if (_vertical > 0)
+            {
+                if (facingSide != FacingSide.Top)
+                {
+                    ChangeSide(FacingSide.Top);
+                }
+            }
+            else if (_vertical < 0)
+            {
+                if (facingSide != FacingSide.Bottom)
+                {
+                    ChangeSide(FacingSide.Bottom);
+                }
+            }
+
+            // Set the destination of the player's inputs
+            SetDestination(transform.position + (_movement * 1.5f));
+
+            yield return new WaitForSeconds(.05f);
+            _timer += .05f;
+        }
+        navMeshCharacter.speed = _originalSpeed;
+        isDodging = false;
+    }
 
     /// <summary>
     /// Makes the player interact with an object :
@@ -248,7 +306,7 @@ public abstract class TDS_Player : TDS_Character
         }
         else
         {
-            TDS_RPCManager.Instance.RPCManagerPhotonView.RPC("ThrowObject", PhotonTargets.All, PhotonViewElementID);
+            TDS_RPCManager.Instance.RPCManagerPhotonView.RPC("DropObject", PhotonTargets.All, PhotonViewElementID);
         }
     }
     #endregion
@@ -261,10 +319,14 @@ public abstract class TDS_Player : TDS_Character
 
     protected virtual void FixedUpdate()
     {
+        // If the player is dodging, return
+        if (isDodging || isCatching) return;
+
         // If it's the player's avatar : Checks the inputs of the player
         if (photonViewElement.isMine)
         {
-            CheckInputs();
+            Move();
+            Actions();
         }
         // If not, just set the position of this player localy
         else
