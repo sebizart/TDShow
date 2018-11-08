@@ -28,10 +28,10 @@ public class TDS_FightingArea : PunBehaviour
 
     #region Fields and Properties
     [SerializeField]SpawnPointState detectionState = SpawnPointState.Disable; 
-    public SpawnPointState DetectionState { get { return detectionState; } }
+    public SpawnPointState DetectionState { get { return detectionState; } set { detectionState = value; } }
 
     [SerializeField, Range(1, 10)] int remainingWaves=1;
-    public int RemainingWaves { get { return remainingWaves; } }
+    public int RemainingWaves { get { return remainingWaves; } set { remainingWaves = value; } }
 
     private bool isFirstWave = true;
 
@@ -40,6 +40,8 @@ public class TDS_FightingArea : PunBehaviour
     public TDS_DetectionArea DetectionArea { get { return detectionArea; } }
     [SerializeField] List<TDS_SpawnPoint> spawnPoints = new List<TDS_SpawnPoint>();
     public List<TDS_SpawnPoint> SpawnPoints { get { return spawnPoints; } }
+    [SerializeField] List<TDS_Wave> waves = new List<TDS_Wave>();
+    public List<TDS_Wave> Waves { get { return waves; } set { waves = value; } }
     [SerializeField] List<TDS_Enemy> spawnedEnemies = new List<TDS_Enemy>();
     public List<TDS_Enemy> SpawnedEnemies { get { return spawnedEnemies; } }
     [SerializeField] PhotonView areaPhotonView;
@@ -47,16 +49,18 @@ public class TDS_FightingArea : PunBehaviour
 
     #endregion
 
-        #region UnityMethods
+    #region UnityMethods
     private void Awake()
     {
         OnNextWave += Spawn;
     }
     void Start ()
     {
-	}
-	void Update ()
-    {
+        if (areaPhotonView == null)
+        {
+            areaPhotonView = GetComponent<PhotonView>();
+            Debug.Log("GET PHOTON"); 
+        }
 	}
     private void OnDrawGizmos()
     {
@@ -65,7 +69,7 @@ public class TDS_FightingArea : PunBehaviour
         for (int i = 0; i < SpawnPoints.Count; i++)
         {
             Gizmos.color = SpawnPoints[i].SpawnPointColor;
-            Gizmos.DrawSphere(SpawnPoints[i].SpawnPosition, .5f); 
+            Gizmos.DrawSphere(SpawnPoints[i].SpawnPosition, .5f);
         }
     }
     private void OnTriggerEnter(Collider _collider)
@@ -78,43 +82,61 @@ public class TDS_FightingArea : PunBehaviour
             OnNextWave?.Invoke();
         }
     }
-    private void OnGUI()
-    {
-        GUI.Label(new Rect(Screen.width - 200, 50, 200, 50), spawnedEnemies.Count.ToString()); 
-    }
     #endregion
 
     #region Methods
 
 
     /// <summary>
-    /// 
+    /// Get a random number of spawn points selected randomly within the available points
     /// </summary>
     /// <returns></returns>
     private TDS_SpawnPoint[] GetSpawnPoints()
     {
+        //Get all available points
+        TDS_SpawnPoint[] _availablePoints;
         if (isFirstWave)
+            _availablePoints = SpawnPoints.ToArray(); 
+        else
+            _availablePoints = SpawnPoints.FindAll(p => !p.IsOnFightingArea).ToArray();
+        if (_availablePoints.Length == 0) return _availablePoints;
+        //Get the number of points within 0 and available points count
+        int _numberOfPoints = UnityEngine.Random.Range(1, _availablePoints.Length-1);
+        List<TDS_SpawnPoint> _returnedPoints = new List<TDS_SpawnPoint>();
+        int _index;
+        while (_numberOfPoints > 0)
         {
-            return SpawnPoints.ToArray(); 
+            _index = UnityEngine.Random.Range(0, _availablePoints.Length - 1);
+            if (!_availablePoints[_index].IsSelected)
+            {
+                _availablePoints[_index].IsSelected = true; 
+                _returnedPoints.Add(_availablePoints[_index]);
+                _numberOfPoints--; 
+            }
         }
-        return SpawnPoints.FindAll(p => !p.IsOnFightingArea).ToArray(); ; 
+        _returnedPoints.ForEach(p => p.IsSelected = false); 
+        return _returnedPoints.ToArray(); 
     }
     
     /// <summary>
-    /// 
+    /// Get the points and spawn enemies in it 
+    /// Then add the enemy to the spawned enemies list
     /// </summary>
     void Spawn()
     {
         if (!PhotonNetwork.isMasterClient) return;
+        
         TDS_SpawnPoint[] _spawnablePoints = GetSpawnPoints();
+        if (_spawnablePoints.Length == 0) return; 
         //TROUVER LE NOMBRE D'ENEMIES A FAIRE SPAWN A CHAQUE WAVE -> DANS UN GAME MANAGER qui calcule les dégats qu'ont infligé les joueurs?
-        // Pour le moment, on en fera spawn autant qu'il y a de points
+        // Pour le moment, on en fera spawn autant qu'il y a de points OU random? 
         for (int i = 0; i < _spawnablePoints.Length; i++)
         {
             TDS_Enemy _e = _spawnablePoints[i].GetEnemy();
             TDS_Enemy _enemy = PhotonNetwork.Instantiate(_e.PrefabName.ToString(), _spawnablePoints[i].SpawnPosition + Vector3.up, Quaternion.identity, 0).GetComponent<TDS_Enemy>();
             spawnedEnemies.Add(_enemy); 
         }
+
     }
 
     /// <summary>

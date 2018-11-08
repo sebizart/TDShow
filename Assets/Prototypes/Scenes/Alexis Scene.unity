@@ -3128,31 +3128,81 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   detectionState: 0
-  remainingWaves: 2
+  remainingWaves: 5
   detectionArea:
-    extendedX: 18.95673
-    extendedY: 1.4215155
-    extendedZ: 12.296429
+    extendedX: 17.907124
+    extendedY: 1.6581135
+    extendedZ: 11.020559
     debugColor: {r: 1, g: 0, b: 0, a: 1}
   spawnPoints:
   - name: Spawn Point 1
-    spawnPosition: {x: 6.098164, y: 0, z: 4.437573}
+    spawnPosition: {x: -1.47, y: 0, z: 0}
     id: 1
-    isOnFightingArea: 0
+    isOnFightingArea: 1
     isSelected: 0
-    EnemiesSpawnable:
-    - {fileID: 114801022512511472, guid: cd76fe4882b6b8d42a59ef6f065af2c6, type: 2}
+    enemiesSpawnable:
+    - spawningEnemy: {fileID: 114801022512511472, guid: cd76fe4882b6b8d42a59ef6f065af2c6,
+        type: 2}
+      spawningChance: 50
     spawnPointColor: {r: 1, g: 0, b: 0, a: 1}
+    IsFoldOut: 0
+  - name: Spawn Point 1
+    spawnPosition: {x: 0, y: 0, z: 1.98}
+    id: 1
+    isOnFightingArea: 1
+    isSelected: 0
+    enemiesSpawnable:
+    - spawningEnemy: {fileID: 114801022512511472, guid: cd76fe4882b6b8d42a59ef6f065af2c6,
+        type: 2}
+      spawningChance: 50
+    spawnPointColor: {r: 1, g: 0, b: 0, a: 1}
+    IsFoldOut: 0
   - name: Spawn Point 2
-    spawnPosition: {x: -0.048885822, y: 0, z: 3.8504019}
+    spawnPosition: {x: -0.05624199, y: 0, z: -2.0498924}
     id: 2
-    isOnFightingArea: 0
+    isOnFightingArea: 1
     isSelected: 0
-    EnemiesSpawnable:
-    - {fileID: 114801022512511472, guid: cd76fe4882b6b8d42a59ef6f065af2c6, type: 2}
+    enemiesSpawnable:
+    - spawningEnemy: {fileID: 114801022512511472, guid: cd76fe4882b6b8d42a59ef6f065af2c6,
+        type: 2}
+      spawningChance: 50
     spawnPointColor: {r: 1, g: 0, b: 0, a: 1}
+    IsFoldOut: 0
+  - name: Spawn Point 3
+    spawnPosition: {x: -1.5668461, y: 0, z: 2.0254645}
+    id: 3
+    isOnFightingArea: 1
+    isSelected: 0
+    enemiesSpawnable:
+    - spawningEnemy: {fileID: 114801022512511472, guid: cd76fe4882b6b8d42a59ef6f065af2c6,
+        type: 2}
+      spawningChance: 50
+    spawnPointColor: {r: 1, g: 0, b: 0, a: 1}
+    IsFoldOut: 0
+  - name: Spawn Point 4
+    spawnPosition: {x: 1.9180398, y: 0, z: -0.79542494}
+    id: 4
+    isOnFightingArea: 1
+    isSelected: 0
+    enemiesSpawnable:
+    - spawningEnemy: {fileID: 114801022512511472, guid: cd76fe4882b6b8d42a59ef6f065af2c6,
+        type: 2}
+      spawningChance: 50
+    spawnPointColor: {r: 1, g: 0, b: 0, a: 1}
+    IsFoldOut: 0
+  - name: Spawn Point 5
+    spawnPosition: {x: 2.19, y: 0, z: 1.2}
+    id: 5
+    isOnFightingArea: 1
+    isSelected: 0
+    enemiesSpawnable:
+    - spawningEnemy: {fileID: 114801022512511472, guid: cd76fe4882b6b8d42a59ef6f065af2c6,
+        type: 2}
+      spawningChance: 50
+    spawnPointColor: {r: 1, g: 0, b: 0, a: 1}
+    IsFoldOut: 0
   spawnedEnemies: []
-  areaPhotonView: {fileID: 1692345493}
+  areaPhotonView: {fileID: 0}
 --- !u!114 &1692345493
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3190,7 +3240,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: -3.94, y: 1, z: 12.36}
-  m_Center: {x: -11.36, y: 0, z: 0}
+  m_Center: {x: -12.2, y: 0, z: 0}
 --- !u!4 &1692345495
 Transform:
   m_ObjectHideFlags: 0
