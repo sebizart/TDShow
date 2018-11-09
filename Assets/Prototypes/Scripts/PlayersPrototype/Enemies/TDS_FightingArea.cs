@@ -47,6 +47,8 @@ public class TDS_FightingArea : PunBehaviour
     [SerializeField] PhotonView areaPhotonView;
     public PhotonView AreaPhotonView { get { return areaPhotonView; } }
 
+    public bool ShowSpawnPoints { get; set; }
+    public bool ShowWaves { get; set; }
     #endregion
 
     #region UnityMethods
@@ -66,11 +68,6 @@ public class TDS_FightingArea : PunBehaviour
     {
         Gizmos.color = DetectionArea.DebugColor;
         Gizmos.DrawWireCube(DetectionArea.CenterPosition, DetectionArea.ExtendingPosition);
-        for (int i = 0; i < SpawnPoints.Count; i++)
-        {
-            Gizmos.color = SpawnPoints[i].SpawnPointColor;
-            Gizmos.DrawSphere(SpawnPoints[i].SpawnPosition, .5f);
-        }
     }
     private void OnTriggerEnter(Collider _collider)
     {
@@ -155,8 +152,33 @@ public class TDS_FightingArea : PunBehaviour
     #endregion
 
     #region EditorMethods
-    public void AddSpawnPoint(int _i) => SpawnPoints.Add(new TDS_SpawnPoint(_i));
-    public void RemovePointAt(int _i) => SpawnPoints.RemoveAt(_i);  
+    public void AddSpawnPoint(int _i)
+    {
+        GameObject _obj = new GameObject();
+        TDS_SpawnPoint _point = _obj.AddComponent<TDS_SpawnPoint>(); 
+        _point.PointName = "Spawn point " + _i;
+        _point.Owner = this; 
+        _obj.name = _point.PointName;
+        _obj.transform.SetParent(this.gameObject.transform); 
+        SpawnPoints.Add(_point);
+    }
+    public void RemovePointAt(int _i)
+    {
+        TDS_SpawnPoint _point = SpawnPoints[_i]; 
+        SpawnPoints.RemoveAt(_i);
+        Destroy(_point.gameObject); 
+    }
+    public void RemoveDestroyedPoint(int _i)
+    {
+        SpawnPoints.RemoveAt(_i);
+    }
+    public void UpdatePoints()
+    {
+        for (int i = 0; i < spawnPoints.Count; i++)
+        {
+            if (spawnPoints[i] == null) RemoveDestroyedPoint(i); 
+        }
+    }
     #endregion
 }
 

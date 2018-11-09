@@ -8,15 +8,13 @@ using UnityEditor;
 //HEADER
 // Spawn point
 // Make a spawn for a various number of enemies on a selected position (into or out of the fighting area)
-[Serializable]
-public class TDS_SpawnPoint
+public class TDS_SpawnPoint : MonoBehaviour
 {
     #region FieldAndProperties
-    [SerializeField] string name = "SP";
-    public string Name { get { return name; } }
+    [SerializeField] string pointName = "SP";
+    public string PointName { get { return pointName; } set { pointName = value; } }
 
-    [SerializeField] Vector3 spawnPosition;
-    public Vector3 SpawnPosition { get { return spawnPosition; } set { spawnPosition = value; } }
+    public Vector3 SpawnPosition { get { return transform.position; } }
 
     [SerializeField] int id;
     public int ID { get { return id; } }
@@ -42,6 +40,9 @@ public class TDS_SpawnPoint
     [SerializeField] List<TDS_SpawningElement> enemiesSpawnable = new List<TDS_SpawningElement>();
     public List<TDS_SpawningElement> EnemiesSpawnable { get { return enemiesSpawnable; } }
 
+    [SerializeField] TDS_FightingArea owner; 
+    public TDS_FightingArea Owner { get { return owner; } set { owner = value; } }
+
     #region EditorSettings
     [SerializeField] Color spawnPointColor = Color.red;
     public Color SpawnPointColor { get { return spawnPointColor; } set { spawnPointColor = value; } }
@@ -49,15 +50,6 @@ public class TDS_SpawnPoint
     public bool IsFoldOut = false; 
     #endregion
 
-    #endregion
-
-    #region Constructor
-    public TDS_SpawnPoint(int _id)
-    {
-        id = _id;
-        name = "Spawn Point " + id;
-        enemiesSpawnable.Clear(); 
-    }
     #endregion
 
     #region Methods
@@ -76,7 +68,19 @@ public class TDS_SpawnPoint
         int _enemyIndex = UnityEngine.Random.Range(0, _enemies.Length - 1);
         return _enemies[_enemyIndex];
     }
-    #endregion 
+    #endregion
+
+    #region UnityMethod
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = spawnPointColor;
+        Gizmos.DrawSphere(SpawnPosition, .5f);
+    }
+    private void OnDestroy()
+    {
+        Owner.UpdatePoints(); 
+    }
+    #endregion
 }
 
 [Serializable]

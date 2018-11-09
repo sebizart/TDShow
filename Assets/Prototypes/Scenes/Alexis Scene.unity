@@ -3128,79 +3128,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   detectionState: 0
-  remainingWaves: 5
+  remainingWaves: 1
   detectionArea:
-    extendedX: 17.907124
-    extendedY: 1.6581135
-    extendedZ: 11.020559
+    extendedX: 1
+    extendedY: 1
+    extendedZ: 1
     debugColor: {r: 1, g: 0, b: 0, a: 1}
-  spawnPoints:
-  - name: Spawn Point 1
-    spawnPosition: {x: -1.47, y: 0, z: 0}
-    id: 1
-    isOnFightingArea: 1
-    isSelected: 0
-    enemiesSpawnable:
-    - spawningEnemy: {fileID: 114801022512511472, guid: cd76fe4882b6b8d42a59ef6f065af2c6,
-        type: 2}
-      spawningChance: 50
-    spawnPointColor: {r: 1, g: 0, b: 0, a: 1}
-    IsFoldOut: 0
-  - name: Spawn Point 1
-    spawnPosition: {x: 0, y: 0, z: 1.98}
-    id: 1
-    isOnFightingArea: 1
-    isSelected: 0
-    enemiesSpawnable:
-    - spawningEnemy: {fileID: 114801022512511472, guid: cd76fe4882b6b8d42a59ef6f065af2c6,
-        type: 2}
-      spawningChance: 50
-    spawnPointColor: {r: 1, g: 0, b: 0, a: 1}
-    IsFoldOut: 0
-  - name: Spawn Point 2
-    spawnPosition: {x: -0.05624199, y: 0, z: -2.0498924}
-    id: 2
-    isOnFightingArea: 1
-    isSelected: 0
-    enemiesSpawnable:
-    - spawningEnemy: {fileID: 114801022512511472, guid: cd76fe4882b6b8d42a59ef6f065af2c6,
-        type: 2}
-      spawningChance: 50
-    spawnPointColor: {r: 1, g: 0, b: 0, a: 1}
-    IsFoldOut: 0
-  - name: Spawn Point 3
-    spawnPosition: {x: -1.5668461, y: 0, z: 2.0254645}
-    id: 3
-    isOnFightingArea: 1
-    isSelected: 0
-    enemiesSpawnable:
-    - spawningEnemy: {fileID: 114801022512511472, guid: cd76fe4882b6b8d42a59ef6f065af2c6,
-        type: 2}
-      spawningChance: 50
-    spawnPointColor: {r: 1, g: 0, b: 0, a: 1}
-    IsFoldOut: 0
-  - name: Spawn Point 4
-    spawnPosition: {x: 1.9180398, y: 0, z: -0.79542494}
-    id: 4
-    isOnFightingArea: 1
-    isSelected: 0
-    enemiesSpawnable:
-    - spawningEnemy: {fileID: 114801022512511472, guid: cd76fe4882b6b8d42a59ef6f065af2c6,
-        type: 2}
-      spawningChance: 50
-    spawnPointColor: {r: 1, g: 0, b: 0, a: 1}
-    IsFoldOut: 0
-  - name: Spawn Point 5
-    spawnPosition: {x: 2.19, y: 0, z: 1.2}
-    id: 5
-    isOnFightingArea: 1
-    isSelected: 0
-    enemiesSpawnable:
-    - spawningEnemy: {fileID: 114801022512511472, guid: cd76fe4882b6b8d42a59ef6f065af2c6,
-        type: 2}
-      spawningChance: 50
-    spawnPointColor: {r: 1, g: 0, b: 0, a: 1}
-    IsFoldOut: 0
+  spawnPoints: []
+  waves:
+  - fixElements: []
   spawnedEnemies: []
   areaPhotonView: {fileID: 0}
 --- !u!114 &1692345493
@@ -3248,7 +3184,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1692345491}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.5, z: 0}
+  m_LocalPosition: {x: -2.03, y: 0.5, z: 3.97}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
