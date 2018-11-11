@@ -27,10 +27,7 @@ public class TDS_FightingAreaEditor : Editor
 
     #region FieldsAndProperties
     private TDS_FightingArea p_target;
-    //private TDS_SpawnPoint selectedPoint = null;
-    [SerializeField] private int spawnPointID = 0;
 
-    public bool HasToBeUpdated { get { return (p_target.SpawnPoints.Count > 0 && p_target.SpawnPoints.Any(p => p == null)); } }
     #endregion
 
     #region Methods
@@ -45,41 +42,77 @@ public class TDS_FightingAreaEditor : Editor
         EditorGUILayout.HelpBox("DETECTION AREA", MessageType.None);
         //DETECTION STATE 
         p_target.DetectionState = (SpawnPointState)EditorGUILayout.EnumPopup("Detection State",p_target.DetectionState);
-        //REMAINING WAVES
-        p_target.RemainingWaves = EditorGUILayout.IntSlider("Remaining waves",p_target.RemainingWaves, 1, 15);
         //DETECTION AREA
         p_target.DetectionArea.DebugColor = EditorGUILayout.ColorField("Debug color", p_target.DetectionArea.DebugColor);
     }
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    void ShowPointManagerSettings()
+    {
+        GUI.color = Color.red; 
+        EditorGUILayout.HelpBox("Point Manager Settings", MessageType.None);
+        GUI.color = Color.white;
+        p_target.PointsManager.Position = EditorGUILayout.Vector3Field("Manager Position", p_target.PointsManager.Position);
+        EditorGUILayout.HelpBox("WAVES", MessageType.None);
+        for (int i = 0; i < p_target.PointsManager.AllWavePoints.Count; i++)
+        {
+            ShowWaveSettings(p_target.PointsManager.AllWavePoints[i]);
+            GUITools.ActionButton("Remove Wave point", p_target.PointsManager.RemoveWavePoint, i, Color.white, Color.black); 
+        }
+        EditorGUILayout.Space(); 
+        GUITools.ActionButton("Add Wave point", p_target.PointsManager.AddWavePoint, Color.white, Color.black);
+    }
 
     /// <summary>
-    /// Add points 
-    /// Clear points
-    /// show every points settings
+    /// 
     /// </summary>
-    void ShowSpawnPointsSettings()
+    /// <param name="_point"></param>
+    void ShowWaveSettings(TDS_WavePoint _point)
     {
-        p_target.ShowSpawnPoints = EditorGUILayout.Foldout(p_target.ShowSpawnPoints, "SPAWN POINTS", true); 
-        if(HasToBeUpdated)
+        _point.IsFoldOut = EditorGUILayout.Foldout(_point.IsFoldOut, _point.Name, true);
+        if (_point.IsFoldOut)
         {
-            p_target.UpdatePoints(); 
-            return;
+            _point.Position = EditorGUILayout.Vector3Field("Point Position", _point.Position);
+
+            _point.Range = EditorGUILayout.Slider("Spawn Range" ,_point.Range, 1, 10);
+
+            _point.WaveNumber = EditorGUILayout.IntField("Wave Number", _point.WaveNumber); 
+
+            // STATIC WAVE ELEMENT
+            ShowWaveElementSettings(_point.StaticWaveElement);
+            EditorGUILayout.Space();
+
+            // RANDOM WAVE ELEMENT
+            ShowWaveElementSettings(_point.RandomWaveElement);
+            EditorGUILayout.Space();
+
         }
-        if(p_target.ShowSpawnPoints)
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="_element"></param>
+    void ShowWaveElementSettings(TDS_WaveElement _element)
+    {
+        // COLOR
+        GUI.color = Color.blue;
+        EditorGUILayout.HelpBox("Wave Element", MessageType.None);
+        GUI.color = Color.white;
+        // ENEMIES AND COUNT
+        TDS_Enemy _enemy = null;
+        _enemy = EditorGUILayout.ObjectField(_enemy, typeof(TDS_Enemy), false) as TDS_Enemy;
+        if (_enemy != null && !_element.EnemiesSpawn.Any(e => e.SpawningEnemy == _enemy))
         {
-            EditorGUILayout.Space();
-            for (int i = 0; i < p_target.SpawnPoints.Count; i++)
-            {
-                EditorGUILayout.HelpBox(p_target.SpawnPoints[i].name, MessageType.None);
-                EditorGUILayout.BeginHorizontal();
-                GUITools.ActionButton("Select", SelectSpawnPoint, p_target.SpawnPoints[i], Color.white, Color.black);
-                GUITools.ActionButton("Delete", p_target.RemovePointAt, i, Color.white, Color.black);
-                EditorGUILayout.EndHorizontal();
-            }
-            EditorGUILayout.Space();
-            EditorGUILayout.BeginHorizontal();
-            GUITools.ActionButton("Add Spawn Point", IncrementSpawnPoint, Color.white, Color.black);
-            GUITools.ActionButton("Clear all points", ClearPoints, Color.white, Color.black);
-            EditorGUILayout.EndHorizontal();
+            _element.AddElement(_enemy);
+        }
+        for (int i = 0; i < _element.EnemiesSpawn.Count; i++)
+        {
+            EditorGUILayout.LabelField(_element.EnemiesSpawn[i].SpawningEnemy.PrefabName.ToString());
+            _element.EnemiesSpawn[i].NumberOfEnemies = EditorGUILayout.IntSlider("Enemy count", _element.EnemiesSpawn[i].NumberOfEnemies, 0, 10);
+            GUITools.ActionButton("Remove Element", _element.RemoveElement, i, Color.white, Color.black);
         }
 
     }
@@ -87,122 +120,29 @@ public class TDS_FightingAreaEditor : Editor
     /// <summary>
     /// 
     /// </summary>
-    void ShowWavesSettings()
+    /// <param name="_element"></param>
+    void ShowWaveElementSettings(TDS_RandomWaveElement _element)
     {
-        p_target.ShowWaves = EditorGUILayout.Foldout(p_target.ShowWaves, "WAVES", true);
-        if (p_target.ShowWaves)
+        // COLOR
+        GUI.color = Color.green;
+        EditorGUILayout.HelpBox("Random Wave Element", MessageType.None);
+        GUI.color = Color.white;
+
+        // ENEMIES AND COUNT
+        TDS_Enemy _enemy = null;
+        _enemy = EditorGUILayout.ObjectField(_enemy, typeof(TDS_Enemy), false) as TDS_Enemy;
+        if (_enemy != null && !_element.EnemiesSpawn.Any(e => e.SpawningEnemy == _enemy))
         {
-
-
-            EditorGUILayout.HelpBox("WAVES", MessageType.None);
-            for (int i = 0; i < p_target.Waves.Count; i++)
-            {
-                ShowWave(p_target.Waves[i], i);
-            }
-            EditorGUILayout.BeginHorizontal();
-            GUITools.ActionButton("Add Wave", AddWave, Color.white, Color.black);
-            EditorGUILayout.EndHorizontal();
-            EditorGUILayout.Space();
+            _element.AddElement(_enemy);
+        }
+        for (int i = 0; i < _element.EnemiesSpawn.Count; i++)
+        {
+            EditorGUILayout.LabelField(_element.EnemiesSpawn[i].SpawningEnemy.PrefabName.ToString());
+            _element.EnemiesSpawn[i].NumberOfEnemies = EditorGUILayout.IntSlider("Enemy count", _element.EnemiesSpawn[i].NumberOfEnemies, 0, 10);
+            _element.RandomValues[i] = EditorGUILayout.IntSlider("Spawning Chance", _element.RandomValues[i], 0, 100);
+            GUITools.ActionButton("Remove Element", _element.RemoveElement, i, Color.white, Color.black);
         }
     }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="_wave"></param>
-    /// <param name="_index"></param>
-    void ShowWave(TDS_Wave _wave, int _index)
-    {
-
-        _wave.IsFoldOut = EditorGUILayout.Foldout(_wave.IsFoldOut, "Wave", true);
-        if(_wave.IsFoldOut)
-        {
-            ShowWaveInfo(_wave);
-            EditorGUILayout.Space(); 
-            GUITools.ActionButton("Remove Wave", RemoveWave, _index, Color.white, Color.black);
-        }
-
-    }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="_wave"></param>
-    void ShowWaveInfo(TDS_Wave _wave)
-    {
-        
-        for (int i = 0; i < _wave.FixElement.Count; i++)
-        {
-            TDS_WaveElement _info = _wave.FixElement[i];
-            _info.IsFoldOut = EditorGUILayout.Foldout(_info.IsFoldOut, "Info", true);
-            if(_info.IsFoldOut)
-            {
-                _info.LinkedPoint = EditorGUILayout.ObjectField("LinkedPoint", _info.LinkedPoint, typeof(TDS_SpawnPoint), true) as TDS_SpawnPoint;
-                _info.IsRandom = EditorGUILayout.Toggle("Is random?", _info.IsRandom); 
-                if(_info.IsRandom)
-                {
-                    _info.NumberEnemy = EditorGUILayout.IntSlider("Number of enemies", _info.NumberEnemy, 1, 10); 
-                }
-                else
-                {
-                    TDS_Enemy _e = null;
-                    _e = EditorGUILayout.ObjectField("Ennemies", _e, typeof(TDS_Enemy), false) as TDS_Enemy;
-                    if(_e != null)
-                    {
-                        _info.SpawningEnemies.Add(_e); 
-                    }
-                    for (int j = 0; j < _info.SpawningEnemies.Count; j++)
-                    {
-                        EditorGUILayout.BeginHorizontal();
-                        EditorGUILayout.HelpBox(_info.SpawningEnemies[j].name, MessageType.None);
-                        GUITools.ActionButton("Remove Enemy", _info.RemoveEnemyAt, j, Color.white, Color.black);
-                        EditorGUILayout.EndHorizontal();
-                    }
-                }
-            }
-            GUITools.ActionButton("Remove Info", _wave.RemoveInfoAt, i, Color.white, Color.black);
-            EditorGUILayout.Space(); 
-        }
-        GUITools.ActionButton("Add Info", _wave.AddInfo, Color.white, Color.black);
-    }
-
-    #region Points
-    /// <summary>
-    /// Add spawn point
-    /// </summary>
-    void IncrementSpawnPoint()
-    {
-        spawnPointID++;
-        p_target.AddSpawnPoint(spawnPointID); 
-    }
-    /// <summary>
-    /// Select spawn point
-    /// </summary>
-    /// <param name="_point">selected point</param>
-    void SelectSpawnPoint(TDS_SpawnPoint _point)
-    {
-        Selection.activeObject = _point.gameObject; 
-    }
-    /// <summary>
-    /// Clear all points
-    /// </summary>
-    void ClearPoints()
-    {
-        spawnPointID = 0;
-        p_target.SpawnPoints.Clear(); 
-    }
-    #endregion
-
-    #region Waves 
-    void AddWave()
-    {
-        p_target.Waves.Add(new TDS_Wave());
-    }
-    void RemoveWave(int _index)
-    {
-        p_target.Waves.RemoveAt(_index);
-    }
-    #endregion
 
     #endregion
 
@@ -215,8 +155,7 @@ public class TDS_FightingAreaEditor : Editor
     public override void OnInspectorGUI()
     {
         ShowFigthingAreaSettings();
-        ShowWavesSettings();
-        ShowSpawnPointsSettings(); 
+        ShowPointManagerSettings();
     }
 
     private void OnSceneGUI()
@@ -235,13 +174,17 @@ public class TDS_FightingAreaEditor : Editor
         {
             p_target.DetectionArea.UpdateAreaScale(_scaleX, _scaleY, _scaleZ); 
         }
-        if (HasToBeUpdated) return; 
-        // POINTS RANGE
-        for (int i = 0; i < p_target.SpawnPoints.Count; i++)
+
+        // MANAGER
+        p_target.PointsManager.Position = Handles.PositionHandle(p_target.PointsManager.Position, Quaternion.identity);
+
+        // POINTS
+        for (int i = 0; i < p_target.PointsManager.AllWavePoints.Count; i++)
         {
-            Handles.color = p_target.SpawnPoints[i].SpawnPointColor;
-            Handles.DrawWireDisc(p_target.SpawnPoints[i].SpawnPosition, Vector3.up, p_target.SpawnPoints[i].SpawningRange);
+            p_target.PointsManager.AllWavePoints[i].Position = Handles.PositionHandle(p_target.PointsManager.AllWavePoints[i].Position, Quaternion.identity);
+            Handles.DrawWireDisc(p_target.PointsManager.AllWavePoints[i].Position, Vector3.up, p_target.PointsManager.AllWavePoints[i].Range); 
         }
+
     }
 
     #endregion 

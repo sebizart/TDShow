@@ -3128,15 +3128,43 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   detectionState: 0
-  remainingWaves: 1
+  waveNumber: 0
   detectionArea:
     extendedX: 1
     extendedY: 1
     extendedZ: 1
     debugColor: {r: 1, g: 0, b: 0, a: 1}
-  spawnPoints: []
-  waves:
-  - fixElements: []
+  pointsManager:
+    position: {x: 0, y: 0, z: 0}
+    allWavePoints:
+    - waveNumber: 0
+      position: {x: -3.760693, y: 0, z: 3.5428815}
+      range: 2.73
+      staticWaveElement:
+        enemiesSpawn:
+        - spawningEnemy: {fileID: 114801022512511472, guid: cd76fe4882b6b8d42a59ef6f065af2c6,
+            type: 2}
+          numberOfEnemies: 3
+      randomWaveElement:
+        enemiesSpawn:
+        - spawningEnemy: {fileID: 114801022512511472, guid: cd76fe4882b6b8d42a59ef6f065af2c6,
+            type: 2}
+          numberOfEnemies: 2
+        randomValues: 39000000
+    - waveNumber: 0
+      position: {x: 2.5765104, y: 0, z: 3.8457012}
+      range: 3.2
+      staticWaveElement:
+        enemiesSpawn:
+        - spawningEnemy: {fileID: 114801022512511472, guid: cd76fe4882b6b8d42a59ef6f065af2c6,
+            type: 2}
+          numberOfEnemies: 2
+      randomWaveElement:
+        enemiesSpawn:
+        - spawningEnemy: {fileID: 114801022512511472, guid: cd76fe4882b6b8d42a59ef6f065af2c6,
+            type: 2}
+          numberOfEnemies: 3
+        randomValues: 3e000000
   spawnedEnemies: []
   areaPhotonView: {fileID: 0}
 --- !u!114 &1692345493
