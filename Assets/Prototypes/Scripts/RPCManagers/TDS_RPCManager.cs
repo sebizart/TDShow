@@ -137,6 +137,22 @@ public class TDS_RPCManager : PunBehaviour
 
     #region Grab & Throw Object
     /// <summary>
+    /// Makes a character drop an object
+    /// </summary>
+    /// <param name="_characterID">ID of the character</param>
+    [PunRPC]
+    public void DropObject(int _characterID)
+    {
+        TDS_Character _char = GetCharacterByID(_characterID);
+        if (_char == null)
+        {
+            TDS_CustomDebug.CustomDebugLog($"No Character found with the ID {_characterID}");
+            return;
+        }
+        _char.DropObject();
+    }
+
+    /// <summary>
     /// Makes a character grab an object
     /// </summary>
     /// <param name="_characterAndObject">String containing the ID of the character & the Id of the object, separated by a "|"</param>

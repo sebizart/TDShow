@@ -34,7 +34,6 @@ public abstract class TDS_Character : TDS_DamageableElement
 
     [SerializeField, Header("Float")] protected float speed = 1;
 
-    [SerializeField, Header("Nav Mesh")] protected NavMeshAgent navMeshCharacter;
     private Vector3 netOnlinePosition;
 
     [SerializeField, Header("Projectile")] protected TDS_Throwable projectile;
@@ -104,10 +103,7 @@ public abstract class TDS_Character : TDS_DamageableElement
     /// Set the destination of this character to a new position
     /// </summary>
     /// <param name="_position">New destination position of the character</param>
-    protected virtual void SetDestination(Vector3 _position)
-    {
-        navMeshCharacter.SetDestination(_position);
-    }
+    protected abstract void SetDestination(Vector3 _position);
 
     #region Combats
     protected abstract void AttackOne();
@@ -197,7 +193,7 @@ public abstract class TDS_Character : TDS_DamageableElement
     {
         if (photonViewElement.isMine) return; 
         //SUIVRE LA POSITION DU PLAYER LOCAL AVEC LE ONPHOTONSERIALIZEVIEW
-        transform.position = Vector3.Lerp(transform.position, netOnlinePosition, Time.deltaTime * navMeshCharacter.speed); 
+        transform.position = Vector3.Lerp(transform.position, netOnlinePosition, Time.deltaTime * 5); 
 
         //OU ENVOYER LE PATH AVEC UNE REQUËTE RPC SOUS FORME D'UNE CHAINE STRING POUR QUE TOUS LES PLAYERS SUIVENT LE PATH DONNÉ PAR LE MASTERMANAGER
     }

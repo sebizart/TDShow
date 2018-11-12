@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 /*
 [Script Header] TDS_Enemy Version 0.0.1
@@ -25,6 +26,9 @@ public class TDS_Enemy : TDS_Character
     [Header("Enemy")]
     [SerializeField]private EnemyName prefabName = EnemyName.Acrobat; 
     public EnemyName PrefabName { get { return prefabName; } }
+
+    [SerializeField, Header("Nav Mesh")] protected NavMeshAgent navMeshCharacter;
+    private Vector3 netOnlinePosition;
     #endregion
 
     #region Methods
@@ -42,17 +46,22 @@ public class TDS_Enemy : TDS_Character
     {
         throw new NotImplementedException();
     }
+
+    protected override void SetDestination(Vector3 _position)
+    {
+        navMeshCharacter.SetDestination(_position);
+    }
     #endregion
 
     #region UnityMethods
-    void Start () 
+    protected override void Start () 
 	{
-		
+        base.Start();
 	}
-	
-	void Update () 
+
+    protected override void Update () 
 	{
-		
+        base.Update();
 	}
     #endregion
 }

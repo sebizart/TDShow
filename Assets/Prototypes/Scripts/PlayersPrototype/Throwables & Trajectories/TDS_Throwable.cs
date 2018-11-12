@@ -111,7 +111,7 @@ public class TDS_Throwable : PunBehaviour
         if (!isGrab) return;
 
         rigidbody.isKinematic = false;
-        transform.SetParent(null);
+        transform.SetParent(null, true);
         isGrab = false;
     }
 
@@ -157,7 +157,7 @@ public class TDS_Throwable : PunBehaviour
         if (!isGrab) return;
 
         rigidbody.isKinematic = false;
-        transform.SetParent(null);
+        transform.SetParent(null, true);
 
         Vector3 _force = Vector3.up;
 
@@ -193,7 +193,7 @@ public class TDS_Throwable : PunBehaviour
         if (!isGrab || !isThrowable) return;
 
         rigidbody.isKinematic = false;
-        transform.SetParent(null);
+        transform.SetParent(null, true);
 
         rigidbody.velocity = _velocity;
 

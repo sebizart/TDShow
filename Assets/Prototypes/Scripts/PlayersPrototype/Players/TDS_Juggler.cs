@@ -193,7 +193,7 @@ public class TDS_Juggler : TDS_Player
 
     protected override IEnumerator Catching()
     {
-        float _originalSpeed = navMeshCharacter.speed;
+        float _originalSpeed = speed;
         Vector3 _backMovement = Vector3.zero;
 
         isCatching = true;
@@ -216,29 +216,35 @@ public class TDS_Juggler : TDS_Player
                 break;
         }
 
-        _backMovement *= 10;
-        navMeshCharacter.speed = 1;
+        speed = 1;
 
-        SetDestination(transform.position + _backMovement);
+        float _timer = 0;
 
         if (PhotonNetwork.isMasterClient)
         {
-            float _timer = 0;
-
             while (_timer < slapTime)
             {
                 TDS_RPCManager.Instance.RPCManagerPhotonView.RPC("ApplyInfoDamages", PhotonTargets.All, TDS_RPCManager.Instance.SetInfoDamages(CheckHit(1), PhotonViewElementID, 1));
 
-                yield return new WaitForSeconds(.05f);
+                SetDestination(_backMovement);
 
-                _timer += .05f;
+                yield return new WaitForEndOfFrame();
+
+                _timer += Time.deltaTime;
             }
         }
         else
         {
-            yield return new WaitForSeconds(slapTime);
+            while (_timer < slapTime)
+            {
+                SetDestination(_backMovement);
+
+                yield return new WaitForEndOfFrame();
+
+                _timer += Time.deltaTime;
+            }
         }
-        navMeshCharacter.speed = _originalSpeed;
+        speed = _originalSpeed;
         isCatching = false;
     }
 
@@ -520,7 +526,7 @@ public class TDS_Juggler : TDS_Player
 
     protected override void Catch()
     {
-        TDS_RPCManager.Instance.RPCManagerPhotonView.RPC("LaunchAction", PhotonTargets.All, PhotonViewElementID, "Catch");
+        base.Catch();
     }
 
     protected override void RodeoAttack()

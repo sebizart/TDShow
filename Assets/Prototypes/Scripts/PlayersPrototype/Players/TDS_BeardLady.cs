@@ -53,6 +53,8 @@ public class TDS_BeardLady : TDS_Player
     [SerializeField] int growingBeardCooldown = 5;
     [SerializeField] int growingBeardValue = 0;
     [Header("Animator"), SerializeField] Animator beardAnimator;
+
+    [Header("Float"), SerializeField] private float catchTime = .5f;
     #endregion
 
     #region Methods
@@ -71,6 +73,62 @@ public class TDS_BeardLady : TDS_Player
     protected override void OnDrawGizmos()
     {
         base.OnDrawGizmos();
+
+        TDS_AttackBox _currentBox = new TDS_AttackBox();
+
+        switch (currentAttack)
+        {
+            case PlayerAttacks.AttackOne:
+                _currentBox = attackBoxes.Where(b => b.ID == 1).FirstOrDefault();
+                if (_currentBox != null)
+                {
+                    Gizmos.color = _currentBox.BoxColor;
+                    Gizmos.DrawCube(transform.position + _currentBox.CenterPosition, _currentBox.ExtendPosition);
+                    Gizmos.color = Color.white;
+                }
+                break;
+            case PlayerAttacks.AttackTwo:
+                _currentBox = attackBoxes.Where(b => b.ID == 2).FirstOrDefault();
+                if (_currentBox != null)
+                {
+                    Gizmos.color = _currentBox.BoxColor;
+                    Gizmos.DrawCube(transform.position + _currentBox.CenterPosition, _currentBox.ExtendPosition);
+                    Gizmos.color = Color.white;
+                }
+                break;
+            case PlayerAttacks.AttackThree:
+                _currentBox = attackBoxes.Where(b => b.ID == 3).FirstOrDefault();
+                if (_currentBox != null)
+                {
+                    Gizmos.color = _currentBox.BoxColor;
+                    Gizmos.DrawCube(transform.position + _currentBox.CenterPosition, _currentBox.ExtendPosition);
+                    Gizmos.color = Color.white;
+                }
+                break;
+            case PlayerAttacks.AirAttack:
+                break;
+            case PlayerAttacks.RodeoAttack:
+                break;
+            case PlayerAttacks.InteractWithObject:
+                break;
+            case PlayerAttacks.Dodge:
+                break;
+            case PlayerAttacks.Catch:
+                _currentBox = attackBoxes.Where(b => b.ID == 4).FirstOrDefault();
+                if (_currentBox != null)
+                {
+                    Gizmos.color = _currentBox.BoxColor;
+                    Gizmos.DrawCube(transform.position + _currentBox.CenterPosition, _currentBox.ExtendPosition);
+                    Gizmos.color = Color.white;
+                }
+                break;
+            case PlayerAttacks.Super:
+                break;
+            case PlayerAttacks.None:
+                break;
+            default:
+                break;
+        }
     }
 
     // Use this for initialization
@@ -161,6 +219,26 @@ public class TDS_BeardLady : TDS_Player
         return _box.RayCastAttack(_beardOffset);
     }
 
+    public override void ExecuteAction(string _actionID)
+    {
+        base.ExecuteAction(_actionID);
+
+        switch (_actionID)
+        {
+            case "AttackOne":
+                StartCoroutine(BeardStroke());
+                break;
+            case "AttackTwo":
+                StartCoroutine(Whirligig());
+                break;
+            case "AttackThree":
+                StartCoroutine(HazelCatcher());
+                break;
+            default:
+                break;
+        }
+    }
+
     #region Combat
     protected override void AirAttack()
     {
@@ -169,22 +247,22 @@ public class TDS_BeardLady : TDS_Player
 
     protected override void AttackOne()
     {
-        throw new System.NotImplementedException();
+        TDS_RPCManager.Instance.RPCManagerPhotonView.RPC("LaunchAction", PhotonTargets.All, PhotonViewElementID, "AttackOne");
     }
 
     protected override void AttackThree()
     {
-        throw new System.NotImplementedException();
+        TDS_RPCManager.Instance.RPCManagerPhotonView.RPC("LaunchAction", PhotonTargets.All, PhotonViewElementID, "AttackThree");
     }
 
     protected override void AttackTwo()
     {
-        throw new System.NotImplementedException();
+        TDS_RPCManager.Instance.RPCManagerPhotonView.RPC("LaunchAction", PhotonTargets.All, PhotonViewElementID, "AttackTwo");
     }
 
     protected override void Catch()
     {
-        throw new System.NotImplementedException();
+        base.Catch();
     }
 
     protected override void RodeoAttack()
@@ -197,9 +275,112 @@ public class TDS_BeardLady : TDS_Player
         throw new System.NotImplementedException();
     }
 
+    private IEnumerator BeardStroke()
+    {
+        currentAttack = PlayerAttacks.AttackOne;
+        isStroking = true;
+
+        if (PhotonNetwork.isMasterClient)
+        {
+            float _timer = 0;
+
+            while (_timer < 1f)
+            {
+                TDS_RPCManager.Instance.RPCManagerPhotonView.RPC("ApplyInfoDamages", PhotonTargets.All, TDS_RPCManager.Instance.SetInfoDamages(CheckHit(1), PhotonViewElementID, 1));
+
+                yield return new WaitForSeconds(.05f);
+
+                _timer += .05f;
+            }
+        }
+        else
+        {
+            yield return new WaitForSeconds(catchTime);
+        }
+
+        currentAttack = PlayerAttacks.None;
+        isStroking = false;
+    }
+
     protected override IEnumerator Catching()
     {
-        throw new System.NotImplementedException();
+        currentAttack = PlayerAttacks.Catch;
+        isCatching = true;
+
+        if (PhotonNetwork.isMasterClient)
+        {
+            float _timer = 0;
+
+            while (_timer < catchTime)
+            {
+                TDS_RPCManager.Instance.RPCManagerPhotonView.RPC("ApplyInfoDamages", PhotonTargets.All, TDS_RPCManager.Instance.SetInfoDamages(CheckHit(4), PhotonViewElementID, 4));
+
+                yield return new WaitForSeconds(.05f);
+
+                _timer += .05f;
+            }
+        }
+        else
+        {
+            yield return new WaitForSeconds(catchTime);
+        }
+
+        currentAttack = PlayerAttacks.None;
+        isCatching = false;
+    }
+
+    private IEnumerator HazelCatcher()
+    {
+        currentAttack = PlayerAttacks.AttackThree;
+        isStroking = true;
+
+        if (PhotonNetwork.isMasterClient)
+        {
+            float _timer = 0;
+
+            while (_timer < .5f)
+            {
+                TDS_RPCManager.Instance.RPCManagerPhotonView.RPC("ApplyInfoDamages", PhotonTargets.All, TDS_RPCManager.Instance.SetInfoDamages(CheckHit(3), PhotonViewElementID, 3));
+
+                yield return new WaitForSeconds(.05f);
+
+                _timer += .05f;
+            }
+        }
+        else
+        {
+            yield return new WaitForSeconds(catchTime);
+        }
+
+        currentAttack = PlayerAttacks.None;
+        isStroking = false;
+    }
+
+    private IEnumerator Whirligig()
+    {
+        currentAttack = PlayerAttacks.AttackTwo;
+        isStroking = true;
+
+        if (PhotonNetwork.isMasterClient)
+        {
+            float _timer = 0;
+
+            while (_timer < .75f)
+            {
+                TDS_RPCManager.Instance.RPCManagerPhotonView.RPC("ApplyInfoDamages", PhotonTargets.All, TDS_RPCManager.Instance.SetInfoDamages(CheckHit(2), PhotonViewElementID, 2));
+
+                yield return new WaitForSeconds(.05f);
+
+                _timer += .05f;
+            }
+        }
+        else
+        {
+            yield return new WaitForSeconds(catchTime);
+        }
+
+        currentAttack = PlayerAttacks.None;
+        isStroking = false;
     }
     #endregion
     #endregion

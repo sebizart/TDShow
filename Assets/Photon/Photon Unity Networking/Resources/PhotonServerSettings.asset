@@ -62,4 +62,5 @@ MonoBehaviour:
   - SendInGamePlayers
   - ApplyAreaInformations
   - ThrowMysteryBall
+  - DropObject
   DisableAutoOpenWizard: 1

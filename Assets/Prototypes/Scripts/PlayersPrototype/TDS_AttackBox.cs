@@ -75,8 +75,11 @@ public class TDS_AttackBox
         Dictionary<int, int> _characterDamages = new Dictionary<int, int>();
         foreach (int id in _elements)
         {
-            _damages = Random.Range(minDamages, maxDamages);
-            _characterDamages.Add(id, _damages);
+            if (!_characterDamages.ContainsKey(id))
+            {
+                _damages = Random.Range(minDamages, maxDamages);
+                _characterDamages.Add(id, _damages);
+            }
         }
         return _characterDamages;
     }

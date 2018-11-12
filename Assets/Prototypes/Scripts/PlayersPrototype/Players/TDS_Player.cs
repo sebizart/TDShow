@@ -27,7 +27,8 @@ public enum PlayerAttacks
     InteractWithObject,
     Dodge,
     Catch,
-    Super
+    Super,
+    None
 }
 
 public enum PlayerCharacter
@@ -46,8 +47,13 @@ public abstract class TDS_Player : TDS_Character
     [SerializeField, Header("Player", order = 0), Header("Bool", order = 1)] protected bool isCatching = false;
     [SerializeField] protected bool isDodging = false;
     [SerializeField] protected bool isGrounded = true;
+    [SerializeField] protected bool isStroking = false;
+
+    [SerializeField, Header("Attack")] protected PlayerAttacks currentAttack = PlayerAttacks.None;
 
     [SerializeField, Header("Character")] protected PlayerCharacter character = PlayerCharacter.BeardLady;
+
+    [SerializeField, Header("Character Controller")] protected CharacterController characterController = null;
 
     [SerializeField, Header("Int")] protected int comboMax = 3;
     [SerializeField] protected int comboResetTime = 1;
@@ -194,7 +200,7 @@ public abstract class TDS_Player : TDS_Character
         }
 
         // Set the destination of the player's inputs
-        SetDestination(new Vector3(transform.position.x + _horizontal, transform.position.y, transform.position.z + _vertical));
+        SetDestination(new Vector3(_horizontal, 0, _vertical));
     }
 
     /// <summary>
@@ -209,7 +215,10 @@ public abstract class TDS_Player : TDS_Character
 
     #region Actions
     protected abstract void AirAttack();
-    protected abstract void Catch();
+    protected virtual void Catch()
+    {
+        TDS_RPCManager.Instance.RPCManagerPhotonView.RPC("LaunchAction", PhotonTargets.All, PhotonViewElementID, "Catch");
+    }
     protected abstract void RodeoAttack();
     protected abstract void Super();
     #endregion
@@ -219,10 +228,10 @@ public abstract class TDS_Player : TDS_Character
     {
         float _timer = 0;
         Vector3 _movement = Vector3.zero;
-        float _originalSpeed = navMeshCharacter.speed;
+        float _originalSpeed = speed;
 
         isDodging = true;
-        navMeshCharacter.speed *= 1.5f;
+        speed *= 1.5f;
 
         switch (facingSide)
         {
@@ -284,12 +293,12 @@ public abstract class TDS_Player : TDS_Character
             }
 
             // Set the destination of the player's inputs
-            SetDestination(transform.position + (_movement * 1.5f));
+            SetDestination(_movement * 1.5f);
 
-            yield return new WaitForSeconds(.05f);
-            _timer += .05f;
+            yield return new WaitForEndOfFrame();
+            _timer += Time.deltaTime;
         }
-        navMeshCharacter.speed = _originalSpeed;
+        speed = _originalSpeed;
         isDodging = false;
     }
 
@@ -309,6 +318,11 @@ public abstract class TDS_Player : TDS_Character
             TDS_RPCManager.Instance.RPCManagerPhotonView.RPC("DropObject", PhotonTargets.All, PhotonViewElementID);
         }
     }
+
+    protected override void SetDestination(Vector3 _position)
+    {
+        characterController.Move(_position * Time.deltaTime * speed);
+    }
     #endregion
 
     #region UnityMethods
@@ -320,7 +334,7 @@ public abstract class TDS_Player : TDS_Character
     protected virtual void FixedUpdate()
     {
         // If the player is dodging, return
-        if (isDodging || isCatching) return;
+        if (isDodging || isCatching || isStroking) return;
 
         // If it's the player's avatar : Checks the inputs of the player
         if (photonViewElement.isMine)
