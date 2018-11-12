@@ -79,7 +79,6 @@
     <Compile Include="Assets\Photon\Photon Unity Networking\UtilityScripts\PhotonPlayer\Editor\PunTeamsInspector.cs" />
     <Compile Include="Assets\Prototypes\Scripts\Editor\TDS_CameraEditor.cs" />
     <Compile Include="Assets\Prototypes\Scripts\Editor\TDS_FightingAreaEditor.cs" />
-    <Compile Include="Assets\Prototypes\Scripts\Editor\TDS_SpawnPointEditor.cs" />
     <Compile Include="Assets\Scripts\LogSaver\Editor\TDS_LoggerManagerEditor.cs" />
     <Compile Include="Assets\Scripts\LogSaver\Editor\TDS_LogSaverEditor.cs" />
     <Compile Include="Assets\Scripts\LogSaver\Editor\TDS_LogSaverMenu.cs" />

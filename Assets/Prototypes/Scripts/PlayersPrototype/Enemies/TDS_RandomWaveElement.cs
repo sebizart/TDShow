@@ -50,7 +50,7 @@ public class TDS_RandomWaveElement : TDS_WaveElement
         {
             // POUR CHAQUE ENTRÉE DU DICTIONNAIRE,
             // ON AJOUTERA UN NOMBRE D'INFO EGAL A CHAQUE VALUE DE NOTRE PAIR
-            for (int j = 0; j <enemiesSpawn[i].NumberOfEnemies; j++)
+            for (int j = 0; j < enemiesSpawn[i].NumberOfEnemies; j++)
             {
                 float _random = Random.Range(0, 100);
                 if (_random < randomValues[i])
