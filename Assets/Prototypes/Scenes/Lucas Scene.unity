@@ -1990,6 +1990,7 @@ GameObject:
   - component: {fileID: 1129281047}
   - component: {fileID: 1129281046}
   - component: {fileID: 1129281045}
+  - component: {fileID: 1129281044}
   m_Layer: 9
   m_Name: GameObject
   m_TagString: Untagged
@@ -1997,6 +1998,21 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!54 &1129281044
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1129281043}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 1
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 112
+  m_CollisionDetection: 0
 --- !u!65 &1129281045
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2020,19 +2036,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a07ef2c24cf2c9248979873731be6b44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  OnGetInAir:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   OnGetOnGround:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
-  doDrawColliderEdgesMiddlePositions: 1
+  OnMove:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  doDrawColliderEdgesMiddlePositions: 0
+  isInCumbersomeCollider: 0
   isGrounded: 1
   collider: {fileID: 1129281045}
-  speed: 1
-  i: 0
-  whatCollides:
+  JumpForce: 150
+  JumpForceIncrease: 7
+  JumpMaxTime: 0.5
+  Speed: 1
+  WhatCollides:
     serializedVersion: 2
     m_Bits: 1335
+  rigidbody: {fileID: 1129281044}
 --- !u!4 &1129281047
 Transform:
   m_ObjectHideFlags: 0
@@ -3520,16 +3550,40 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4361958919079312, guid: b309a475e4bd6b241916b1a9d167ae25, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 3.464
+      value: 0.025
       objectReference: {fileID: 0}
     - target: {fileID: 4361958919079312, guid: b309a475e4bd6b241916b1a9d167ae25, type: 2}
       propertyPath: m_LocalPosition.z
-      value: -3.523
+      value: 0.184
       objectReference: {fileID: 0}
     - target: {fileID: 212726230651868472, guid: b309a475e4bd6b241916b1a9d167ae25,
         type: 2}
       propertyPath: m_SortingOrder
-      value: -352
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4361958919079312, guid: b309a475e4bd6b241916b1a9d167ae25, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0.396
+      objectReference: {fileID: 0}
+    - target: {fileID: 212726230651868472, guid: b309a475e4bd6b241916b1a9d167ae25,
+        type: 2}
+      propertyPath: m_Color.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 212752465565324804, guid: b309a475e4bd6b241916b1a9d167ae25,
+        type: 2}
+      propertyPath: m_FlipX
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 212752465565324804, guid: b309a475e4bd6b241916b1a9d167ae25,
+        type: 2}
+      propertyPath: m_FlipY
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 212752465565324804, guid: b309a475e4bd6b241916b1a9d167ae25,
+        type: 2}
+      propertyPath: m_DrawMode
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 114444382402338456, guid: b309a475e4bd6b241916b1a9d167ae25, type: 2}
