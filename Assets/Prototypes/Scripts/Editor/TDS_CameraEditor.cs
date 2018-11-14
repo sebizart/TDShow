@@ -29,7 +29,8 @@ public class TDS_CameraEditor : Editor
     SerializedProperty yOffsetProp;
     SerializedProperty zOffsetProp;
     SerializedProperty maxSpeedProp;
-    SerializedProperty doMoveOnZProp; 
+    SerializedProperty doMoveOnZProp;
+    SerializedProperty Otarget;
 
     TDS_Camera p_target; 
     #endregion
@@ -50,7 +51,7 @@ public class TDS_CameraEditor : Editor
         zOffsetProp = serializedObject.FindProperty("zOffset");
         maxSpeedProp = serializedObject.FindProperty("maxSpeed");
         doMoveOnZProp = serializedObject.FindProperty("doMoveOnZ");
-
+        Otarget = serializedObject.FindProperty("target");
     }
     public override void OnInspectorGUI()
     {
@@ -68,8 +69,9 @@ public class TDS_CameraEditor : Editor
         {
             p_target.UpdateProperties(); 
         }
-        serializedObject.ApplyModifiedProperties(); 
+        EditorGUILayout.ObjectField(Otarget, new GUIContent("Target"));
 
+        serializedObject.ApplyModifiedProperties();
     }
 
 

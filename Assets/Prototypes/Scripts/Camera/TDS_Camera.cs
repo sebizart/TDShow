@@ -60,7 +60,7 @@ public class TDS_Camera : MonoBehaviour
     [SerializeField, Range(-50, 50)] private float xOffset, yOffset, zOffset = 0;
 
     // The player the camera is following
-    [SerializeField] private TDS_Player player = null;
+    [SerializeField] private Transform target = null;
 
     // The rigidbody of the player
     [SerializeField] private Rigidbody playerRigidbody = null;
@@ -83,9 +83,9 @@ public class TDS_Camera : MonoBehaviour
         //}
 
         // Moves the camera to the player's position
-        transform.position = Vector3.Lerp(transform.position, new Vector3 (player.transform.position.x + xOffset,
-                                     player.transform.position.y + yOffset,
-                                     doMoveOnZ ? player.transform.position.z + zOffset : transform.position.z),
+        transform.position = Vector3.Lerp(transform.position, new Vector3 (target.transform.position.x + xOffset,
+                                     /*target.transform.position.y + */yOffset,
+                                     doMoveOnZ ? target.transform.position.z + zOffset : transform.position.z),
                                      Time.deltaTime * speed);
 
         transform.position = new Vector3(transform.position.x, transform.position.y, Mathf.Clamp(transform.position.z, zBackwardBound, zForwardBound));
@@ -95,13 +95,13 @@ public class TDS_Camera : MonoBehaviour
     // Use this to set the player
     public void SetPlayer(TDS_Player _player)
     {
-        player = _player;
+        target = _player.transform;
         playerRigidbody = _player.gameObject.GetComponent<Rigidbody>();
     }
 
     public void UpdateProperties()
     {
-        Vector3 _target = player ? player.transform.position : Vector3.zero;
+        Vector3 _target = target ? target.transform.position : Vector3.zero;
         transform.position = _target + new Vector3(xOffset, yOffset, zOffset);
         transform.localRotation = Quaternion.Euler(new Vector3(cameraOrientation, 0, 0)); 
     }
@@ -137,7 +137,7 @@ public class TDS_Camera : MonoBehaviour
 	void Update () 
 	{
         // If there is no player, returns
-        if (!player) return;
+        if (!target) return;
 
         // Else, follows it
         FollowPlayer();

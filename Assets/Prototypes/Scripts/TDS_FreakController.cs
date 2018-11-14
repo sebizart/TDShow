@@ -50,8 +50,14 @@ public class TDS_FreakController : MonoBehaviour
     // Maximum time length of the jump
     public float JumpMaxTime = 1;
 
+    [Header("Speed :")]
+    // The initial speed of the movement
+    [SerializeField] private float initialSpeed = 1;
+    // Maximum default speed of the movement
+    [SerializeField] private float maxSpeed = 1;
     // Speed of the movement
-    public float Speed = 1;
+    [SerializeField] private float speed = 1;
+    public float Speed { get { return speed; } }
 
     [Header("Layer Mask :")]
     // What the character should be stoped by
@@ -62,8 +68,14 @@ public class TDS_FreakController : MonoBehaviour
     [SerializeField] private new Rigidbody rigidbody = null;
     public Rigidbody Rigidbody { get { return rigidbody; } }
 
+    [Header("Vector3 :")]
+    [SerializeField] private Vector3 groundBoxCenter = Vector3.zero;
+    [SerializeField] private Vector3 groundBoxExtents = Vector3.one;
+    // Prvious position of the character
+    [SerializeField] Vector3 previousPosition;
+
     // DEBUG
-    Vector3 DEBUGdestination;
+    [SerializeField] Vector3 DEBUGdestination;
 
     // Colldier's edges middle positions
     public Vector3 BackColliderEdge
@@ -123,24 +135,46 @@ public class TDS_FreakController : MonoBehaviour
 
         Gizmos.color = Color.magenta;
         Gizmos.DrawSphere(DEBUGdestination, .05f);
+
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireCube(transform.position + groundBoxCenter, groundBoxExtents);
     }
 
     // Use this for initialization
     void Start ()
     {
-		
-	}
+
+    }
 	
 	// Update is called once per frame
 	void Update ()
     {
+        GroundCheck();
+
         Move(new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")), true);
 
-        Jump("Jump");
+        Jump("Jump", true);
 	}
     #endregion
 
     #region Original Methods
+    /// <summary>
+    /// Checks if the character is on ground or not
+    /// </summary>
+    private void GroundCheck()
+    {
+        // If something is detected in the ground box detection, the character is grounded
+        if (Physics.OverlapBox(transform.position + groundBoxCenter, groundBoxExtents, Quaternion.identity, WhatCollides, QueryTriggerInteraction.Ignore).Length > 0)
+        {
+            isGrounded = true;
+        }
+        // If nothing was detected, the character is not grounded
+        else
+        {
+            isGrounded = false;
+        }
+    }
+
     #region Jump
     /// <summary>
     /// Makes the player jump plus or less high depending on the time the key is pressed
@@ -189,7 +223,8 @@ public class TDS_FreakController : MonoBehaviour
         while (Input.GetButton(_inputName) && (_timer < JumpMaxTime))
         {
             // Increases the rigidbody velocity
-            rigidbody.AddForce(Vector3.up * JumpForceIncrease);
+            //rigidbody.AddForce(Vector3.up * JumpForceIncrease);
+            rigidbody.AddForce(rigidbody.velocity * JumpForceIncrease);
 
             // Wait for the next frame
             yield return new WaitForEndOfFrame();
@@ -197,6 +232,8 @@ public class TDS_FreakController : MonoBehaviour
             // Increases the timer
             _timer += Time.deltaTime;
         }
+
+        Debug.Log("End Jump...");
     }
 
     /// <summary>
@@ -288,7 +325,7 @@ public class TDS_FreakController : MonoBehaviour
         if (_isDirection) _position = transform.position + _position;
 
         // Get the final position after movement
-        Vector3 _newPosition = Vector3.Lerp(transform.position, _position, Time.deltaTime * Speed);
+        Vector3 _newPosition = Vector3.Lerp(transform.position, _position, Time.deltaTime * speed);
 
         // DEBUG
         DEBUGdestination = _newPosition;
@@ -296,12 +333,48 @@ public class TDS_FreakController : MonoBehaviour
         // Get the overlap box's extents value
         Vector3 _overlapExtents = (collider.size / 2) - Vector3.one * 0.0001f;
 
-        // If the character is not currently into some cumbersome collider, restrict its moves into the zone where there's no collider
-
+        // If the character is not currently into some cumbersome collider, restrict its moves into the zone where there's no collider (only in X & Z axis)
         if (Physics.OverlapBox(transform.position + collider.center, _overlapExtents, Quaternion.identity, WhatCollides, QueryTriggerInteraction.Ignore).Length > 0)
         {
-            // Set the boolean indicating there's a bad obstacle
-            isInCumbersomeCollider = true;
+            // OK ALORS JE L'AI
+            // Lorsque le personnage retombe au sol suite à la gravité,
+            // Il se trouve momentanément trèèèès légèrement en dessous du sol
+            // Du coup, je détecte que je suis dans un obstacle
+            // Sauf que, le rigidbody remet tout seul l'objet au Y correct
+            // Mais si j'essaye de le faire revenir à sa position précédente,
+            // Il tombe à l'infini et tout et tout
+            // En revanche, si je dis qu'il est coincé & qu'il peut aller n'importe où
+            // Alors il va traverser n'importe quel mur
+            // C'est franchement vraiment très très nul
+            // J'en ai marre
+
+            // If the previous position is still free, get back to it in X & Z axis
+            if (Physics.OverlapBox(previousPosition + collider.center, _overlapExtents, Quaternion.identity, WhatCollides, QueryTriggerInteraction.Ignore).Length < 1)
+            {
+                // Get the direction from now position to the previous position
+                Vector3 _backDirection = transform.position - previousPosition;
+
+                // Restricts the position only in X & Z axis, do not touch to the Y
+                _newPosition = transform.position;
+                if (_backDirection.x != 0)
+                {
+                    _newPosition = new Vector3(previousPosition.x, _newPosition.y, _newPosition.z);
+
+                    Debug.Log("Back X !");
+                }
+                if (_backDirection.z != 0)
+                {
+                    _newPosition = new Vector3(_newPosition.x, _newPosition.y, previousPosition.z);
+                }
+                Debug.Log("Back Z !");
+
+                Debug.Log($"Back => {_newPosition}");
+            }
+            else
+            {
+                // Set the boolean indicating there's a bad obstacle
+                isInCumbersomeCollider = true;
+            }
         }
         // If the character is into some cumbersome collider, let it move to its destination regardless of other colliders
         else
@@ -326,10 +399,22 @@ public class TDS_FreakController : MonoBehaviour
                 _newPosition = new Vector3(_newPosition.x, _newPosition.y, transform.position.z);
             }
         }
+        // Update the previous position as this position, before movement
+        previousPosition = transform.position;
 
         // If nothing does block the way, move to the objective
         transform.position = _newPosition;
     }
     #endregion
+
+    string StringVector3(Vector3 _vector3)
+    {
+        string _return = "(";
+        _return += _vector3.x + ", ";
+        _return += _vector3.y + ", ";
+        _return += _vector3.z + ")";
+
+        return _return;
+    }
     #endregion
 }
