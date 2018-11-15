@@ -327,6 +327,9 @@ public class TDS_FreakController : MonoBehaviour
         // Get the final position after movement
         Vector3 _newPosition = Vector3.Lerp(transform.position, _position, Time.deltaTime * speed);
 
+        // Set the boolean indicating there's a bad obstacle
+        isInCumbersomeCollider = false;
+
         // DEBUG
         DEBUGdestination = _newPosition;
 
@@ -348,40 +351,50 @@ public class TDS_FreakController : MonoBehaviour
             // C'est franchement vraiment très très nul
             // J'en ai marre
 
-            // If the previous position is still free, get back to it in X & Z axis
-            if (Physics.OverlapBox(previousPosition + collider.center, _overlapExtents, Quaternion.identity, WhatCollides, QueryTriggerInteraction.Ignore).Length < 1)
+            // Si une force est appliquée via le rigidbody dans une direction,
+            // ne pas changer la position sur les axes de cette direction et raycaster
+            // depuis la précédente position si celle-ci est est libre sur ces axes
+
+            // Set the new position to go as this one, 'cause there are bad colliders around
+            Vector3 _realPosition = previousPosition;
+
+            Debug.Log("Get back ! Get back ! Get back to where you once belong !");
+
+            // Foreach axis, if the movement is posible from the previous position to the actual, let the actual position
+            if (rigidbody.velocity.x != 0 || Physics.OverlapBox(new Vector3(transform.position.x, previousPosition.y, previousPosition.z) + collider.center, _overlapExtents, Quaternion.identity, WhatCollides, QueryTriggerInteraction.Ignore).Length < 1)
             {
-                // Get the direction from now position to the previous position
-                Vector3 _backDirection = transform.position - previousPosition;
-
-                // Restricts the position only in X & Z axis, do not touch to the Y
-                _newPosition = transform.position;
-                if (_backDirection.x != 0)
-                {
-                    _newPosition = new Vector3(previousPosition.x, _newPosition.y, _newPosition.z);
-
-                    Debug.Log("Back X !");
-                }
-                if (_backDirection.z != 0)
-                {
-                    _newPosition = new Vector3(_newPosition.x, _newPosition.y, previousPosition.z);
-                }
-                Debug.Log("Back Z !");
-
-                Debug.Log($"Back => {_newPosition}");
+                Debug.Log("Movement posible in X !");
+                _realPosition = new Vector3(transform.position.x, _realPosition.y, _realPosition.z);
             }
+            if (rigidbody.velocity.y != 0 || Physics.OverlapBox(new Vector3(previousPosition.x, transform.position.y, previousPosition.z) + collider.center, _overlapExtents, Quaternion.identity, WhatCollides, QueryTriggerInteraction.Ignore).Length < 1)
+            {
+                Debug.Log("Movement posible in Y !");
+                _realPosition = new Vector3(_realPosition.x, transform.position.y, _realPosition.z);
+            }
+            if (rigidbody.velocity.z != 0 || Physics.OverlapBox(new Vector3(previousPosition.x, previousPosition.y, transform.position.z) + collider.center, _overlapExtents, Quaternion.identity, WhatCollides, QueryTriggerInteraction.Ignore).Length < 1)
+            {
+                Debug.Log("Movement posible in Z !");
+                _realPosition = new Vector3(_realPosition.x, _realPosition.y, transform.position.z);
+            }
+
+            // If no movement from the previous position to the actual is posible & that the previous position contains obstacle, set character in powerful mode
+            if (_realPosition == transform.position && Physics.OverlapBox(new Vector3(previousPosition.x, previousPosition.y, previousPosition.z) + collider.center, _overlapExtents, Quaternion.identity, WhatCollides, QueryTriggerInteraction.Ignore).Length > 0)
+            {
+                    Debug.Log("Stuck ! Powerful mode !");
+
+                    // Set the boolean indicating there's a bad obstacle
+                    isInCumbersomeCollider = true;
+            }
+            // Else, go to the real position
             else
             {
-                // Set the boolean indicating there's a bad obstacle
-                isInCumbersomeCollider = true;
+                Debug.Log($"OLD => {transform.position} | New => {_realPosition}");
+                transform.position = _realPosition;
             }
         }
         // If the character is into some cumbersome collider, let it move to its destination regardless of other colliders
-        else
+        if (!isInCumbersomeCollider)
         {
-            // Set the boolean indicating there's no obstacle
-            isInCumbersomeCollider = false;
-
             // If the final position is blocked by something, do not move
             if (Physics.OverlapBox(new Vector3(_newPosition.x, transform.position.y, transform.position.z) + collider.center, _overlapExtents, Quaternion.identity, WhatCollides, QueryTriggerInteraction.Ignore).Length > 0)
             {
