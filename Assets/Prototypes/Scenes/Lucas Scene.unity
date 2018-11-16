@@ -2088,7 +2088,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 122
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!65 &1129281045
 BoxCollider:
@@ -2128,6 +2128,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
+  destinationPosition: {x: 0, y: 0, z: 0}
   doDrawColliderEdgesMiddlePositions: 0
   isInCumbersomeCollider: 0
   isGrounded: 1
@@ -2138,14 +2139,16 @@ MonoBehaviour:
   initialSpeed: 1
   maxSpeed: 1
   speed: 2.5
+  groundBox:
+    color: {r: 1, g: 0.6383666, b: 0, a: 1}
+    center: {x: 0.02, y: -0.47, z: -0.35}
+    extents: {x: 0.67, y: 0.15, z: 0.23}
   WhatCollides:
     serializedVersion: 2
     m_Bits: 3383
   rigidbody: {fileID: 1129281044}
-  groundBoxCenter: {x: 0, y: -0.5, z: -0.35}
-  groundBoxExtents: {x: 0.5, y: 0.07, z: 0.21}
-  previousPosition: {x: 0, y: 0, z: 0}
-  DEBUGdestination: {x: 0, y: 0, z: 0}
+  colliderExtents: {x: 1, y: 1, z: 1}
+  previousRealPosition: {x: 0, y: 0, z: 0}
 --- !u!4 &1129281047
 Transform:
   m_ObjectHideFlags: 0

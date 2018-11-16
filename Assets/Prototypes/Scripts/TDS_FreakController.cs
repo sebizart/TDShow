@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -25,6 +26,10 @@ public class TDS_FreakController : MonoBehaviour
     #endregion
 
     #region Fields / Accessors
+    [Header("# Debug & Help #")]
+    // Aiming destination position 
+    [SerializeField] private Vector3 destinationPosition;
+
     [Header("Bools :")]
     // Should the collider's edges middle positions be drawn
     [SerializeField] private bool doDrawColliderEdgesMiddlePositions = false;
@@ -40,6 +45,10 @@ public class TDS_FreakController : MonoBehaviour
     // The collider used for collision detection
     [SerializeField] private new BoxCollider collider = null;
     public Collider Collider { get { return collider; } }
+    public Vector3 GetColliderCenterPosition
+    {
+        get { return transform.position + collider.center; }
+    }
 
     [Header("Floats :")]
     // Initial force of the jump
@@ -59,6 +68,14 @@ public class TDS_FreakController : MonoBehaviour
     [SerializeField] private float speed = 1;
     public float Speed { get { return speed; } }
 
+    [Header("Ground Box :")]
+    // The box used for ground detection
+    [SerializeField] private TDS_Box groundBox = new TDS_Box();
+    public Vector3 GetGroundBoxCenterPosition
+    {
+        get { return transform.position + groundBox.Center; }
+    }
+
     [Header("Layer Mask :")]
     // What the character should be stoped by
     public LayerMask WhatCollides = new LayerMask();
@@ -69,13 +86,14 @@ public class TDS_FreakController : MonoBehaviour
     public Rigidbody Rigidbody { get { return rigidbody; } }
 
     [Header("Vector3 :")]
-    [SerializeField] private Vector3 groundBoxCenter = Vector3.zero;
-    [SerializeField] private Vector3 groundBoxExtents = Vector3.one;
-    // Prvious position of the character
-    [SerializeField] Vector3 previousPosition;
-
-    // DEBUG
-    [SerializeField] Vector3 DEBUGdestination;
+    // The extents of the collider to use in raycast
+    [SerializeField] private Vector3 colliderExtents = Vector3.one;
+    public Vector3 ColliderExtents
+    {
+        get { return colliderExtents; }
+    }
+    // Previous "real" position of the character, that is the closest one to the actual where there were no bad colliders at the time
+    [SerializeField] private Vector3 previousRealPosition;
 
     // Colldier's edges middle positions
     public Vector3 BackColliderEdge
@@ -131,19 +149,28 @@ public class TDS_FreakController : MonoBehaviour
         }
 
         Gizmos.color = Color.cyan;
-        Gizmos.DrawWireCube(DEBUGdestination + collider.center, collider.size);
+        Gizmos.DrawWireCube(destinationPosition + collider.center, collider.size);
 
         Gizmos.color = Color.magenta;
-        Gizmos.DrawSphere(DEBUGdestination, .05f);
+        Gizmos.DrawSphere(destinationPosition, .05f);
 
-        Gizmos.color = Color.green;
-        Gizmos.DrawWireCube(transform.position + groundBoxCenter, groundBoxExtents);
+
+    }
+    private void OnDrawGizmosSelected()
+    {
+        // Draws the ground detection box
+        Gizmos.color = groundBox.Color;
+        Gizmos.DrawWireCube(GetGroundBoxCenterPosition, groundBox.Extents);
     }
 
     // Use this for initialization
     void Start ()
     {
+        // Set the first previous position as this transform's one
+        previousRealPosition = transform.position;
 
+        // Set the value of the collider extents to use in raycast
+        colliderExtents = (collider.size / 2) - Vector3.one * 0.001f;
     }
 	
 	// Update is called once per frame
@@ -164,7 +191,7 @@ public class TDS_FreakController : MonoBehaviour
     private void GroundCheck()
     {
         // If something is detected in the ground box detection, the character is grounded
-        if (Physics.OverlapBox(transform.position + groundBoxCenter, groundBoxExtents, Quaternion.identity, WhatCollides, QueryTriggerInteraction.Ignore).Length > 0)
+        if (RaycastZone(GetGroundBoxCenterPosition, groundBox.Extents))
         {
             isGrounded = true;
         }
@@ -318,8 +345,8 @@ public class TDS_FreakController : MonoBehaviour
     /// Moves the character to a new position
     /// </summary>
     /// <param name="_position">New position to move to</param>
-    /// <param name="_isDirection">Should the given position be used as a direction from the actual position, or as world new position</param>
-    public void Move(Vector3 _position, bool _isDirection = false)
+    /// <param name="_isDirection">Should the given position be used as a direction from the actual position, or as a world new position</param>
+    public void Move(Vector3 _position, bool _isDirection)
     {
         // If the given position is a direction, convert it as world position
         if (_isDirection) _position = transform.position + _position;
@@ -327,107 +354,212 @@ public class TDS_FreakController : MonoBehaviour
         // Get the final position after movement
         Vector3 _newPosition = Vector3.Lerp(transform.position, _position, Time.deltaTime * speed);
 
+        // Get the position to raycast from : basically, the actual position
+        Vector3 _raycastPosition = transform.position;
+
+        // DEBUG
+        destinationPosition = _newPosition;
+
         // Set the boolean indicating there's a bad obstacle
         isInCumbersomeCollider = false;
 
-        // DEBUG
-        DEBUGdestination = _newPosition;
-
-        // Get the overlap box's extents value
-        Vector3 _overlapExtents = (collider.size / 2) - Vector3.one * 0.0001f;
-
         // If the character is not currently into some cumbersome collider, restrict its moves into the zone where there's no collider (only in X & Z axis)
-        if (Physics.OverlapBox(transform.position + collider.center, _overlapExtents, Quaternion.identity, WhatCollides, QueryTriggerInteraction.Ignore).Length > 0)
+        if (RaycastZone(GetColliderCenterPosition, colliderExtents))
         {
-            // OK ALORS JE L'AI
-            // Lorsque le personnage retombe au sol suite à la gravité,
-            // Il se trouve momentanément trèèèès légèrement en dessous du sol
-            // Du coup, je détecte que je suis dans un obstacle
-            // Sauf que, le rigidbody remet tout seul l'objet au Y correct
-            // Mais si j'essaye de le faire revenir à sa position précédente,
-            // Il tombe à l'infini et tout et tout
-            // En revanche, si je dis qu'il est coincé & qu'il peut aller n'importe où
-            // Alors il va traverser n'importe quel mur
-            // C'est franchement vraiment très très nul
-            // J'en ai marre
-
-            // Si une force est appliquée via le rigidbody dans une direction,
-            // ne pas changer la position sur les axes de cette direction et raycaster
-            // depuis la précédente position si celle-ci est est libre sur ces axes
-
-            // Set the new position to go as this one, 'cause there are bad colliders around
-            Vector3 _realPosition = previousPosition;
+            // Améliorer en ne raycastant que la toute petite zone qui a été franchie
+            // entre la précédente position et l'actuelle
 
             Debug.Log("Get back ! Get back ! Get back to where you once belong !");
 
-            // Foreach axis, if the movement is posible from the previous position to the actual, let the actual position
-            if (rigidbody.velocity.x != 0 || Physics.OverlapBox(new Vector3(transform.position.x, previousPosition.y, previousPosition.z) + collider.center, _overlapExtents, Quaternion.identity, WhatCollides, QueryTriggerInteraction.Ignore).Length < 1)
+            // If the previous real position is clean from bad colliders, for each axis, set the raycast position as previous if the movement was not allowed
+            if (!RaycastZone(previousRealPosition + collider.center, colliderExtents))
             {
-                Debug.Log("Movement posible in X !");
-                _realPosition = new Vector3(transform.position.x, _realPosition.y, _realPosition.z);
-            }
-            if (rigidbody.velocity.y != 0 || Physics.OverlapBox(new Vector3(previousPosition.x, transform.position.y, previousPosition.z) + collider.center, _overlapExtents, Quaternion.identity, WhatCollides, QueryTriggerInteraction.Ignore).Length < 1)
-            {
-                Debug.Log("Movement posible in Y !");
-                _realPosition = new Vector3(_realPosition.x, transform.position.y, _realPosition.z);
-            }
-            if (rigidbody.velocity.z != 0 || Physics.OverlapBox(new Vector3(previousPosition.x, previousPosition.y, transform.position.z) + collider.center, _overlapExtents, Quaternion.identity, WhatCollides, QueryTriggerInteraction.Ignore).Length < 1)
-            {
-                Debug.Log("Movement posible in Z !");
-                _realPosition = new Vector3(_realPosition.x, _realPosition.y, transform.position.z);
+                // Raycast in the 3 different axis in the zone between the previous position and the actual one
+                bool[] _raycastResults = RaycastZoneOutsideBox(previousRealPosition, transform.position, colliderExtents);
+
+                // Foreach axis were the movement was not posible, update the raycast position
+
+                // X axis
+                /*if (_raycastResults[0])
+                {
+                    _raycastPosition = new Vector3(previousRealPosition.x, _raycastPosition.y, _raycastPosition.z);
+
+                    Debug.Log("Raycast back in X");
+                }
+                // Y axis
+                if (_raycastResults[1])
+                {
+                    _raycastPosition = new Vector3(_raycastPosition.x, previousRealPosition.y, _raycastPosition.z);
+
+                    Debug.Log("Raycast back in Y");
+                }
+                // Z axis
+                if (_raycastResults[2])
+                {
+                    _raycastPosition = new Vector3(_raycastPosition.x, _raycastPosition.y, previousRealPosition.z);
+
+                    Debug.Log("Raycast back in Z");
+                }*/
+
+                
+                // X axis
+                if (RaycastZone(new Vector3(transform.position.x, previousRealPosition.y, previousRealPosition.z) + collider.center, colliderExtents))
+                {
+                    _raycastPosition = new Vector3(previousRealPosition.x, _raycastPosition.y, _raycastPosition.z);
+
+                    Debug.Log("Raycast back in X");
+                }
+                // Y axis
+                if (RaycastZone(new Vector3(previousRealPosition.x, transform.position.y, previousRealPosition.z) + collider.center, colliderExtents))
+                {
+                    _raycastPosition = new Vector3(_raycastPosition.x, previousRealPosition.y, _raycastPosition.z);
+
+                    Debug.Log("Raycast back in Y");
+                }
+                // Z axis
+                if (RaycastZone(new Vector3(previousRealPosition.x, previousRealPosition.y, transform.position.z) + collider.center, colliderExtents))
+                {
+                    _raycastPosition = new Vector3(_raycastPosition.x, _raycastPosition.y, previousRealPosition.z);
+
+                    Debug.Log("Raycast back in Z");
+                }
             }
 
-            // If no movement from the previous position to the actual is posible & that the previous position contains obstacle, set character in powerful mode
-            if (_realPosition == transform.position && Physics.OverlapBox(new Vector3(previousPosition.x, previousPosition.y, previousPosition.z) + collider.center, _overlapExtents, Quaternion.identity, WhatCollides, QueryTriggerInteraction.Ignore).Length > 0)
+            // If the raycast position is still the same as the position of the character, where there are bad colliders stucking the character, triggers Powerful Mode
+            if (_raycastPosition == transform.position)
             {
-                    Debug.Log("Stuck ! Powerful mode !");
+                Debug.Log("Stuck ! Powerful Mode !");
 
-                    // Set the boolean indicating there's a bad obstacle
-                    isInCumbersomeCollider = true;
-            }
-            // Else, go to the real position
-            else
-            {
-                Debug.Log($"OLD => {transform.position} | New => {_realPosition}");
-                transform.position = _realPosition;
+                // Set the boolean indicating there's a bad obstacle
+                isInCumbersomeCollider = true;
             }
         }
-        // If the character is into some cumbersome collider, let it move to its destination regardless of other colliders
+
+        // If the character is not into some cumbersome collider, restrains its movements in the zones where there are no bad colliders
         if (!isInCumbersomeCollider)
         {
             // If the final position is blocked by something, do not move
-            if (Physics.OverlapBox(new Vector3(_newPosition.x, transform.position.y, transform.position.z) + collider.center, _overlapExtents, Quaternion.identity, WhatCollides, QueryTriggerInteraction.Ignore).Length > 0)
+            if (Physics.OverlapBox(new Vector3(_newPosition.x, _raycastPosition.y, _raycastPosition.z) + collider.center, colliderExtents, Quaternion.identity, WhatCollides, QueryTriggerInteraction.Ignore).Length > 0)
             {
                 Debug.Log("No movement posible in X !");
                 _newPosition = new Vector3(transform.position.x, _newPosition.y, _newPosition.z);
             }
-            if (Physics.OverlapBox(new Vector3(transform.position.x, _newPosition.y, transform.position.z) + collider.center, _overlapExtents, Quaternion.identity, WhatCollides, QueryTriggerInteraction.Ignore).Length > 0)
+            if (Physics.OverlapBox(new Vector3(_raycastPosition.x, _newPosition.y, _raycastPosition.z) + collider.center, colliderExtents, Quaternion.identity, WhatCollides, QueryTriggerInteraction.Ignore).Length > 0)
             {
                 Debug.Log("No movement posible in Y !");
                 _newPosition = new Vector3(_newPosition.x, transform.position.y, _newPosition.z);
             }
-            if (Physics.OverlapBox(new Vector3(transform.position.x, transform.position.y, _newPosition.z) + collider.center, _overlapExtents, Quaternion.identity, WhatCollides, QueryTriggerInteraction.Ignore).Length > 0)
+            if (Physics.OverlapBox(new Vector3(_raycastPosition.x, _raycastPosition.y, _newPosition.z) + collider.center, colliderExtents, Quaternion.identity, WhatCollides, QueryTriggerInteraction.Ignore).Length > 0)
             {
                 Debug.Log("No movement posible in Z !");
                 _newPosition = new Vector3(_newPosition.x, _newPosition.y, transform.position.z);
             }
         }
         // Update the previous position as this position, before movement
-        previousPosition = transform.position;
+        previousRealPosition = _raycastPosition;
 
         // If nothing does block the way, move to the objective
         transform.position = _newPosition;
     }
-    #endregion
 
-    string StringVector3(Vector3 _vector3)
+    /// <summary>
+    /// With 2 box with the same size, raycast separatly in the 3 axis in the zone of the second box not touching the first one
+    /// </summary>
+    /// <param name="_firstBoxCenter">Center position of the first box</param>
+    /// <param name="_secondBoxCenter">Center position of the second box</param>
+    /// <param name="_extents">Extents (half size) of the boxes</param>
+    /// <returns>Returns an array of 3 bools indicating respectively for the X, Y & Z axis if a bad collider was touched</returns>
+    private bool[] RaycastZoneOutsideBox(Vector3 _firstBoxCenter, Vector3 _secondBoxCenter, Vector3 _extents)
     {
-        string _return = "(";
-        _return += _vector3.x + ", ";
-        _return += _vector3.y + ", ";
-        _return += _vector3.z + ")";
+        // Get the movement between the two positions, in absolute value
+        Vector3 _movement = _secondBoxCenter - _firstBoxCenter;
+        _movement = new Vector3(Mathf.Abs(_movement.x), Mathf.Abs(_movement.y), Mathf.Abs(_movement.z));
 
-        return _return;
+        Debug.Log($"Movement => X : {_movement.x} | Y : {_movement.y} | Z : {_movement.z}");
+
+        // Creates the array that will contain the results
+        bool[] _result = new bool[3];
+
+        // Foreach axis, if a movement has been made, get if it was posible ; if no movement, it was posible
+
+        // X axis
+        if (_movement.x != 0)
+        {
+            _result[0] = RaycastZone(new Vector3(_secondBoxCenter.x, _firstBoxCenter.y, _firstBoxCenter.z) + collider.center, new Vector3(_movement.x / 2, _extents.y, _extents.z));
+        }
+        else
+        {
+            _result[0] = false;
+        }
+        // Y axis
+        if (_movement.y != 0)
+        {
+            _result[1] = RaycastZone(new Vector3(_firstBoxCenter.x, _secondBoxCenter.y, _firstBoxCenter.z) + collider.center, new Vector3(_extents.x, _movement.y / 2, _extents.z));
+        }
+        else
+        {
+            _result[1] = false;
+        }
+        // Z axis
+        if (_movement.z != 0)
+        {
+            _result[2] = RaycastZone(new Vector3(_firstBoxCenter.x, _firstBoxCenter.y, _secondBoxCenter.z) + collider.center, new Vector3(_extents.x, _extents.y, _movement.z / 2));
+        }
+        else
+        {
+            _result[2] = false;
+        }
+
+        // Returns the results of the raycasts in the zone
+        return _result;
+    }
+
+    /// <summary>
+    /// Raycast in a given zone to know if some bad colliders are in it
+    /// </summary>
+    /// <param name="_center">Center position to raycast from</param>
+    /// <param name="_extents">Extents (half size) of the cube zone to raycast</param>
+    /// <returns>Returns true if a collider is touched, else way false</returns>
+    private bool RaycastZone(Vector3 _center, Vector3 _extents)
+    {
+        return Physics.OverlapBox(_center, _extents, Quaternion.identity, WhatCollides, QueryTriggerInteraction.Ignore).Length > 0;
     }
     #endregion
+    #endregion
+}
+
+[Serializable]
+public class TDS_Box
+{
+    // Box :
+    // 
+    // Serializable class containing box settings, including :
+    //      - The box center
+    //      - Extents of the box
+    //      - Color of the box (Gizmos uses)
+
+    [Header("Color :")]
+    // The color of the box
+    [SerializeField] private Color color = Color.green;
+    public Color Color
+    {
+        get { return color; }
+        set { color = value; }
+    }
+
+    [Header("Vector3 :")]
+    // The center position of the box
+    [SerializeField] private Vector3 center = Vector3.zero;
+    public Vector3 Center
+    {
+        get { return center; }
+        set { center = value; }
+    }
+    // The extents (half size) of the box
+    [SerializeField] private Vector3 extents = Vector3.one;
+    public Vector3 Extents
+    {
+        get { return extents; }
+        set { extents = value; }
+    }
 }
