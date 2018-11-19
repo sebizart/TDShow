@@ -93,7 +93,7 @@ public class TDS_Camera : MonoBehaviour
 
 
     // Use this to set the player
-    public void SetPlayer(TDS_Player _player)
+    public void SetPlayer(TDS_FreakController _player)
     {
         target = _player.transform;
         playerRigidbody = _player.gameObject.GetComponent<Rigidbody>();

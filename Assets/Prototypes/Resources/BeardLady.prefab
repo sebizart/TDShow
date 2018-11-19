@@ -22,9 +22,9 @@ GameObject:
   - component: {fileID: 114178660620990094}
   - component: {fileID: 114443289932529606}
   - component: {fileID: 95399694777790132}
+  - component: {fileID: 114717049629220858}
   - component: {fileID: 65500382046086232}
   - component: {fileID: 54910413235692574}
-  - component: {fileID: 143823875990222134}
   m_Layer: 9
   m_Name: BeardLady
   m_TagString: Untagged
@@ -102,7 +102,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1229586997064324}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.3462417, y: 0.985, z: -2.141953}
+  m_LocalPosition: {x: -2.6610813, y: 0.971, z: -0.39233384}
   m_LocalScale: {x: 6.1098957, y: 11.340577, z: 6.1098957}
   m_Children:
   - {fileID: 4963175182977434}
@@ -262,7 +262,7 @@ MonoBehaviour:
   isStroking: 0
   currentAttack: 10
   character: 0
-  characterController: {fileID: 143823875990222134}
+  controller: {fileID: 0}
   comboMax: 3
   comboResetTime: 1
   currentComboValue: 0
@@ -300,23 +300,53 @@ MonoBehaviour:
   instantiationId: -1
   currentMasterID: -1
   isRuntimeInstantiated: 0
---- !u!143 &143823875990222134
-CharacterController:
+--- !u!114 &114717049629220858
+MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1229586997064324}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Height: 0.12
-  m_Radius: 0.06
-  m_SlopeLimit: 15
-  m_StepOffset: 0.3
-  m_SkinWidth: 0.08
-  m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: -0.03, z: 0}
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a07ef2c24cf2c9248979873731be6b44, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnGetInAir:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  OnGetOnGround:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  OnMove:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  destinationPosition: {x: 0, y: 0, z: 0}
+  doDrawColliderEdgesMiddlePositions: 0
+  isInCumbersomeCollider: 0
+  isGrounded: 1
+  collider: {fileID: 65500382046086232}
+  JumpForce: 200
+  JumpForceIncrease: 2
+  JumpMaxTime: 0.5
+  initialSpeed: 1
+  maxSpeed: 1
+  speed: 2.5
+  groundBox:
+    color: {r: 1, g: 0.6392157, b: 0, a: 1}
+    center: {x: -0.01, y: -0.89, z: -0.23}
+    extents: {x: 0.67, y: 0.15, z: 0.23}
+  WhatCollides:
+    serializedVersion: 2
+    m_Bits: 2049
+  rigidbody: {fileID: 54910413235692574}
+  colliderExtents: {x: 1, y: 1, z: 1}
+  previousRealPosition: {x: 0, y: 0, z: 0}
 --- !u!212 &212439437356475108
 SpriteRenderer:
   m_ObjectHideFlags: 1

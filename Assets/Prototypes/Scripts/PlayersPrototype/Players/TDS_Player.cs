@@ -39,6 +39,7 @@ public enum PlayerCharacter
     Juggler
 }
 
+[RequireComponent(typeof(TDS_FreakController))]
 public abstract class TDS_Player : TDS_Character
 {
     public event Action OnHeal;
@@ -53,7 +54,7 @@ public abstract class TDS_Player : TDS_Character
 
     [SerializeField, Header("Character")] protected PlayerCharacter character = PlayerCharacter.BeardLady;
 
-    [SerializeField, Header("Character Controller")] protected CharacterController characterController = null;
+    [SerializeField, Header("Freak Controller")] protected TDS_FreakController controller = null;
 
     [SerializeField, Header("Int")] protected int comboMax = 3;
     [SerializeField] protected int comboResetTime = 1;
@@ -321,14 +322,14 @@ public abstract class TDS_Player : TDS_Character
 
     protected override void SetDestination(Vector3 _position)
     {
-        characterController.Move(_position * Time.deltaTime * speed);
+        controller.Move(_position, true);
     }
     #endregion
 
     #region UnityMethods
     protected virtual void Awake()
     {
-
+        if (!controller) controller = GetComponent<TDS_FreakController>();
     }
 
     protected virtual void FixedUpdate()
@@ -356,7 +357,7 @@ public abstract class TDS_Player : TDS_Character
 
         if (photonViewElement.isMine)
         {
-            TDS_Camera.Instance.SetPlayer(this);
+            TDS_Camera.Instance.SetPlayer(controller);
         }
         else
         {

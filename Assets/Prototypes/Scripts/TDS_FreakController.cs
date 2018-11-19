@@ -14,6 +14,10 @@ public class TDS_FreakController : MonoBehaviour
     * Used to :
     *       - Move the character to a destination avoiding weird interactions with others colliders
     *       - Make the character jump higher or lower depending on the time the key is pressed
+    *       
+    * To do :
+    *       - Increase speed gradualy when starting to move before reaching max speed
+    *       - Reduce air control
 	*/
 
     #region Events
@@ -351,8 +355,11 @@ public class TDS_FreakController : MonoBehaviour
         // If the given position is a direction, convert it as world position
         if (_isDirection) _position = transform.position + _position;
 
+        // Set the speed of the movement
+        float _speed = speed;
+
         // Get the final position after movement
-        Vector3 _newPosition = Vector3.Lerp(transform.position, _position, Time.deltaTime * speed);
+        Vector3 _newPosition = Vector3.Lerp(transform.position, _position, Time.deltaTime * _speed);
 
         // Get the position to raycast from : basically, the actual position
         Vector3 _raycastPosition = transform.position;
@@ -380,7 +387,7 @@ public class TDS_FreakController : MonoBehaviour
                 // Foreach axis were the movement was not posible, update the raycast position
 
                 // X axis
-                /*if (_raycastResults[0])
+                if (_raycastResults[0])
                 {
                     _raycastPosition = new Vector3(previousRealPosition.x, _raycastPosition.y, _raycastPosition.z);
 
@@ -399,9 +406,9 @@ public class TDS_FreakController : MonoBehaviour
                     _raycastPosition = new Vector3(_raycastPosition.x, _raycastPosition.y, previousRealPosition.z);
 
                     Debug.Log("Raycast back in Z");
-                }*/
+                }
 
-                
+                /*
                 // X axis
                 if (RaycastZone(new Vector3(transform.position.x, previousRealPosition.y, previousRealPosition.z) + collider.center, colliderExtents))
                 {
@@ -415,6 +422,8 @@ public class TDS_FreakController : MonoBehaviour
                     _raycastPosition = new Vector3(_raycastPosition.x, previousRealPosition.y, _raycastPosition.z);
 
                     Debug.Log("Raycast back in Y");
+
+                    Debug.Log($"Movement Y => : Center : {Vector3String(new Vector3(previousRealPosition.x, transform.position.y, previousRealPosition.z) + collider.center)} | Extents : {Vector3String(colliderExtents)}");
                 }
                 // Z axis
                 if (RaycastZone(new Vector3(previousRealPosition.x, previousRealPosition.y, transform.position.z) + collider.center, colliderExtents))
@@ -422,7 +431,7 @@ public class TDS_FreakController : MonoBehaviour
                     _raycastPosition = new Vector3(_raycastPosition.x, _raycastPosition.y, previousRealPosition.z);
 
                     Debug.Log("Raycast back in Z");
-                }
+                }*/
             }
 
             // If the raycast position is still the same as the position of the character, where there are bad colliders stucking the character, triggers Powerful Mode
@@ -473,9 +482,6 @@ public class TDS_FreakController : MonoBehaviour
     {
         // Get the movement between the two positions, in absolute value
         Vector3 _movement = _secondBoxCenter - _firstBoxCenter;
-        _movement = new Vector3(Mathf.Abs(_movement.x), Mathf.Abs(_movement.y), Mathf.Abs(_movement.z));
-
-        Debug.Log($"Movement => X : {_movement.x} | Y : {_movement.y} | Z : {_movement.z}");
 
         // Creates the array that will contain the results
         bool[] _result = new bool[3];
@@ -485,7 +491,8 @@ public class TDS_FreakController : MonoBehaviour
         // X axis
         if (_movement.x != 0)
         {
-            _result[0] = RaycastZone(new Vector3(_secondBoxCenter.x, _firstBoxCenter.y, _firstBoxCenter.z) + collider.center, new Vector3(_movement.x / 2, _extents.y, _extents.z));
+            _result[0] = RaycastZone(new Vector3(_firstBoxCenter.x + (_extents.x * Mathf.Sign(_movement.x)) + (_movement.x / 2), _firstBoxCenter.y, _firstBoxCenter.z) + collider.center, new Vector3(Mathf.Abs(_movement.x / 2), _extents.y, _extents.z));
+
         }
         else
         {
@@ -494,7 +501,7 @@ public class TDS_FreakController : MonoBehaviour
         // Y axis
         if (_movement.y != 0)
         {
-            _result[1] = RaycastZone(new Vector3(_firstBoxCenter.x, _secondBoxCenter.y, _firstBoxCenter.z) + collider.center, new Vector3(_extents.x, _movement.y / 2, _extents.z));
+            _result[1] = RaycastZone(new Vector3(_firstBoxCenter.x, _firstBoxCenter.y + (_extents.y * Mathf.Sign(_movement.y)) + (_movement.y / 2), _firstBoxCenter.z) + collider.center, new Vector3(_extents.x, Mathf.Abs(_movement.y / 2), _extents.z));
         }
         else
         {
@@ -503,7 +510,7 @@ public class TDS_FreakController : MonoBehaviour
         // Z axis
         if (_movement.z != 0)
         {
-            _result[2] = RaycastZone(new Vector3(_firstBoxCenter.x, _firstBoxCenter.y, _secondBoxCenter.z) + collider.center, new Vector3(_extents.x, _extents.y, _movement.z / 2));
+            _result[2] = RaycastZone(new Vector3(_firstBoxCenter.x, _firstBoxCenter.y, _firstBoxCenter.z + (_extents.z * Mathf.Sign(_movement.z)) + (_movement.z / 2)) + collider.center, new Vector3(_extents.x, _extents.y, Mathf.Abs(_movement.z / 2)));
         }
         else
         {
@@ -523,6 +530,13 @@ public class TDS_FreakController : MonoBehaviour
     private bool RaycastZone(Vector3 _center, Vector3 _extents)
     {
         return Physics.OverlapBox(_center, _extents, Quaternion.identity, WhatCollides, QueryTriggerInteraction.Ignore).Length > 0;
+    }
+
+    // Debug Utility
+    string Vector3String(Vector3 _vector)
+    {
+        string _return = $"({_vector.x}, {_vector.y}, {_vector.z})";
+        return _return;
     }
     #endregion
     #endregion
