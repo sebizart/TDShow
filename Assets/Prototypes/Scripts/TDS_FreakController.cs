@@ -180,11 +180,8 @@ public class TDS_FreakController : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
     {
+        // Checks if the character is on ground or not
         GroundCheck();
-
-        Move(new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")), true);
-
-        Jump("Jump", true);
 	}
     #endregion
 

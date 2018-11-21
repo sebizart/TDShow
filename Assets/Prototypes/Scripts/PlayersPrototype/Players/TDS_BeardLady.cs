@@ -28,7 +28,7 @@ public class TDS_BeardLady : TDS_Player
 
     #region Fields / Accessors
     [Header("BeardLady")]
-    [SerializeField] BeardState currentBeardState = BeardState.Average;
+    [SerializeField] BeardState currentBeardState = BeardState.Short;
     [Header("Int"), SerializeField] int beardDurability = 0;
     public int BeardDurability
     {
@@ -40,10 +40,10 @@ public class TDS_BeardLady : TDS_Player
         {
             if (value >= beardDurabilityMax)
             {
-                if (currentBeardState > BeardState.VeryShort)
+                if (currentBeardState > BeardState.Short)
                 {
                     currentBeardState = (BeardState)((int)currentBeardState - 1);
-                    if (beardAnimator) beardAnimator.SetInteger("BeardState", (int)currentBeardState);
+                    if (CharacterAnimator) CharacterAnimator.SetInteger("BeardState", (int)currentBeardState);
                 }
                 beardDurability = 0;
             }
@@ -52,9 +52,10 @@ public class TDS_BeardLady : TDS_Player
     [SerializeField] int beardDurabilityMax = 2;
     [SerializeField] int growingBeardCooldown = 5;
     [SerializeField] int growingBeardValue = 0;
-    [Header("Animator"), SerializeField] Animator beardAnimator;
 
     [Header("Float"), SerializeField] private float catchTime = .5f;
+
+    [SerializeField] Component test = null;
     #endregion
 
     #region Methods
@@ -63,6 +64,7 @@ public class TDS_BeardLady : TDS_Player
     {
         base.Awake();
         character = PlayerCharacter.BeardLady;
+        currentBeardState = BeardState.Short;
     }
 
     protected override void FixedUpdate()
@@ -159,11 +161,8 @@ public class TDS_BeardLady : TDS_Player
         if (growingBeardValue >= growingBeardCooldown)
         {
             growingBeardValue = 0;
-            if (currentBeardState < BeardState.VeryLong)
-            {
-                currentBeardState = (BeardState)((int)currentBeardState + 1);
-                if (beardAnimator) beardAnimator.SetInteger("BeardState", (int)currentBeardState);
-            }
+            currentBeardState = (BeardState)((int)currentBeardState + 1);
+            if (CharacterAnimator) CharacterAnimator.SetInteger("BeardState", (int)currentBeardState);
         }
     }
 
@@ -174,7 +173,7 @@ public class TDS_BeardLady : TDS_Player
     /// </summary>
     private void ResetBeardAfterAttack()
     {
-        beardDurability++;
+        BeardDurability++;
         growingBeardValue = 0;
     }
     #endregion
@@ -197,11 +196,8 @@ public class TDS_BeardLady : TDS_Player
         float _beardOffset;
         switch (currentBeardState)
         {
-            case BeardState.VeryShort:
-                _beardOffset = .5f;
-                break;
             case BeardState.Short:
-                _beardOffset = .75f;
+                _beardOffset = .5f;
                 break;
             case BeardState.Average:
                 _beardOffset = 1;
@@ -300,6 +296,8 @@ public class TDS_BeardLady : TDS_Player
 
         currentAttack = PlayerAttacks.None;
         isStroking = false;
+
+        ResetBeardAfterAttack();
     }
 
     protected override IEnumerator Catching()
@@ -327,6 +325,8 @@ public class TDS_BeardLady : TDS_Player
 
         currentAttack = PlayerAttacks.None;
         isCatching = false;
+
+        ResetBeardAfterAttack();
     }
 
     private IEnumerator HazelCatcher()
@@ -354,6 +354,8 @@ public class TDS_BeardLady : TDS_Player
 
         currentAttack = PlayerAttacks.None;
         isStroking = false;
+
+        ResetBeardAfterAttack();
     }
 
     private IEnumerator Whirligig()
@@ -381,6 +383,8 @@ public class TDS_BeardLady : TDS_Player
 
         currentAttack = PlayerAttacks.None;
         isStroking = false;
+
+        ResetBeardAfterAttack();
     }
     #endregion
     #endregion
@@ -389,7 +393,6 @@ public class TDS_BeardLady : TDS_Player
 
 public enum BeardState
 {
-    VeryShort,
     Short,
     Average,
     Long,

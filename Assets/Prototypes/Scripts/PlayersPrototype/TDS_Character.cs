@@ -247,7 +247,7 @@ public abstract class TDS_Character : TDS_DamageableElement
 
     protected virtual void Start () 
     {
-        transform.forward = Camera.main.transform.forward;
+        //transform.forward = Camera.main.transform.forward;
     }
 
     protected virtual void Update () 

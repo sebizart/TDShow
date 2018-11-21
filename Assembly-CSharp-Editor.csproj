@@ -82,6 +82,7 @@
     <Compile Include="Assets\Scripts\LogSaver\Editor\TDS_LoggerManagerEditor.cs" />
     <Compile Include="Assets\Scripts\LogSaver\Editor\TDS_LogSaverEditor.cs" />
     <Compile Include="Assets\Scripts\LogSaver\Editor\TDS_LogSaverMenu.cs" />
+    <Compile Include="Assets\Scripts\Team Tools\Auto Save\Editor\AutoSaver.cs" />
     <Compile Include="Assets\Scripts\Team Tools\BuildsShortcuts\Editor\BuildsShortcuts.cs" />
     <Compile Include="Assets\Scripts\Team Tools\FPSCounter\Editor\FPSCounterCaller.cs" />
     <Compile Include="Assets\Scripts\Team Tools\InputManager\Editor\InputManagerCaller.cs" />
