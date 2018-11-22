@@ -59,7 +59,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!65 &65882630659723366
 BoxCollider:
@@ -138,6 +138,7 @@ MonoBehaviour:
   rigidbody: {fileID: 54544279705366906}
   colliderExtents: {x: 1, y: 1, z: 1}
   previousRealPosition: {x: 0, y: 0, z: 0}
+  worldScale: {x: 1, y: 1, z: 1}
 --- !u!114 &114529713178369788
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -83,7 +83,7 @@ public class TDS_Throwable : PunBehaviour
         Dictionary<int, int> _hitElements = new Dictionary<int, int>();
 
         // Get all colliders in the range of the object's attack box
-        Collider[] _touchColliders = Physics.OverlapBox(attackBox.CenterPosition, attackBox.ExtendPosition);
+        Collider[] _touchColliders = Physics.OverlapBox(transform.position + attackBox.Collider.center, attackBox.Collider.extents);
 
         // Foreach collider, check if it is an available target, and if so it this !
         foreach (Collider _collider in _touchColliders)

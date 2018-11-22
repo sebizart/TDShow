@@ -89,10 +89,10 @@ public class TDS_Juggler : TDS_Player
         if (isCatching)
         {
             TDS_AttackBox _catchBox = attackBoxes.Where(b => b.ID == 1).FirstOrDefault();
-            if (_catchBox != null)
+            if (_catchBox != null && _catchBox.Collider != null)
             {
                 Gizmos.color = _catchBox.BoxColor;
-                Gizmos.DrawCube(transform.position + _catchBox.CenterPosition, _catchBox.ExtendPosition);
+                Gizmos.DrawCube(transform.TransformPoint(_catchBox.Collider.center), _catchBox.Collider.size);
                 Gizmos.color = Color.white;
             }
         }

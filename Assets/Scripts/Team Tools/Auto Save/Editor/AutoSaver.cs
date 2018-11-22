@@ -16,7 +16,7 @@ public class AutoSaver : EditorWindow
     [SerializeField] private bool isAutoSave = false;
 
     // The time at which the next auto save will run
-    [SerializeField] private double nextSaveTime = 0;
+    private double nextSaveTime = 0;
 
     // The interval between auto saves (in seconds)
     [SerializeField] private int saveInterval = 300;
@@ -43,6 +43,9 @@ public class AutoSaver : EditorWindow
     /// </summary>
     private void SaveScene()
     {
+        // If the application is playing, do not save
+        if (EditorApplication.isPlaying) return;
+
         // Get the active scene, set it as dirty, then save it
         currentScene = EditorSceneManager.GetActiveScene();
         EditorSceneManager.MarkSceneDirty(currentScene);
@@ -102,8 +105,8 @@ public class AutoSaver : EditorWindow
     // Update is called once per frame
     void Update()
     {
-        // Returns if auto save is not enabled
-        if (!isAutoSave) return;
+        // Returns if auto save is not enabled or if playing
+        if (!isAutoSave || EditorApplication.isPlaying) return;
 
         // Triggers auto save if the timer is superior to the save interval
         if (EditorApplication.timeSinceStartup >= nextSaveTime)

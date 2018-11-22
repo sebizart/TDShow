@@ -51,6 +51,7 @@ public abstract class TDS_Player : TDS_Character
     [SerializeField] protected bool isStroking = false;
 
     [SerializeField, Header("Attack")] protected PlayerAttacks currentAttack = PlayerAttacks.None;
+    [SerializeField] protected Coroutine currentAttackCoroutine = null;
 
     [SerializeField, Header("Character")] protected PlayerCharacter character = PlayerCharacter.BeardLady;
 
@@ -93,11 +94,11 @@ public abstract class TDS_Player : TDS_Character
             return;
         }
 
-        if (Input.GetButtonDown("Jump"))
-        {
-            // JUMP
-        }
-        else if (Input.GetButtonDown("Fire1"))
+        if (currentAttack != PlayerAttacks.None) return;
+
+        controller.Jump("Jump", true);
+
+        if (Input.GetButtonDown("Fire1"))
         {
             if (isGrounded)
             {

@@ -32,6 +32,38 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &1266483715796656
+GameObject:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4157056453790240}
+  - component: {fileID: 65099846590884050}
+  m_Layer: 9
+  m_Name: Catch Box
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &1302712521836084
+GameObject:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4766540296938146}
+  - component: {fileID: 65913680900045482}
+  m_Layer: 9
+  m_Name: Attack Two Box
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &1310061885105040
 GameObject:
   m_ObjectHideFlags: 1
@@ -64,6 +96,92 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &1626838611534594
+GameObject:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4565643208935958}
+  - component: {fileID: 65204850694210324}
+  m_Layer: 9
+  m_Name: Attack Three Box
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &1871568001324086
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4810623297594008}
+  m_Layer: 9
+  m_Name: Detection Colliders
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &1945564040456748
+GameObject:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4068312663534516}
+  - component: {fileID: 65823255886198160}
+  m_Layer: 9
+  m_Name: Attack One Box
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4068312663534516
+Transform:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1945564040456748}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4810623297594008}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &4157056453790240
+Transform:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1266483715796656}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4810623297594008}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &4565643208935958
+Transform:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1626838611534594}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4810623297594008}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4653231892688294
 Transform:
   m_ObjectHideFlags: 1
@@ -75,6 +193,7 @@ Transform:
   m_LocalScale: {x: 6.109896, y: 6.109896, z: 6.109896}
   m_Children:
   - {fileID: 4721290145434038}
+  - {fileID: 4810623297594008}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -91,6 +210,36 @@ Transform:
   - {fileID: 4850296922222608}
   m_Father: {fileID: 4653231892688294}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &4766540296938146
+Transform:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1302712521836084}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4810623297594008}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &4810623297594008
+Transform:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1871568001324086}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 4068312663534516}
+  - {fileID: 4766540296938146}
+  - {fileID: 4565643208935958}
+  - {fileID: 4157056453790240}
+  m_Father: {fileID: 4653231892688294}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4850296922222608
 Transform:
@@ -120,6 +269,30 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!65 &65099846590884050
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1266483715796656}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 0
+  serializedVersion: 2
+  m_Size: {x: 0.16201012, y: 0.099999994, z: 0.15802562}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!65 &65204850694210324
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1626838611534594}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 0
+  serializedVersion: 2
+  m_Size: {x: 0.072538614, y: 0.07260114, z: 0.099999994}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!65 &65418865399358712
 BoxCollider:
   m_ObjectHideFlags: 1
@@ -131,6 +304,30 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 0.14540106, y: 0.12935123, z: 0.11888396}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!65 &65823255886198160
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1945564040456748}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 0
+  serializedVersion: 2
+  m_Size: {x: 0.1, y: 0.1, z: 0.1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!65 &65913680900045482
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1302712521836084}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 0
+  serializedVersion: 2
+  m_Size: {x: 0.12935857, y: 0.07805509, z: 0.099999994}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!95 &95047434179407188
 Animator:
@@ -207,7 +404,7 @@ MonoBehaviour:
   isInCumbersomeCollider: 0
   isGrounded: 1
   collider: {fileID: 65418865399358712}
-  JumpForce: 200
+  JumpForce: 150
   JumpForceIncrease: 2
   JumpMaxTime: 0.5
   initialSpeed: 1
@@ -215,14 +412,15 @@ MonoBehaviour:
   speed: 2.5
   groundBox:
     color: {r: 1, g: 0.6392157, b: 0, a: 1}
-    center: {x: -0.01, y: -0.89, z: -0.23}
-    extents: {x: 0.67, y: 0.15, z: 0.23}
+    center: {x: -0.01, y: -0.33, z: -0.23}
+    extents: {x: 0.3, y: 0.075, z: 0.125}
   WhatCollides:
     serializedVersion: 2
     m_Bits: 2049
   rigidbody: {fileID: 54030093398169674}
   colliderExtents: {x: 1, y: 1, z: 1}
   previousRealPosition: {x: 0, y: 0, z: 0}
+  worldScale: {x: 1, y: 1, z: 1}
 --- !u!114 &114625752986144220
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -250,34 +448,30 @@ MonoBehaviour:
     id: 1
     maxDamages: 0
     minDamages: 0
-    centerPosition: {x: 0, y: 0, z: 0}
-    extendPosition: {x: 1.98, y: 0.48, z: 0.91}
+    collider: {fileID: 65823255886198160}
     isVisible: 0
     boxColor: {r: 0.10346207, g: 0.80791765, b: 0.8773585, a: 0.53333336}
   - boxName: Action2
     id: 2
     maxDamages: 0
     minDamages: 0
-    centerPosition: {x: 0, y: 0, z: 0}
-    extendPosition: {x: 1.04, y: 0.82, z: 0.78}
+    collider: {fileID: 65913680900045482}
     isVisible: 0
-    boxColor: {r: 0.10346207, g: 0.80791765, b: 0.8773585, a: 0.53333336}
+    boxColor: {r: 0.10196076, g: 0.8784314, b: 0.22298366, a: 0.53333336}
   - boxName: Action3
     id: 3
     maxDamages: 0
     minDamages: 0
-    centerPosition: {x: 0, y: 0, z: 0}
-    extendPosition: {x: 1.42, y: 0.73, z: 0.78}
+    collider: {fileID: 65204850694210324}
     isVisible: 0
-    boxColor: {r: 0.10346207, g: 0.80791765, b: 0.8773585, a: 0.53333336}
+    boxColor: {r: 0.8784314, g: 0.6659771, b: 0.10196076, a: 0.53333336}
   - boxName: Catch
     id: 4
     maxDamages: 0
     minDamages: 0
-    centerPosition: {x: 0, y: 0, z: 0}
-    extendPosition: {x: 2.31, y: 0.86, z: 0.78}
+    collider: {fileID: 65099846590884050}
     isVisible: 0
-    boxColor: {r: 0.10196076, g: 0.3149482, b: 0.8784314, a: 0.53333336}
+    boxColor: {r: 0.640749, g: 0.10196076, b: 0.8784314, a: 0.53333336}
   grabObjectZoneCenter: {x: 0, y: 0, z: 0}
   grabObjectZoneExtents: {x: 1, y: 1, z: 1}
   isCatching: 0
@@ -297,6 +491,7 @@ MonoBehaviour:
   growingBeardCooldown: 5
   growingBeardValue: 0
   catchTime: 1.25
+  test: {fileID: 0}
 --- !u!212 &212807584149476546
 SpriteRenderer:
   m_ObjectHideFlags: 1

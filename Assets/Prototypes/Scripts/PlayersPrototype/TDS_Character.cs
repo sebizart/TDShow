@@ -109,6 +109,16 @@ public abstract class TDS_Character : TDS_DamageableElement
     protected abstract void AttackOne();
     protected abstract void AttackThree();
     protected abstract void AttackTwo();
+
+    protected virtual IEnumerator Attack(int _attackID)
+    {
+        while (true)
+        {
+            TDS_RPCManager.Instance.RPCManagerPhotonView.RPC("ApplyInfoDamages", PhotonTargets.All, TDS_RPCManager.Instance.SetInfoDamages(CheckHit(_attackID), PhotonViewElementID, _attackID));
+
+            yield return new WaitForSeconds(.05f);
+        }
+    }
     #endregion
 
     #region Object Interaction
@@ -233,7 +243,7 @@ public abstract class TDS_Character : TDS_DamageableElement
             if (_box.IsVisible)
             {
                 Gizmos.color = _box.BoxColor;
-                Gizmos.DrawCube(transform.position + _box.CenterPosition, _box.ExtendPosition);
+                Gizmos.DrawCube(transform.position + _box.Collider.center, _box.Collider.extents);
             }
         }
 

@@ -49,9 +49,15 @@ public class TDS_FreakController : MonoBehaviour
     // The collider used for collision detection
     [SerializeField] private new BoxCollider collider = null;
     public Collider Collider { get { return collider; } }
+    // Get the collider center world position
     public Vector3 GetColliderCenterPosition
     {
-        get { return transform.position + collider.center; }
+        get { return transform.TransformPoint(collider.center); }
+    }
+    // Get the space difference between the collider center world position and the object world position
+    public Vector3 GetColliderCenterSpace
+    {
+        get { return GetColliderCenterPosition - transform.position; }
     }
 
     [Header("Floats :")]
@@ -98,32 +104,8 @@ public class TDS_FreakController : MonoBehaviour
     }
     // Previous "real" position of the character, that is the closest one to the actual where there were no bad colliders at the time
     [SerializeField] private Vector3 previousRealPosition;
-
-    // Colldier's edges middle positions
-    public Vector3 BackColliderEdge
-    {
-        get { return collider.bounds.center + (Vector3.back * collider.bounds.extents.z); }
-    }
-    public Vector3 DownColliderEdge
-    {
-        get { return collider.bounds.center + (Vector3.down * collider.bounds.extents.y); }
-    }
-    public Vector3 ForwardColliderEdge
-    {
-        get { return collider.bounds.center + (Vector3.forward * collider.bounds.extents.z); }
-    }
-    public Vector3 LeftColliderEdge
-    {
-        get { return collider.bounds.center + (Vector3.left * collider.bounds.extents.x); }
-    }
-    public Vector3 RightColliderEdge
-    {
-        get { return collider.bounds.center + (Vector3.right * collider.bounds.extents.x); }
-    }
-    public Vector3 UpColliderEdge
-    {
-        get { return collider.bounds.center + (Vector3.up * collider.bounds.extents.y); }
-    }
+    // The world scale of the collider
+    [SerializeField] private Vector3 worldScale = Vector3.one;
     #endregion
 
     #region Methods
@@ -140,20 +122,9 @@ public class TDS_FreakController : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        // Draws the collider's edges middle positions
-        if (doDrawColliderEdgesMiddlePositions && collider)
-        {
-            Gizmos.color = new Color(0, 1, 0, .5f);
-            Gizmos.DrawSphere(BackColliderEdge, .025f);
-            Gizmos.DrawSphere(DownColliderEdge, .025f);
-            Gizmos.DrawSphere(ForwardColliderEdge, .025f);
-            Gizmos.DrawSphere(LeftColliderEdge, .025f);
-            Gizmos.DrawSphere(RightColliderEdge, .025f);
-            Gizmos.DrawSphere(UpColliderEdge, .025f);
-        }
-
+        // Draws the character's next position by collider box & point
         Gizmos.color = Color.cyan;
-        Gizmos.DrawWireCube(destinationPosition + collider.center, collider.size);
+        Gizmos.DrawWireCube(destinationPosition + GetColliderCenterSpace, colliderExtents * 2);
 
         Gizmos.color = Color.magenta;
         Gizmos.DrawSphere(destinationPosition, .05f);
@@ -164,7 +135,7 @@ public class TDS_FreakController : MonoBehaviour
     {
         // Draws the ground detection box
         Gizmos.color = groundBox.Color;
-        Gizmos.DrawWireCube(GetGroundBoxCenterPosition, groundBox.Extents);
+        Gizmos.DrawWireCube(GetGroundBoxCenterPosition, groundBox.Extents * 2);
     }
 
     // Use this for initialization
@@ -173,8 +144,11 @@ public class TDS_FreakController : MonoBehaviour
         // Set the first previous position as this transform's one
         previousRealPosition = transform.position;
 
+        // Get the world scale of the collider
+        worldScale = collider.transform.lossyScale;
+
         // Set the value of the collider extents to use in raycast
-        colliderExtents = (collider.size / 2) - Vector3.one * 0.001f;
+        colliderExtents = (Vector3.Scale(collider.size, worldScale) / 2) - Vector3.one * 0.001f;
     }
 	
 	// Update is called once per frame
@@ -191,16 +165,8 @@ public class TDS_FreakController : MonoBehaviour
     /// </summary>
     private void GroundCheck()
     {
-        // If something is detected in the ground box detection, the character is grounded
-        if (RaycastZone(GetGroundBoxCenterPosition, groundBox.Extents))
-        {
-            isGrounded = true;
-        }
-        // If nothing was detected, the character is not grounded
-        else
-        {
-            isGrounded = false;
-        }
+        // If something is detected in the ground box detection, then character is grounded, otherwise not
+        isGrounded = RaycastZone(GetGroundBoxCenterPosition, groundBox.Extents);
     }
 
     #region Jump
@@ -376,7 +342,7 @@ public class TDS_FreakController : MonoBehaviour
             Debug.Log("Get back ! Get back ! Get back to where you once belong !");
 
             // If the previous real position is clean from bad colliders, for each axis, set the raycast position as previous if the movement was not allowed
-            if (!RaycastZone(previousRealPosition + collider.center, colliderExtents))
+            if (!RaycastZone(previousRealPosition + GetColliderCenterSpace, colliderExtents))
             {
                 // Raycast in the 3 different axis in the zone between the previous position and the actual one
                 bool[] _raycastResults = RaycastZoneOutsideBox(previousRealPosition, transform.position, colliderExtents);
@@ -404,31 +370,6 @@ public class TDS_FreakController : MonoBehaviour
 
                     Debug.Log("Raycast back in Z");
                 }
-
-                /*
-                // X axis
-                if (RaycastZone(new Vector3(transform.position.x, previousRealPosition.y, previousRealPosition.z) + collider.center, colliderExtents))
-                {
-                    _raycastPosition = new Vector3(previousRealPosition.x, _raycastPosition.y, _raycastPosition.z);
-
-                    Debug.Log("Raycast back in X");
-                }
-                // Y axis
-                if (RaycastZone(new Vector3(previousRealPosition.x, transform.position.y, previousRealPosition.z) + collider.center, colliderExtents))
-                {
-                    _raycastPosition = new Vector3(_raycastPosition.x, previousRealPosition.y, _raycastPosition.z);
-
-                    Debug.Log("Raycast back in Y");
-
-                    Debug.Log($"Movement Y => : Center : {Vector3String(new Vector3(previousRealPosition.x, transform.position.y, previousRealPosition.z) + collider.center)} | Extents : {Vector3String(colliderExtents)}");
-                }
-                // Z axis
-                if (RaycastZone(new Vector3(previousRealPosition.x, previousRealPosition.y, transform.position.z) + collider.center, colliderExtents))
-                {
-                    _raycastPosition = new Vector3(_raycastPosition.x, _raycastPosition.y, previousRealPosition.z);
-
-                    Debug.Log("Raycast back in Z");
-                }*/
             }
 
             // If the raycast position is still the same as the position of the character, where there are bad colliders stucking the character, triggers Powerful Mode
@@ -445,17 +386,17 @@ public class TDS_FreakController : MonoBehaviour
         if (!isInCumbersomeCollider)
         {
             // If the final position is blocked by something, do not move
-            if (Physics.OverlapBox(new Vector3(_newPosition.x, _raycastPosition.y, _raycastPosition.z) + collider.center, colliderExtents, Quaternion.identity, WhatCollides, QueryTriggerInteraction.Ignore).Length > 0)
+            if (Physics.OverlapBox(new Vector3(_newPosition.x, _raycastPosition.y, _raycastPosition.z) + GetColliderCenterSpace, colliderExtents, Quaternion.identity, WhatCollides, QueryTriggerInteraction.Ignore).Length > 0)
             {
                 Debug.Log("No movement posible in X !");
                 _newPosition = new Vector3(transform.position.x, _newPosition.y, _newPosition.z);
             }
-            if (Physics.OverlapBox(new Vector3(_raycastPosition.x, _newPosition.y, _raycastPosition.z) + collider.center, colliderExtents, Quaternion.identity, WhatCollides, QueryTriggerInteraction.Ignore).Length > 0)
+            if (Physics.OverlapBox(new Vector3(_raycastPosition.x, _newPosition.y, _raycastPosition.z) + GetColliderCenterSpace, colliderExtents, Quaternion.identity, WhatCollides, QueryTriggerInteraction.Ignore).Length > 0)
             {
                 Debug.Log("No movement posible in Y !");
                 _newPosition = new Vector3(_newPosition.x, transform.position.y, _newPosition.z);
             }
-            if (Physics.OverlapBox(new Vector3(_raycastPosition.x, _raycastPosition.y, _newPosition.z) + collider.center, colliderExtents, Quaternion.identity, WhatCollides, QueryTriggerInteraction.Ignore).Length > 0)
+            if (Physics.OverlapBox(new Vector3(_raycastPosition.x, _raycastPosition.y, _newPosition.z) + GetColliderCenterSpace, colliderExtents, Quaternion.identity, WhatCollides, QueryTriggerInteraction.Ignore).Length > 0)
             {
                 Debug.Log("No movement posible in Z !");
                 _newPosition = new Vector3(_newPosition.x, _newPosition.y, transform.position.z);
@@ -488,7 +429,7 @@ public class TDS_FreakController : MonoBehaviour
         // X axis
         if (_movement.x != 0)
         {
-            _result[0] = RaycastZone(new Vector3(_firstBoxCenter.x + (_extents.x * Mathf.Sign(_movement.x)) + (_movement.x / 2), _firstBoxCenter.y, _firstBoxCenter.z) + collider.center, new Vector3(Mathf.Abs(_movement.x / 2), _extents.y, _extents.z));
+            _result[0] = RaycastZone(new Vector3(_firstBoxCenter.x + (_extents.x * Mathf.Sign(_movement.x)) + (_movement.x / 2), _firstBoxCenter.y, _firstBoxCenter.z) + GetColliderCenterSpace, new Vector3(Mathf.Abs(_movement.x / 2), _extents.y, _extents.z));
 
         }
         else
@@ -498,7 +439,7 @@ public class TDS_FreakController : MonoBehaviour
         // Y axis
         if (_movement.y != 0)
         {
-            _result[1] = RaycastZone(new Vector3(_firstBoxCenter.x, _firstBoxCenter.y + (_extents.y * Mathf.Sign(_movement.y)) + (_movement.y / 2), _firstBoxCenter.z) + collider.center, new Vector3(_extents.x, Mathf.Abs(_movement.y / 2), _extents.z));
+            _result[1] = RaycastZone(new Vector3(_firstBoxCenter.x, _firstBoxCenter.y + (_extents.y * Mathf.Sign(_movement.y)) + (_movement.y / 2), _firstBoxCenter.z) + GetColliderCenterSpace, new Vector3(_extents.x, Mathf.Abs(_movement.y / 2), _extents.z));
         }
         else
         {
@@ -507,7 +448,7 @@ public class TDS_FreakController : MonoBehaviour
         // Z axis
         if (_movement.z != 0)
         {
-            _result[2] = RaycastZone(new Vector3(_firstBoxCenter.x, _firstBoxCenter.y, _firstBoxCenter.z + (_extents.z * Mathf.Sign(_movement.z)) + (_movement.z / 2)) + collider.center, new Vector3(_extents.x, _extents.y, Mathf.Abs(_movement.z / 2)));
+            _result[2] = RaycastZone(new Vector3(_firstBoxCenter.x, _firstBoxCenter.y, _firstBoxCenter.z + (_extents.z * Mathf.Sign(_movement.z)) + (_movement.z / 2)) + GetColliderCenterSpace, new Vector3(_extents.x, _extents.y, Mathf.Abs(_movement.z / 2)));
         }
         else
         {

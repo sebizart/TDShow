@@ -82,10 +82,15 @@ public class TDS_RPCManager : PunBehaviour
     public string SetInfoDamages(Dictionary<int, int> _dico, int _charID, int _attackID)
     {
         string _info = $"{_charID}#{_attackID}";
-        foreach (KeyValuePair<int, int> _pair in _dico)
+
+        if (_dico != null)
         {
-            _info += $"|{_pair.Key}#{_pair.Value}";
+            foreach (KeyValuePair<int, int> _pair in _dico)
+            {
+                _info += $"|{_pair.Key}#{_pair.Value}";
+            }
         }
+
         return _info;
     }
 
