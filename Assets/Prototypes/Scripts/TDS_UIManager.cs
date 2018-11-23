@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,7 +8,8 @@ using UnityEngine.UI;
 public class TDS_UIManager : MonoBehaviour
 {
     #region Events
-
+    public event Action OnFailFireMiniGame = null;
+    public event Action<FireMiniGameState> OnSetFireMiniGameState = null;
     #endregion
 
     #region Fields / Properties
@@ -25,6 +27,9 @@ public class TDS_UIManager : MonoBehaviour
 
     #region In-Game
     [Header("In-Game")]
+    // The Ui animator
+    [SerializeField] private Animator animator = null;
+
     // Dictionary containing in-game player's type associated with their health image
     [SerializeField]
     public Dictionary<PlayerCharacter, Image> OtherPlayersHealth = new Dictionary<PlayerCharacter, Image>();
@@ -113,6 +118,8 @@ public class TDS_UIManager : MonoBehaviour
         RefreshCharacterSelection();
     }
 
+    public void FailFireMiniGame() => OnFailFireMiniGame?.Invoke();
+
     /// <summary>
     /// Makes the main player leave the game (in UI)
     /// </summary>
@@ -132,6 +139,16 @@ public class TDS_UIManager : MonoBehaviour
         OtherPlayersHealth.Remove(_player);
 
         RefreshCharacterSelection();
+    }
+
+    public void SetFireMiniGame(bool _activate)
+    {
+        animator.SetBool("IsFireMiniGame", _activate);
+    }
+
+    public void SetFireMiniGameState(FireMiniGameState _state)
+    {
+        OnSetFireMiniGameState?.Invoke(_state);
     }
 
     /// <summary>
@@ -197,6 +214,8 @@ public class TDS_UIManager : MonoBehaviour
         fatLadySB.onClick.AddListener(() => TDS_GameManager.Instance.Spawn(PlayerCharacter.FatLady));
         fireEaterSB.onClick.AddListener(() => TDS_GameManager.Instance.Spawn(PlayerCharacter.FireEater));
         jugglerSB.onClick.AddListener(() => TDS_GameManager.Instance.Spawn(PlayerCharacter.Juggler));
+
+        if (!animator) animator = GetComponent<Animator>();
     }
 
     private void FixedUpdate()

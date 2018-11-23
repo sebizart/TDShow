@@ -339,7 +339,7 @@ public class TDS_FreakController : MonoBehaviour
             // Améliorer en ne raycastant que la toute petite zone qui a été franchie
             // entre la précédente position et l'actuelle
 
-            Debug.Log("Get back ! Get back ! Get back to where you once belong !");
+            Debug.Log("Get back ! Get back ! Get back to where you once belonged !");
 
             // If the previous real position is clean from bad colliders, for each axis, set the raycast position as previous if the movement was not allowed
             if (!RaycastZone(previousRealPosition + GetColliderCenterSpace, colliderExtents))

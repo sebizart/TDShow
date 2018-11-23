@@ -85,8 +85,6 @@ public class TDS_BeardLady : TDS_Player
                     Gizmos.color = _currentBox.BoxColor;
                     Gizmos.DrawCube(transform.TransformPoint(_currentBox.Collider.center), Vector3.Scale(_currentBox.Collider.size, _currentBox.Collider.transform.lossyScale));
                     Gizmos.color = Color.white;
-
-                    Debug.Log($"Box 1 --> Center : {_currentBox.Collider.center} | Position : {_currentBox.Collider.transform.position}");
                 }
                 break;
             case PlayerAttacks.AttackTwo:
@@ -174,20 +172,12 @@ public class TDS_BeardLady : TDS_Player
     /// Add one to the beard Durability
     /// set growing beardValue to zero
     /// </summary>
-    private void EndAttack()
+    protected override void EndAttack()
     {
         BeardDurability++;
         growingBeardValue = 0;
 
-        if (currentAttackCoroutine != null)
-        {
-            StopCoroutine(currentAttackCoroutine);
-        }
-
-        CharacterAnimator.SetInteger("AttackState", 0);
-
-        currentAttack = PlayerAttacks.None;
-        isStroking = false;
+        base.EndAttack();
 
         InvokeRepeating("GrowBeard", 1, 1);
     }

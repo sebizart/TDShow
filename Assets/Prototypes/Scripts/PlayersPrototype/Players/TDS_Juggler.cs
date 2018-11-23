@@ -200,7 +200,7 @@ public class TDS_Juggler : TDS_Player
 
         switch (facingSide)
         {
-            case FacingSide.Bottom:
+            case FacingSide.Face:
                 _backMovement = Vector3.forward;
                 break;
             case FacingSide.Left:
@@ -209,7 +209,7 @@ public class TDS_Juggler : TDS_Player
             case FacingSide.Right:
                 _backMovement = -Vector3.right;
                 break;
-            case FacingSide.Top:
+            case FacingSide.Back:
                 _backMovement = -Vector3.forward;
                 break;
             default:
@@ -284,7 +284,7 @@ public class TDS_Juggler : TDS_Player
         // Set the default destination
         switch (facingSide)
         {
-            case FacingSide.Bottom:
+            case FacingSide.Face:
                 projectileDestination = new Vector3(transform.position.x, 0, transform.position.z) - (Vector3.forward * 2.5f);
                 break;
             case FacingSide.Left:
@@ -293,7 +293,7 @@ public class TDS_Juggler : TDS_Player
             case FacingSide.Right:
                 projectileDestination = new Vector3(transform.position.x, 0, transform.position.z) + (Vector3.right * 2.5f);
                 break;
-            case FacingSide.Top:
+            case FacingSide.Back:
                 projectileDestination = new Vector3(transform.position.x, 0, transform.position.z) + (Vector3.forward * 2.5f);
                 break;
             default:
@@ -333,11 +333,11 @@ public class TDS_Juggler : TDS_Player
             }
             else if (projectileDestination.z < transform.position.z)
             {
-                if (facingSide != FacingSide.Bottom) ChangeSide(FacingSide.Bottom);
+                if (facingSide != FacingSide.Face) ChangeSide(FacingSide.Face);
             }
             else if (projectileDestination.z > transform.position.z)
             {
-                if (facingSide != FacingSide.Top) ChangeSide(FacingSide.Top);
+                if (facingSide != FacingSide.Back) ChangeSide(FacingSide.Back);
             }
 
             // Refresh the throw angle

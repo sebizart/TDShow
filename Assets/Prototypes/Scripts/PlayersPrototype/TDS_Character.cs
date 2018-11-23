@@ -243,7 +243,7 @@ public abstract class TDS_Character : TDS_DamageableElement
             if (_box.IsVisible)
             {
                 Gizmos.color = _box.BoxColor;
-                Gizmos.DrawCube(transform.position + _box.Collider.center, _box.Collider.extents);
+                Gizmos.DrawCube(transform.TransformPoint(_box.Collider.center), Vector3.Scale(_box.Collider.size, _box.Collider.transform.lossyScale));
             }
         }
 
@@ -272,8 +272,8 @@ public abstract class TDS_Character : TDS_DamageableElement
 /// </summary>
 public enum FacingSide
 {
-    Bottom = 0, 
+    Face = 0, 
     Left = 1 , 
     Right = 2, 
-    Top = 3
+    Back = 3
 }

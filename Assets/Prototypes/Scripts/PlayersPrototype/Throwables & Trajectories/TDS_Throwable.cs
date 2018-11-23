@@ -163,7 +163,7 @@ public class TDS_Throwable : PunBehaviour
 
         switch (_facingSide)
         {
-            case FacingSide.Bottom:
+            case FacingSide.Face:
                 _force += -Vector3.forward;
                 break;
             case FacingSide.Left:
@@ -172,7 +172,7 @@ public class TDS_Throwable : PunBehaviour
             case FacingSide.Right:
                 _force += Vector3.right;
                 break;
-            case FacingSide.Top:
+            case FacingSide.Back:
                 _force += Vector3.forward;
                 break;
             default:

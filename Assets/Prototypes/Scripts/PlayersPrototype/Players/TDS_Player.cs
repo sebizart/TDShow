@@ -148,6 +148,25 @@ public abstract class TDS_Player : TDS_Character
         }
     }
 
+    protected override IEnumerator Attack(int _attackID)
+    {
+        isStroking = true;
+        return base.Attack(_attackID);
+    }
+
+    protected virtual void EndAttack()
+    {
+        if (currentAttackCoroutine != null)
+        {
+            StopCoroutine(currentAttackCoroutine);
+        }
+
+        CharacterAnimator.SetInteger("AttackState", 0);
+
+        currentAttack = PlayerAttacks.None;
+        isStroking = false;
+    }
+
     public override void ExecuteAction(string _actionID)
     {
         base.ExecuteAction(_actionID);
@@ -188,16 +207,16 @@ public abstract class TDS_Player : TDS_Character
         }
         else if (_vertical > 0)
         {
-            if (facingSide != FacingSide.Top)
+            if (facingSide != FacingSide.Back)
             {
-                ChangeSide(FacingSide.Top);
+                ChangeSide(FacingSide.Back);
             }
         }
         else if (_vertical < 0)
         {
-            if (facingSide != FacingSide.Bottom)
+            if (facingSide != FacingSide.Face)
             {
-                ChangeSide(FacingSide.Bottom);
+                ChangeSide(FacingSide.Face);
             }
         }
 
@@ -237,7 +256,7 @@ public abstract class TDS_Player : TDS_Character
 
         switch (facingSide)
         {
-            case FacingSide.Bottom:
+            case FacingSide.Face:
                 _movement = -Vector3.forward;
                 break;
             case FacingSide.Left:
@@ -246,7 +265,7 @@ public abstract class TDS_Player : TDS_Character
             case FacingSide.Right:
                 _movement = Vector3.right;
                 break;
-            case FacingSide.Top:
+            case FacingSide.Back:
                 _movement = Vector3.forward;
                 break;
             default:
@@ -281,16 +300,16 @@ public abstract class TDS_Player : TDS_Character
             }
             else if (_vertical > 0)
             {
-                if (facingSide != FacingSide.Top)
+                if (facingSide != FacingSide.Back)
                 {
-                    ChangeSide(FacingSide.Top);
+                    ChangeSide(FacingSide.Back);
                 }
             }
             else if (_vertical < 0)
             {
-                if (facingSide != FacingSide.Bottom)
+                if (facingSide != FacingSide.Face)
                 {
-                    ChangeSide(FacingSide.Bottom);
+                    ChangeSide(FacingSide.Face);
                 }
             }
 
@@ -338,12 +357,6 @@ public abstract class TDS_Player : TDS_Character
         // If the player is dodging, return
         if (isDodging || isCatching || isStroking) return;
 
-        // If it's the player's avatar : Checks the inputs of the player
-        if (photonViewElement.isMine)
-        {
-            Move();
-            Actions();
-        }
         // If not, just set the position of this player localy
         else
         {
@@ -368,6 +381,16 @@ public abstract class TDS_Player : TDS_Character
     protected override void Update () 
     {
         base.Update();
+
+        // If the player is dodging, return
+        if (isDodging || isCatching || isStroking) return;
+
+        // If it's the player's avatar : Checks the inputs of the player
+        if (photonViewElement.isMine)
+        {
+            Move();
+            Actions();
+        }
     }
     #endregion
 }

@@ -45,6 +45,8 @@ public class TDS_FireEater : TDS_Player
     protected override void Start()
     {
         base.Start();
+        TDS_UIManager.Instance.OnSetFireMiniGameState += ((FireMiniGameState _state) => currentMiniGameState = _state);
+        TDS_UIManager.Instance.OnFailFireMiniGame += FailMiniGame;
     }
 
     // Update is called once per frame
@@ -113,17 +115,25 @@ public class TDS_FireEater : TDS_Player
     {
         isPreparingFire = true;
 
-        CharacterAnimator.SetBool("IsPreparingFire", true);
+        yield return null;
 
-        while(!Input.GetButtonDown(_isAttackTwo ? "Fire2" : "Fire3") && isPreparingFire)
+        TDS_UIManager.Instance.SetFireMiniGame(true);
+
+        while (isPreparingFire)
         {
-            yield return new WaitForEndOfFrame();
+            if (Input.GetButtonDown(_isAttackTwo ? "Fire2" : "Fire3"))
+            {
+                Debug.Log("Spit the Fire !");
+                break;
+            }
+            yield return null;
         }
 
-        CharacterAnimator.SetBool("IsPreparingFire", false);
+        TDS_UIManager.Instance.SetFireMiniGame(false);
 
         if (!isPreparingFire)
         {
+            Debug.Log("Not preparing fire anymore");
             yield break;
         }
         isPreparingFire = false;
@@ -131,15 +141,16 @@ public class TDS_FireEater : TDS_Player
         switch (currentMiniGameState)
         {
             case FireMiniGameState.Early:
-                TDS_RPCManager.Instance.RPCManagerPhotonView.RPC("LaunchAction", PhotonTargets.All, PhotonViewElementID, _isAttackTwo ? "AttackTwo" : "AttackThree" + "_Early");
+                TDS_RPCManager.Instance.RPCManagerPhotonView.RPC("LaunchAction", PhotonTargets.All, PhotonViewElementID, (_isAttackTwo ? "AttackTwo" : "AttackThree") + "_Early");
                 break;
             case FireMiniGameState.Good:
-                TDS_RPCManager.Instance.RPCManagerPhotonView.RPC("LaunchAction", PhotonTargets.All, PhotonViewElementID, _isAttackTwo ? "AttackTwo" : "AttackThree" + "_Good");
+                TDS_RPCManager.Instance.RPCManagerPhotonView.RPC("LaunchAction", PhotonTargets.All, PhotonViewElementID, (_isAttackTwo ? "AttackTwo" : "AttackThree") + "_Good");
                 break;
             case FireMiniGameState.Late:
-                TDS_RPCManager.Instance.RPCManagerPhotonView.RPC("LaunchAction", PhotonTargets.All, PhotonViewElementID, _isAttackTwo ? "AttackTwo" : "AttackThree" + "_Late");
+                TDS_RPCManager.Instance.RPCManagerPhotonView.RPC("LaunchAction", PhotonTargets.All, PhotonViewElementID, (_isAttackTwo ? "AttackTwo" : "AttackThree") + "_Late");
                 break;
             default:
+                Debug.Log("Euuuh...");
                 break;
         }
     }
