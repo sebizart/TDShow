@@ -150,8 +150,10 @@
     <Compile Include="Assets\Prototypes\Scripts\PlayersPrototype\Enemies\TDS_FightingArea.cs" />
     <Compile Include="Assets\Prototypes\Scripts\PlayersPrototype\Enemies\TDS_PointsManager.cs" />
     <Compile Include="Assets\Prototypes\Scripts\PlayersPrototype\Enemies\TDS_RandomWaveElement.cs" />
+    <Compile Include="Assets\Prototypes\Scripts\PlayersPrototype\Enemies\TDS_SpawnPoint.cs" />
     <Compile Include="Assets\Prototypes\Scripts\PlayersPrototype\Enemies\TDS_WaveElement.cs" />
     <Compile Include="Assets\Prototypes\Scripts\PlayersPrototype\Enemies\TDS_WavePoint.cs" />
+    <Compile Include="Assets\Prototypes\Scripts\PlayersPrototype\MysteryBall.cs" />
     <Compile Include="Assets\Prototypes\Scripts\PlayersPrototype\Players\TDS_BeardLady.cs" />
     <Compile Include="Assets\Prototypes\Scripts\PlayersPrototype\Players\TDS_FatLady.cs" />
     <Compile Include="Assets\Prototypes\Scripts\PlayersPrototype\Players\TDS_FireEater.cs" />
@@ -164,11 +166,12 @@
     <Compile Include="Assets\Prototypes\Scripts\PlayersPrototype\TDS_Item.cs" />
     <Compile Include="Assets\Prototypes\Scripts\PlayersPrototype\TDS_PunInheritance.cs" />
     <Compile Include="Assets\Prototypes\Scripts\PlayersPrototype\TDS_Usable.cs" />
-    <Compile Include="Assets\Prototypes\Scripts\PlayersPrototype\Throwavles &amp; Trajectories\LineRendererExtension.cs" />
-    <Compile Include="Assets\Prototypes\Scripts\PlayersPrototype\Throwavles &amp; Trajectories\TDS_ProjectileUtils.cs" />
-    <Compile Include="Assets\Prototypes\Scripts\PlayersPrototype\Throwavles &amp; Trajectories\TDS_Throwable.cs" />
+    <Compile Include="Assets\Prototypes\Scripts\PlayersPrototype\Throwables &amp; Trajectories\LineRendererExtension.cs" />
+    <Compile Include="Assets\Prototypes\Scripts\PlayersPrototype\Throwables &amp; Trajectories\TDS_ProjectileUtils.cs" />
+    <Compile Include="Assets\Prototypes\Scripts\PlayersPrototype\Throwables &amp; Trajectories\TDS_Throwable.cs" />
     <Compile Include="Assets\Prototypes\Scripts\RPCManagers\TDS_RPCManager.cs" />
     <Compile Include="Assets\Prototypes\Scripts\TDS_DamageBehaviour.cs" />
+    <Compile Include="Assets\Prototypes\Scripts\TDS_FreakController.cs" />
     <Compile Include="Assets\Prototypes\Scripts\TDS_UIManager.cs" />
     <Compile Include="Assets\Scripts\LogSaver\RunTime\TDS_CustomDebug.cs" />
     <Compile Include="Assets\Scripts\LogSaver\RunTime\TDS_LoggerManager.cs" />
@@ -180,6 +183,7 @@
     <Compile Include="Assets\Scripts\Team Tools\SpritesManager\Core\SpritesManager.cs" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Surface-Mobile.shader" />
     <None Include="Assets\TextMesh Pro\Resources\LineBreaking Leading Characters.txt" />
+    <None Include="Assets\Resources\TDS_NavDatas\CustomNavData_Alexis Scene.txt" />
     <None Include="Assets\Photon\Photon Unity Networking\link.xml" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro_Properties.cginc" />
     <None Include="Assets\Photon\Plugins\Photon3Unity3D.xml" />
