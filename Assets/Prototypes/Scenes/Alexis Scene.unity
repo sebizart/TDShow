@@ -3130,18 +3130,35 @@ MonoBehaviour:
   detectionState: 0
   waveNumber: 0
   detectionArea:
-    extendedX: 1
-    extendedY: 1
-    extendedZ: 1
+    extendedX: 20.778393
+    extendedY: 1.2542171
+    extendedZ: 10.713059
     debugColor: {r: 1, g: 0, b: 0, a: 1}
   pointsManager:
-    position: {x: 0, y: 0, z: 2.243429}
+    position: {x: 0, y: 2, z: 0}
     allWavePoints:
-    - waveNumber: 0
-      position: {x: -3.760693, y: 0, z: 3.7894158}
-      range: 4.54
+    - waveNumber: 1
+      position: {x: -5.576501, y: 0, z: -1.6700063}
+      range: 1.5
       staticWaveElement:
         enemiesSpawn:
+        - spawningEnemy: {fileID: 114801022512511472, guid: cd76fe4882b6b8d42a59ef6f065af2c6,
+            type: 2}
+          numberOfEnemies: 2
+      randomWaveElement:
+        enemiesSpawn:
+        - spawningEnemy: {fileID: 114788337986110764, guid: 78e73542c2eb8304ba94a15f08052eb9,
+            type: 2}
+          numberOfEnemies: 1
+        randomValues: 28000000
+    - waveNumber: 2
+      position: {x: 6.595964, y: 0, z: -2.513177}
+      range: 3
+      staticWaveElement:
+        enemiesSpawn:
+        - spawningEnemy: {fileID: 114801022512511472, guid: cd76fe4882b6b8d42a59ef6f065af2c6,
+            type: 2}
+          numberOfEnemies: 4
         - spawningEnemy: {fileID: 114788337986110764, guid: 78e73542c2eb8304ba94a15f08052eb9,
             type: 2}
           numberOfEnemies: 1
@@ -3149,22 +3166,8 @@ MonoBehaviour:
         enemiesSpawn:
         - spawningEnemy: {fileID: 114801022512511472, guid: cd76fe4882b6b8d42a59ef6f065af2c6,
             type: 2}
-          numberOfEnemies: 2
-        randomValues: 39000000
-    - waveNumber: 0
-      position: {x: 1.3506894, y: 1.0493045, z: 3.2980359}
-      range: 3.2
-      staticWaveElement:
-        enemiesSpawn:
-        - spawningEnemy: {fileID: 114801022512511472, guid: cd76fe4882b6b8d42a59ef6f065af2c6,
-            type: 2}
-          numberOfEnemies: 2
-      randomWaveElement:
-        enemiesSpawn:
-        - spawningEnemy: {fileID: 114801022512511472, guid: cd76fe4882b6b8d42a59ef6f065af2c6,
-            type: 2}
           numberOfEnemies: 3
-        randomValues: 3e000000
+        randomValues: 3c000000
   spawnedEnemies: []
   areaPhotonView: {fileID: 0}
 --- !u!114 &1692345493
@@ -3204,7 +3207,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: -3.94, y: 1, z: 12.36}
-  m_Center: {x: -12.2, y: 0, z: 0}
+  m_Center: {x: -12.2, y: 0.57, z: 0}
 --- !u!4 &1692345495
 Transform:
   m_ObjectHideFlags: 0
@@ -3212,7 +3215,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1692345491}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.03, y: 0.5, z: 3.97}
+  m_LocalPosition: {x: 0, y: 0.44, z: 1.18}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -4504,7 +4507,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &2082041163
 MonoBehaviour:
   m_ObjectHideFlags: 0

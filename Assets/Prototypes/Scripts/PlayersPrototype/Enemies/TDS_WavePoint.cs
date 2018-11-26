@@ -22,8 +22,6 @@ public class TDS_WavePoint
     #region Fields and Properties
     public string Name { get; set; }
 
-    public bool IsFoldOut { get; set; }
-
     [SerializeField] int waveNumber = 0; 
     public int WaveNumber { get { return waveNumber; } set { waveNumber = value; } }
 
