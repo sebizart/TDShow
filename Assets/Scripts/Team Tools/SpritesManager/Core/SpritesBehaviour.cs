@@ -28,14 +28,14 @@ public class SpritesBehaviour : MonoBehaviour
 	#endregion
 
 	#region UnityMethods
-		void Start () 
-		{
+	void Start() 
+	{
         transform.forward = Camera.main.transform.forward;
     }
+	
+	void Update() 
+	{
 		
-		void Update () 
-		{
-			
-		}
+	}
 	#endregion
 }

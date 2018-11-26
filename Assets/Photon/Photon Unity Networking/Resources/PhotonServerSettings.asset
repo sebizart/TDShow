@@ -61,7 +61,8 @@ MonoBehaviour:
   - ReceiveInGamePlayers
   - SendInGamePlayers
   - ApplyAreaInformations
-  - ApplyMigrationInformations
+  - ThrowMysteryBall
+  - DropObject
   - ReceiveMigrationsInformations
   - ReceptionFeeback
   DisableAutoOpenWizard: 1

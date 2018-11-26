@@ -34,14 +34,13 @@ public abstract class TDS_Character : TDS_DamageableElement
 
     [SerializeField, Header("Float")] protected float speed = 1;
 
-    [SerializeField, Header("Nav Mesh")] NavMeshAgent navMeshCharacter;
     private Vector3 netOnlinePosition;
 
     [SerializeField, Header("Projectile")] protected TDS_Throwable projectile;
 
     [SerializeField, Header("Animator")] protected Animator CharacterAnimator; 
 
-    [SerializeField, Header("AttackBoxes")] protected TDS_AttackBox[] attackBoxes = new TDS_AttackBox[] { };
+    [SerializeField, Header("AttackBoxes")] protected TDS_AttackBox attackBox = null;
 
     [SerializeField, Header("Vector 3")] protected Vector3 grabObjectZoneCenter = Vector3.zero;
     [SerializeField] protected Vector3 grabObjectZoneExtents = Vector3.one;
@@ -65,55 +64,61 @@ public abstract class TDS_Character : TDS_DamageableElement
     }
 
     /// <summary>
-    /// Ask the master RPC manager to attack with the attack ID
-    /// </summary>
-    /// <param name="_attackID">ID of the attack </param>
-    protected void CallHit(int _attackID)
-    {
-        CallAction(_attackID);
-        TDS_RPCManager.Instance.RPCManagerPhotonView.RPC("LaunchAttack", PhotonTargets.MasterClient, PhotonViewElementID, _attackID); 
-    }
-
-    /// <summary>
     /// Check what the character has in his attackbox with the id "_attackID"
     /// </summary>
     /// <param name="_attackID"> ID of the attack </param>
     /// <returns></returns>
-    public virtual Dictionary<int, int> CheckHit(int _attackID)
+    public virtual Dictionary<int, int> CheckHit()
     {
         if (!PhotonNetwork.isMasterClient) return null;
         // Get the right box         
-        TDS_AttackBox _box = attackBoxes.Where(b => b.ID == _attackID).FirstOrDefault();
-        if (_box == null)
-        {
-            TDS_CustomDebug.CustomDebugLog($"Attack Box n°{_attackID} can't be found on {this.name}");
-            return null;
-        }
-        return _box.RayCastAttack(); 
+        return attackBox.RayCastAttack(); 
     }
 
     /// <summary>
-    /// Apply effects of the action with the ID
+    /// Executes an action
     /// </summary>
     /// <param name="_actionID">ID of the action</param>
-    public abstract void Action(int _actionID);
+    public virtual void ExecuteAction(string _actionID)
+    {
+    }
 
     /// <summary>
     /// Set the destination of this character to a new position
     /// </summary>
     /// <param name="_position">New destination position of the character</param>
-    protected virtual void SetDestination(Vector3 _position)
-    {
-        navMeshCharacter.SetDestination(_position);
-    }
+    protected abstract void SetDestination(Vector3 _position);
 
     #region Combats
     protected abstract void AttackOne();
     protected abstract void AttackThree();
     protected abstract void AttackTwo();
+
+    protected virtual IEnumerator Attack()
+    {
+        while (true)
+        {
+            TDS_RPCManager.Instance.RPCManagerPhotonView.RPC("ApplyInfoDamages", PhotonTargets.All, TDS_RPCManager.Instance.SetInfoDamages(CheckHit(), PhotonViewElementID));
+
+            yield return new WaitForSeconds(.05f);
+        }
+    }
     #endregion
 
     #region Object Interaction
+    /// <summary>
+    /// Drop the graned object
+    /// </summary>
+    public virtual void DropObject()
+    {
+        // If the character doesn't have a projectile to drop, return
+        if (!projectile) return;
+
+        // Drop the projectile and remove it from the current weared object
+        projectile.Drop();
+        projectile = null;
+    }
+
     /// <summary>
     /// Grabs an object
     /// </summary>
@@ -175,11 +180,14 @@ public abstract class TDS_Character : TDS_DamageableElement
     #endregion
 
     #region NET methods
+    /// <summary>
+    /// Set the online position for instance of a character
+    /// </summary>
     protected void NetSetOnlinePosition()
     {
         if (photonViewElement.isMine) return; 
         //SUIVRE LA POSITION DU PLAYER LOCAL AVEC LE ONPHOTONSERIALIZEVIEW
-        transform.position = Vector3.Lerp(transform.position, netOnlinePosition, Time.deltaTime * navMeshCharacter.speed); 
+        transform.position = Vector3.Lerp(transform.position, netOnlinePosition, Time.deltaTime * 5); 
 
         //OU ENVOYER LE PATH AVEC UNE REQUËTE RPC SOUS FORME D'UNE CHAINE STRING POUR QUE TOUS LES PLAYERS SUIVENT LE PATH DONNÉ PAR LE MASTERMANAGER
     }
@@ -214,13 +222,10 @@ public abstract class TDS_Character : TDS_DamageableElement
     #region UnityMethods
     protected virtual void OnDrawGizmos()
     {
-        foreach (TDS_AttackBox _box in attackBoxes)
+        if (attackBox.IsVisible)
         {
-            if (_box.IsVisible)
-            {
-                Gizmos.color = _box.BoxColor;
-                Gizmos.DrawCube(transform.position + _box.CenterPosition, _box.ExtendPosition);
-            }
+            Gizmos.color = attackBox.BoxColor;
+            Gizmos.DrawCube(transform.TransformPoint(attackBox.Collider.center), Vector3.Scale(attackBox.Collider.size, attackBox.Collider.transform.lossyScale));
         }
 
         if (isGrabObjectBoxVisible)
@@ -233,9 +238,9 @@ public abstract class TDS_Character : TDS_DamageableElement
 
     protected virtual void Start () 
     {
-    	
+        //transform.forward = Camera.main.transform.forward;
     }
-    
+
     protected virtual void Update () 
     {
     	
@@ -248,8 +253,8 @@ public abstract class TDS_Character : TDS_DamageableElement
 /// </summary>
 public enum FacingSide
 {
-    Bottom = 0, 
-    Left = 1 , 
-    Right = 2, 
-    Top = 3
+    Back,
+    Face,
+    Left,
+    Right
 }

@@ -33,10 +33,8 @@ public class TDS_AttackBox
     {
         get { return minDamages; }
     }
-    [SerializeField, Header("Box")] private Vector3 centerPosition;
-    public Vector3 CenterPosition { get { return centerPosition; } }
-    [SerializeField] private Vector3 extendPosition;
-    public Vector3 ExtendPosition { get { return extendPosition; } }
+    [SerializeField, Header("Collider")] private BoxCollider collider;
+    public BoxCollider Collider { get { return collider; } }
 
     // Gizmo utilities
     [SerializeField] private bool isVisible = false;
@@ -52,7 +50,9 @@ public class TDS_AttackBox
     /// <returns></returns>
     public Dictionary<int, int> RayCastAttack()
     {
-        int[] _elements =  Physics.OverlapBox(centerPosition, extendPosition).Select(c => c.GetComponent<TDS_DamageableElement>()).ToArray().Where(e => e != null).Select(e => e.PhotonViewElementID).ToArray();
+        if (!collider) return null;
+
+        int[] _elements =  Physics.OverlapBox(collider.transform.TransformPoint(collider.center), Vector3.Scale(collider.size, collider.transform.lossyScale)).Select(c => c.GetComponent<TDS_DamageableElement>()).ToArray().Where(e => e != null).Select(e => e.PhotonViewElementID).ToArray();
         int _damages;
         Dictionary<int, int> _characterDamages = new Dictionary<int, int>();
         foreach (int id in _elements)
@@ -61,24 +61,6 @@ public class TDS_AttackBox
             _characterDamages.Add(id, _damages); 
         }
         return _characterDamages; 
-    }
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <returns></returns>
-    public Dictionary<int, int> RayCastAttack(float _offset)
-    {
-        Vector3 _offsetedCenterPosition = new Vector3(centerPosition.x * _offset, centerPosition.y, centerPosition.z);
-        Vector3 _offsetedExtendedPosition = new Vector3(extendPosition.x * _offset, extendPosition.y, extendPosition.z);
-        int[] _elements = Physics.OverlapBox(_offsetedCenterPosition, _offsetedExtendedPosition).Select(c => c.GetComponent<TDS_DamageableElement>()).ToArray().Where(e => e != null).Select(e => e.PhotonViewElementID).ToArray();
-        int _damages;
-        Dictionary<int, int> _characterDamages = new Dictionary<int, int>();
-        foreach (int id in _elements)
-        {
-            _damages = Random.Range(minDamages, maxDamages);
-            _characterDamages.Add(id, _damages);
-        }
-        return _characterDamages;
     }
     #endregion
 

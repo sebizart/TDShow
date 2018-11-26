@@ -79,59 +79,42 @@ public class TDS_RPCManager : PunBehaviour
     /// <param name="_charID">PhotonView ID of the attacking character</param>
     /// <param name="_attackID">ID of the attack</param>
     /// <returns></returns>
-    private string SetInfoDamages(Dictionary<int, int> _dico, int _charID, int _attackID)
+    public string SetInfoDamages(Dictionary<int, int> _dico, int _charID)
     {
-        string _info = $"{_charID}#{_attackID}";
-        foreach (KeyValuePair<int, int> _pair in _dico)
+        string _info = $"{_charID}";
+
+        if (_dico != null)
         {
-            _info += $"|{_pair.Key}#{_pair.Value}";
+            foreach (KeyValuePair<int, int> _pair in _dico)
+            {
+                _info += $"|{_pair.Key}#{_pair.Value}";
+            }
         }
+
         return _info;
     }
 
     #region RPC Requests
     #region Actions
     /// <summary>
-    /// Launch an action on a character by its ID
+    /// Launch an action with the character by the ID
     /// </summary>
-    /// <param name="_characterID">Id of the character</param>
+    /// <param name="_characterID">ID of the character</param>
     /// <param name="_actionID">ID of the action</param>
     [PunRPC]
-    public void LaunchAction(int _characterID, int _actionID)
+    public void LaunchAction(int _characterID, string _actionID)
     {
-        TDS_Character _character = GetCharacterByID(_characterID);
-        if (_character == null)
-        {
-            TDS_CustomDebug.CustomDebugLog($"No Character found with the ID {_characterID}");
-            return;
-        }
-        _character.Action(_actionID);
-    }
-    #endregion
-
-    #region Attacks
-    /// <summary>
-    /// Launch the attack with the character by the ID
-    /// Get this character
-    /// Check its attackBox
-    /// And Apply Info damages on every PhotonTarget
-    /// </summary>
-    /// <param name="_characterID"></param>
-    /// <param name="_attackID"></param>
-    [PunRPC]
-    public void LaunchAttack(int _characterID, int _attackID)
-    {
-        if (!PhotonNetwork.isMasterClient) return;
         TDS_Character _char = GetCharacterByID(_characterID);
         if (_char == null)
         {
             TDS_CustomDebug.CustomDebugLog($"No Character found with the ID {_characterID}");
             return;
         }
-        Dictionary<int, int> _allChars = _char.CheckHit(_attackID);
-        RPCManagerPhotonView.RPC("ApplyInfoDamages", PhotonTargets.All, SetInfoDamages(_allChars, _characterID, _attackID));
+        _char.ExecuteAction(_actionID);
     }
+    #endregion
 
+    #region Attacks
     /// <summary>
     /// Create a AttackInfo object which contains all the infos in the string
     /// </summary>
@@ -145,7 +128,35 @@ public class TDS_RPCManager : PunBehaviour
     }
     #endregion
 
+    #region FightingAreaInformations
+    [PunRPC]
+    public void ApplyAreaInformations(string _areaInfo)
+    {
+        if (!PhotonNetwork.isMasterClient) return;
+        TDS_FightingAreaInfo _infos = new TDS_FightingAreaInfo(_areaInfo);
+        TDS_FightingArea _area = GetFightingAreaByID(_infos.FightingAreaID);
+        if (_area == null) return;
+        _area.SpawnEnemiesUsingInfos(_infos.EnemiesInfos);
+    }
+    #endregion
+
     #region Grab & Throw Object
+    /// <summary>
+    /// Makes a character drop an object
+    /// </summary>
+    /// <param name="_characterID">ID of the character</param>
+    [PunRPC]
+    public void DropObject(int _characterID)
+    {
+        TDS_Character _char = GetCharacterByID(_characterID);
+        if (_char == null)
+        {
+            TDS_CustomDebug.CustomDebugLog($"No Character found with the ID {_characterID}");
+            return;
+        }
+        _char.DropObject();
+    }
+
     /// <summary>
     /// Makes a character grab an object
     /// </summary>
@@ -178,6 +189,49 @@ public class TDS_RPCManager : PunBehaviour
             return;
         }
         _char.ThrowObject();
+    }
+    /// <summary>
+    /// Makes the juggler throw an object
+    /// </summary>
+    /// <param name="_characterID">ID of the juggler</param>
+    /// <param name="_velocity">Velocity to give to the object</param>
+    [PunRPC]
+    public void ThrowObject(int _characterID, Vector3 _velocity)
+    {
+        TDS_Character _char = GetCharacterByID(_characterID);
+        if (_char == null)
+        {
+            TDS_CustomDebug.CustomDebugLog($"No Character found with the ID {_characterID}");
+            return;
+        }
+        TDS_Juggler _juggler = _char.GetComponent<TDS_Juggler>();
+
+        if (_juggler)
+        {
+            _juggler.ThrowObject(_velocity);
+        }
+    }
+
+    /// <summary>
+    /// Makes the juggler throw a mystery ball
+    /// </summary>
+    /// <param name="_characterID">ID of the juggler</param>
+    /// <param name="_velocity">Velocity of the mystery ball</param>
+    [PunRPC]
+    public void ThrowMysteryBall(int _characterID, Vector3 _velocity)
+    {
+        TDS_Character _char = GetCharacterByID(_characterID);
+        if (_char == null)
+        {
+            TDS_CustomDebug.CustomDebugLog($"No Character found with the ID {_characterID}");
+            return;
+        }
+        TDS_Juggler _juggler = _char.GetComponent<TDS_Juggler>();
+
+        if (_juggler)
+        {
+            _juggler.ThrowMysteryBall(_velocity);
+        }
     }
 
     /// <summary>
@@ -216,7 +270,7 @@ public class TDS_RPCManager : PunBehaviour
         //SPLIT AT '@' TO GET EXMASTER ID AT 0, FIGHTING AREA INFO AT [1] AND PROPS INFORMATIONS AT [2]
         string _areasInfos = _migrationInfos.Split('@')[1];
         //string _propsInfos = _migrationInfos.Split('@')[2]; 
-        if(_areasInfos != string.Empty)
+        if (_areasInfos != string.Empty)
         {
             //SPLIT AGAIN AT '&' TO GET EVERY ACTIVE ZONE (NORMALLY JUST ONE BUT JUST IN CASE)
             string[] _allAreasInfo = _areasInfos.Split('&');
@@ -233,24 +287,33 @@ public class TDS_RPCManager : PunBehaviour
         //     // ADD PROPS PART
         // }
         int _exMasterID = int.Parse(_migrationInfos.Split('@')[0]);
-        PhotonPlayer _exMaster = PhotonPlayer.Find(_exMasterID); 
-        RPCManagerPhotonView.RPC("ReceptionFeeback", _exMaster); 
+        PhotonPlayer _exMaster = PhotonPlayer.Find(_exMasterID);
+        RPCManagerPhotonView.RPC("ReceptionFeeback", _exMaster);
     }
 
     [PunRPC]
     public void ReceptionFeeback()
     {
-        TDS_HostingManager.Instance.GetMigrationFeedBack(); 
+        TDS_HostingManager.Instance.GetMigrationFeedBack();
     }
     #endregion
 
     #region Spawn
+    /// <summary>
+    /// Adds an other player in game settings
+    /// </summary>
+    /// <param name="_playerCharacter">Player type to add</param>
     [PunRPC]
     public void AddPlayer(int _playerCharacter)
     {
         TDS_GameManager.Instance.InGamePlayers[(PlayerCharacter)_playerCharacter] = true;
+        TDS_UIManager.Instance.AddPlayer((PlayerCharacter)_playerCharacter);
     }
 
+    /// <summary>
+    /// Receives informations about in-game players
+    /// </summary>
+    /// <param name="_players">String containing all in-game player types as int</param>
     [PunRPC]
     public void ReceiveInGamePlayers(string _players)
     {
@@ -259,11 +322,21 @@ public class TDS_RPCManager : PunBehaviour
         string[] _split = _players.Split('|');
         foreach (string _inGamePlayer in _split)
         {
-            int _type = int.Parse(_inGamePlayer);
-            TDS_GameManager.Instance.InGamePlayers[(PlayerCharacter)_type] = true;
+            int _character = int.Parse(_inGamePlayer);
+            if (TDS_GameManager.Instance.InGamePlayers[(PlayerCharacter)_character] == false)
+            {
+                TDS_GameManager.Instance.InGamePlayers[(PlayerCharacter)_character] = true;
+                TDS_UIManager.Instance.AddPlayer((PlayerCharacter)_character);
+            }
         }
+
+        TDS_UIManager.Instance.RefreshCharacterSelection();
     }
 
+    /// <summary>
+    /// Removes a player from game's settings
+    /// </summary>
+    /// <param name="_playerCharacter">Player type to remove</param>
     [PunRPC]
     public void RemovePlayer(int _playerCharacter)
     {
@@ -271,6 +344,9 @@ public class TDS_RPCManager : PunBehaviour
         TDS_UIManager.Instance.RemovePlayer((PlayerCharacter)_playerCharacter);
     }
 
+    /// <summary>
+    /// Send in-game player's informations to all other clients
+    /// </summary>
     [PunRPC]
     public void SendInGamePlayers()
     {
@@ -315,13 +391,11 @@ public class TDS_RPCManager : PunBehaviour
 public class TDS_AttackInfo
 {
     public int AttackerId;
-    public int AttackId;
     public List<TDS_AttackSubInfo> AllSubInfos = new List<TDS_AttackSubInfo>();
     
     public TDS_AttackInfo(string _info)
     {
-        AttackerId = int.Parse(_info.Split('|')[0].Split('#')[0]); 
-        AttackId = int.Parse(_info.Split('|')[0].Split('#')[1]);
+        AttackerId = int.Parse(_info.Split('|')[0]); 
         for (int i = 1; i < _info.Split('|').Length; i++)
         {
             AllSubInfos.Add(new TDS_AttackSubInfo(_info.Split('|')[i])); 

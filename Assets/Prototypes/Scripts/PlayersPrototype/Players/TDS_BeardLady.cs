@@ -17,9 +17,6 @@ Date:
 Description:
 */
 
-// CHOSES A FAIRE POUR LE 23/10 
-// -> FAIRE DES ATTACK BOX POUR CHAQUE TAILLE DE LA BARBE
-// -> REGLER LES ANIMATIONS
 public class TDS_BeardLady : TDS_Player
 {
     #region Events
@@ -28,7 +25,7 @@ public class TDS_BeardLady : TDS_Player
 
     #region Fields / Accessors
     [Header("BeardLady")]
-    [SerializeField] BeardState currentBeardState = BeardState.Average;
+    [SerializeField] BeardState currentBeardState = BeardState.Short;
     [Header("Int"), SerializeField] int beardDurability = 0;
     public int BeardDurability
     {
@@ -40,19 +37,23 @@ public class TDS_BeardLady : TDS_Player
         {
             if (value >= beardDurabilityMax)
             {
-                if (currentBeardState > BeardState.VeryShort)
+                if (currentBeardState > BeardState.Short)
                 {
                     currentBeardState = (BeardState)((int)currentBeardState - 1);
-                    if (beardAnimator) beardAnimator.SetInteger("BeardState", (int)currentBeardState);
+                    if (CharacterAnimator) CharacterAnimator.SetInteger("BeardState", (int)currentBeardState);
                 }
-                beardDurability = 0;
+                value = 0;
             }
+            beardDurability = value;
         }
     }
     [SerializeField] int beardDurabilityMax = 2;
     [SerializeField] int growingBeardCooldown = 5;
     [SerializeField] int growingBeardValue = 0;
-    [Header("Animator"), SerializeField] Animator beardAnimator;
+
+    [Header("Float"), SerializeField] private float catchTime = .5f;
+
+    [SerializeField] Component test = null;
     #endregion
 
     #region Methods
@@ -61,6 +62,7 @@ public class TDS_BeardLady : TDS_Player
     {
         base.Awake();
         character = PlayerCharacter.BeardLady;
+        currentBeardState = BeardState.Short;
     }
 
     protected override void FixedUpdate()
@@ -71,6 +73,44 @@ public class TDS_BeardLady : TDS_Player
     protected override void OnDrawGizmos()
     {
         base.OnDrawGizmos();
+
+        switch (currentAttack)
+        {
+            case PlayerAttacks.AttackOne:
+                Gizmos.color = attackBox.BoxColor;
+                Gizmos.DrawCube(transform.TransformPoint(attackBox.Collider.center), Vector3.Scale(attackBox.Collider.size, attackBox.Collider.transform.lossyScale));
+                Gizmos.color = Color.white;
+                break;
+            case PlayerAttacks.AttackTwo:
+                Gizmos.color = attackBox.BoxColor;
+                Gizmos.DrawCube(transform.TransformPoint(attackBox.Collider.center), Vector3.Scale(attackBox.Collider.size, attackBox.Collider.transform.lossyScale));
+                Gizmos.color = Color.white;
+                break;
+            case PlayerAttacks.AttackThree:
+                Gizmos.color = attackBox.BoxColor;
+                Gizmos.DrawCube(transform.TransformPoint(attackBox.Collider.center), Vector3.Scale(attackBox.Collider.size, attackBox.Collider.transform.lossyScale));
+                break;
+            case PlayerAttacks.AirAttack:
+                break;
+            case PlayerAttacks.RodeoAttack:
+                break;
+            case PlayerAttacks.InteractWithObject:
+                break;
+            case PlayerAttacks.Dodge:
+                break;
+            case PlayerAttacks.Catch:
+                Gizmos.color = attackBox.BoxColor;
+                Gizmos.DrawCube(transform.TransformPoint(attackBox.Collider.center), Vector3.Scale(attackBox.Collider.size, attackBox.Collider.transform.lossyScale));
+                Gizmos.color = Color.white;
+
+                break;
+            case PlayerAttacks.Super:
+                break;
+            case PlayerAttacks.None:
+                break;
+            default:
+                break;
+        }
     }
 
     // Use this for initialization
@@ -97,15 +137,15 @@ public class TDS_BeardLady : TDS_Player
     private void GrowBeard()
     {
         if (currentBeardState == BeardState.VeryLong) return;
+
         growingBeardValue++;
+
         if (growingBeardValue >= growingBeardCooldown)
         {
             growingBeardValue = 0;
-            if (currentBeardState < BeardState.VeryLong)
-            {
-                currentBeardState = (BeardState)((int)currentBeardState + 1);
-                if (beardAnimator) beardAnimator.SetInteger("BeardState", (int)currentBeardState);
-            }
+            beardDurability = 0;
+            currentBeardState = (BeardState)((int)currentBeardState + 1);
+            if (CharacterAnimator) CharacterAnimator.SetInteger("BeardState", (int)currentBeardState);
         }
     }
 
@@ -114,51 +154,59 @@ public class TDS_BeardLady : TDS_Player
     /// Add one to the beard Durability
     /// set growing beardValue to zero
     /// </summary>
-    private void ResetBeardAfterAttack()
+    protected override void EndAttack()
     {
-        beardDurability++;
+        BeardDurability++;
         growingBeardValue = 0;
+
+        base.EndAttack();
+
+        InvokeRepeating("GrowBeard", 1, 1);
     }
     #endregion
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="_attackID"></param>
-    /// <returns></returns>
-    public override Dictionary<int, int> CheckHit(int _attackID)
+    public override void ExecuteAction(string _actionID)
     {
-        if (!PhotonNetwork.isMasterClient) return null;
-        // Get the right box         
-        TDS_AttackBox _box = attackBoxes.Where(b => b.ID == _attackID).FirstOrDefault();
-        if (_box == null)
+        base.ExecuteAction(_actionID);
+
+        switch (_actionID)
         {
-            TDS_CustomDebug.CustomDebugLog($"Attack Box n°{_attackID} can't be found on {this.name}");
-            return null;
-        }
-        float _beardOffset;
-        switch (currentBeardState)
-        {
-            case BeardState.VeryShort:
-                _beardOffset = .5f;
+            case "AttackOne":
+                if (currentBeardState == BeardState.Short || currentAttack != PlayerAttacks.None) return;
+
+                CancelInvoke("GrowBeard");
+                currentAttack = PlayerAttacks.AttackOne;
+                CharacterAnimator.SetInteger("AttackState", 1);
+                if (PhotonNetwork.isMasterClient)
+                {
+                    currentAttackCoroutine = StartCoroutine(Attack());
+                }
                 break;
-            case BeardState.Short:
-                _beardOffset = .75f;
+            case "AttackTwo":
+                if (currentBeardState == BeardState.Short || currentAttack != PlayerAttacks.None) return;
+
+                CancelInvoke("GrowBeard");
+                currentAttack = PlayerAttacks.AttackTwo;
+                CharacterAnimator.SetInteger("AttackState", 2);
+                if (PhotonNetwork.isMasterClient)
+                {
+                    currentAttackCoroutine = StartCoroutine(Attack());
+                }
                 break;
-            case BeardState.Average:
-                _beardOffset = 1;
-                break;
-            case BeardState.Long:
-                _beardOffset = 1.5f;
-                break;
-            case BeardState.VeryLong:
-                _beardOffset = 2;
+            case "AttackThree":
+                if (currentBeardState == BeardState.Short || currentAttack != PlayerAttacks.None) return;
+
+                CancelInvoke("GrowBeard");
+                currentAttack = PlayerAttacks.AttackThree;
+                CharacterAnimator.SetInteger("AttackState", 3);
+                if (PhotonNetwork.isMasterClient)
+                {
+                    currentAttackCoroutine = StartCoroutine(Attack());
+                }
                 break;
             default:
-                _beardOffset = 1;
                 break;
         }
-        return _box.RayCastAttack(_beardOffset);
     }
 
     #region Combat
@@ -169,27 +217,22 @@ public class TDS_BeardLady : TDS_Player
 
     protected override void AttackOne()
     {
-        throw new System.NotImplementedException();
+        TDS_RPCManager.Instance.RPCManagerPhotonView.RPC("LaunchAction", PhotonTargets.All, PhotonViewElementID, "AttackOne");
     }
 
     protected override void AttackThree()
     {
-        throw new System.NotImplementedException();
+        TDS_RPCManager.Instance.RPCManagerPhotonView.RPC("LaunchAction", PhotonTargets.All, PhotonViewElementID, "AttackThree");
     }
 
     protected override void AttackTwo()
     {
-        throw new System.NotImplementedException();
+        TDS_RPCManager.Instance.RPCManagerPhotonView.RPC("LaunchAction", PhotonTargets.All, PhotonViewElementID, "AttackTwo");
     }
 
     protected override void Catch()
     {
-        throw new System.NotImplementedException();
-    }
-
-    protected override void Dodge()
-    {
-        throw new System.NotImplementedException();
+        base.Catch();
     }
 
     protected override void RodeoAttack()
@@ -201,6 +244,33 @@ public class TDS_BeardLady : TDS_Player
     {
         throw new System.NotImplementedException();
     }
+
+    protected override IEnumerator Catching()
+    {
+        currentAttack = PlayerAttacks.Catch;
+        isCatching = true;
+
+        if (PhotonNetwork.isMasterClient)
+        {
+            float _timer = 0;
+
+            while (_timer < catchTime)
+            {
+                TDS_RPCManager.Instance.RPCManagerPhotonView.RPC("ApplyInfoDamages", PhotonTargets.All, TDS_RPCManager.Instance.SetInfoDamages(CheckHit(), PhotonViewElementID));
+
+                yield return new WaitForSeconds(.05f);
+
+                _timer += .05f;
+            }
+        }
+        else
+        {
+            yield return new WaitForSeconds(catchTime);
+        }
+
+        currentAttack = PlayerAttacks.None;
+        isCatching = false;
+    }
     #endregion
     #endregion
     #endregion
@@ -208,7 +278,6 @@ public class TDS_BeardLady : TDS_Player
 
 public enum BeardState
 {
-    VeryShort,
     Short,
     Average,
     Long,
