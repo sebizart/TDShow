@@ -19,8 +19,6 @@ Description:
 
 public class TDS_Enemy : TDS_Character 
 {
-
-
     #region Fields/Properties
     [Header("Enemy")]
     [SerializeField]private EnemyName prefabName = EnemyName.Acrobat; 
@@ -28,11 +26,6 @@ public class TDS_Enemy : TDS_Character
     #endregion
 
     #region Methods
-    public override void Action(int _actionId)
-    {
-        throw new NotImplementedException();
-    }
-
     protected override void AttackOne()
     {
         throw new NotImplementedException();
@@ -47,17 +40,22 @@ public class TDS_Enemy : TDS_Character
     {
         throw new NotImplementedException();
     }
+
+    protected override void SetDestination(Vector3 _position)
+    {
+        throw new NotImplementedException();
+    }
     #endregion
 
     #region UnityMethods
     void Start () 
 	{
-		
+		base.Start();
 	}
 	
 	void Update () 
 	{
-		
+		base.Update();
 	}
     #endregion
 }

@@ -6,8 +6,8 @@ PhysicMaterial:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: Bouncing
-  dynamicFriction: 0.17
-  staticFriction: 0.1
-  bounciness: 0.7
+  dynamicFriction: 0.6
+  staticFriction: 0.25
+  bounciness: 0.5
   frictionCombine: 1
   bounceCombine: 0

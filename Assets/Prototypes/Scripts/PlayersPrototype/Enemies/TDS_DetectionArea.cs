@@ -24,7 +24,7 @@ public class TDS_DetectionArea
 
 
     [SerializeField] Color debugColor = Color.red; 
-    public Color DebugColor { get { return debugColor; } }
+    public Color DebugColor { get { return debugColor; } set { debugColor = value; } }
 
     public TDS_DamageableElement[] GetDetectedElements()
     {
