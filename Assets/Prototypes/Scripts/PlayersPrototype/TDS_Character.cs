@@ -40,7 +40,7 @@ public abstract class TDS_Character : TDS_DamageableElement
 
     [SerializeField, Header("Animator")] protected Animator CharacterAnimator; 
 
-    [SerializeField, Header("AttackBoxes")] protected TDS_AttackBox[] attackBoxes = new TDS_AttackBox[] { };
+    [SerializeField, Header("AttackBoxes")] protected TDS_AttackBox attackBox = null;
 
     [SerializeField, Header("Vector 3")] protected Vector3 grabObjectZoneCenter = Vector3.zero;
     [SerializeField] protected Vector3 grabObjectZoneExtents = Vector3.one;
@@ -64,31 +64,15 @@ public abstract class TDS_Character : TDS_DamageableElement
     }
 
     /// <summary>
-    /// Ask the master RPC manager to attack with the attack ID
-    /// </summary>
-    /// <param name="_attackID">ID of the attack </param>
-    protected void CallHit(int _attackID)
-    {
-        CallAction(_attackID);
-        TDS_RPCManager.Instance.RPCManagerPhotonView.RPC("LaunchAttack", PhotonTargets.MasterClient, PhotonViewElementID, _attackID); 
-    }
-
-    /// <summary>
     /// Check what the character has in his attackbox with the id "_attackID"
     /// </summary>
     /// <param name="_attackID"> ID of the attack </param>
     /// <returns></returns>
-    public virtual Dictionary<int, int> CheckHit(int _attackID)
+    public virtual Dictionary<int, int> CheckHit()
     {
         if (!PhotonNetwork.isMasterClient) return null;
         // Get the right box         
-        TDS_AttackBox _box = attackBoxes.Where(b => b.ID == _attackID).FirstOrDefault();
-        if (_box == null)
-        {
-            TDS_CustomDebug.CustomDebugLog($"Attack Box n°{_attackID} can't be found on {this.name}");
-            return null;
-        }
-        return _box.RayCastAttack(); 
+        return attackBox.RayCastAttack(); 
     }
 
     /// <summary>
@@ -110,11 +94,11 @@ public abstract class TDS_Character : TDS_DamageableElement
     protected abstract void AttackThree();
     protected abstract void AttackTwo();
 
-    protected virtual IEnumerator Attack(int _attackID)
+    protected virtual IEnumerator Attack()
     {
         while (true)
         {
-            TDS_RPCManager.Instance.RPCManagerPhotonView.RPC("ApplyInfoDamages", PhotonTargets.All, TDS_RPCManager.Instance.SetInfoDamages(CheckHit(_attackID), PhotonViewElementID, _attackID));
+            TDS_RPCManager.Instance.RPCManagerPhotonView.RPC("ApplyInfoDamages", PhotonTargets.All, TDS_RPCManager.Instance.SetInfoDamages(CheckHit(), PhotonViewElementID));
 
             yield return new WaitForSeconds(.05f);
         }
@@ -238,13 +222,10 @@ public abstract class TDS_Character : TDS_DamageableElement
     #region UnityMethods
     protected virtual void OnDrawGizmos()
     {
-        foreach (TDS_AttackBox _box in attackBoxes)
+        if (attackBox.IsVisible)
         {
-            if (_box.IsVisible)
-            {
-                Gizmos.color = _box.BoxColor;
-                Gizmos.DrawCube(transform.TransformPoint(_box.Collider.center), Vector3.Scale(_box.Collider.size, _box.Collider.transform.lossyScale));
-            }
+            Gizmos.color = attackBox.BoxColor;
+            Gizmos.DrawCube(transform.TransformPoint(attackBox.Collider.center), Vector3.Scale(attackBox.Collider.size, attackBox.Collider.transform.lossyScale));
         }
 
         if (isGrabObjectBoxVisible)
@@ -272,8 +253,8 @@ public abstract class TDS_Character : TDS_DamageableElement
 /// </summary>
 public enum FacingSide
 {
-    Face = 0, 
-    Left = 1 , 
-    Right = 2, 
-    Back = 3
+    Back,
+    Face,
+    Left,
+    Right
 }

@@ -63,4 +63,6 @@ MonoBehaviour:
   - ApplyAreaInformations
   - ThrowMysteryBall
   - DropObject
+  - ReceiveMigrationsInformations
+  - ReceptionFeeback
   DisableAutoOpenWizard: 1

@@ -74,36 +74,21 @@ public class TDS_BeardLady : TDS_Player
     {
         base.OnDrawGizmos();
 
-        TDS_AttackBox _currentBox = new TDS_AttackBox();
-
         switch (currentAttack)
         {
             case PlayerAttacks.AttackOne:
-                _currentBox = attackBoxes.Where(b => b.ID == 1).FirstOrDefault();
-                if (_currentBox != null)
-                {
-                    Gizmos.color = _currentBox.BoxColor;
-                    Gizmos.DrawCube(transform.TransformPoint(_currentBox.Collider.center), Vector3.Scale(_currentBox.Collider.size, _currentBox.Collider.transform.lossyScale));
-                    Gizmos.color = Color.white;
-                }
+                Gizmos.color = attackBox.BoxColor;
+                Gizmos.DrawCube(transform.TransformPoint(attackBox.Collider.center), Vector3.Scale(attackBox.Collider.size, attackBox.Collider.transform.lossyScale));
+                Gizmos.color = Color.white;
                 break;
             case PlayerAttacks.AttackTwo:
-                _currentBox = attackBoxes.Where(b => b.ID == 2).FirstOrDefault();
-                if (_currentBox != null)
-                {
-                    Gizmos.color = _currentBox.BoxColor;
-                    Gizmos.DrawCube(transform.TransformPoint(_currentBox.Collider.center), Vector3.Scale(_currentBox.Collider.size, _currentBox.Collider.transform.lossyScale));
-                    Gizmos.color = Color.white;
-                }
+                Gizmos.color = attackBox.BoxColor;
+                Gizmos.DrawCube(transform.TransformPoint(attackBox.Collider.center), Vector3.Scale(attackBox.Collider.size, attackBox.Collider.transform.lossyScale));
+                Gizmos.color = Color.white;
                 break;
             case PlayerAttacks.AttackThree:
-                _currentBox = attackBoxes.Where(b => b.ID == 3).FirstOrDefault();
-                if (_currentBox != null)
-                {
-                    Gizmos.color = _currentBox.BoxColor;
-                    Gizmos.DrawCube(transform.TransformPoint(_currentBox.Collider.center), Vector3.Scale(_currentBox.Collider.size, _currentBox.Collider.transform.lossyScale));
-                    Gizmos.color = Color.white;
-                }
+                Gizmos.color = attackBox.BoxColor;
+                Gizmos.DrawCube(transform.TransformPoint(attackBox.Collider.center), Vector3.Scale(attackBox.Collider.size, attackBox.Collider.transform.lossyScale));
                 break;
             case PlayerAttacks.AirAttack:
                 break;
@@ -114,13 +99,10 @@ public class TDS_BeardLady : TDS_Player
             case PlayerAttacks.Dodge:
                 break;
             case PlayerAttacks.Catch:
-                _currentBox = attackBoxes.Where(b => b.ID == 4).FirstOrDefault();
-                if (_currentBox != null)
-                {
-                    Gizmos.color = _currentBox.BoxColor;
-                    Gizmos.DrawCube(transform.TransformPoint(_currentBox.Collider.center), Vector3.Scale(_currentBox.Collider.size, _currentBox.Collider.transform.lossyScale));
-                    Gizmos.color = Color.white;
-                }
+                Gizmos.color = attackBox.BoxColor;
+                Gizmos.DrawCube(transform.TransformPoint(attackBox.Collider.center), Vector3.Scale(attackBox.Collider.size, attackBox.Collider.transform.lossyScale));
+                Gizmos.color = Color.white;
+
                 break;
             case PlayerAttacks.Super:
                 break;
@@ -197,7 +179,7 @@ public class TDS_BeardLady : TDS_Player
                 CharacterAnimator.SetInteger("AttackState", 1);
                 if (PhotonNetwork.isMasterClient)
                 {
-                    currentAttackCoroutine = StartCoroutine(Attack(1));
+                    currentAttackCoroutine = StartCoroutine(Attack());
                 }
                 break;
             case "AttackTwo":
@@ -208,7 +190,7 @@ public class TDS_BeardLady : TDS_Player
                 CharacterAnimator.SetInteger("AttackState", 2);
                 if (PhotonNetwork.isMasterClient)
                 {
-                    currentAttackCoroutine = StartCoroutine(Attack(2));
+                    currentAttackCoroutine = StartCoroutine(Attack());
                 }
                 break;
             case "AttackThree":
@@ -219,7 +201,7 @@ public class TDS_BeardLady : TDS_Player
                 CharacterAnimator.SetInteger("AttackState", 3);
                 if (PhotonNetwork.isMasterClient)
                 {
-                    currentAttackCoroutine = StartCoroutine(Attack(3));
+                    currentAttackCoroutine = StartCoroutine(Attack());
                 }
                 break;
             default:
@@ -274,7 +256,7 @@ public class TDS_BeardLady : TDS_Player
 
             while (_timer < catchTime)
             {
-                TDS_RPCManager.Instance.RPCManagerPhotonView.RPC("ApplyInfoDamages", PhotonTargets.All, TDS_RPCManager.Instance.SetInfoDamages(CheckHit(4), PhotonViewElementID, 4));
+                TDS_RPCManager.Instance.RPCManagerPhotonView.RPC("ApplyInfoDamages", PhotonTargets.All, TDS_RPCManager.Instance.SetInfoDamages(CheckHit(), PhotonViewElementID));
 
                 yield return new WaitForSeconds(.05f);
 

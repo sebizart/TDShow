@@ -148,10 +148,10 @@ public abstract class TDS_Player : TDS_Character
         }
     }
 
-    protected override IEnumerator Attack(int _attackID)
+    protected override IEnumerator Attack()
     {
         isStroking = true;
-        return base.Attack(_attackID);
+        return base.Attack();
     }
 
     protected virtual void EndAttack()
@@ -191,14 +191,14 @@ public abstract class TDS_Player : TDS_Character
         float _vertical = Input.GetAxis("Vertical");
 
         // Set the orientation side of the player
-        if (_horizontal >= .5F)
+        if (_horizontal >= .1F)
         {
             if (facingSide != FacingSide.Right)
             {
                 ChangeSide(FacingSide.Right);
             }
         }
-        else if (_horizontal <= -.5f)
+        else if (_horizontal <= -.1f)
         {
             if (facingSide != FacingSide.Left)
             {

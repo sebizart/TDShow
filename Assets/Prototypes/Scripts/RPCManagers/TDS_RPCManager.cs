@@ -79,9 +79,9 @@ public class TDS_RPCManager : PunBehaviour
     /// <param name="_charID">PhotonView ID of the attacking character</param>
     /// <param name="_attackID">ID of the attack</param>
     /// <returns></returns>
-    public string SetInfoDamages(Dictionary<int, int> _dico, int _charID, int _attackID)
+    public string SetInfoDamages(Dictionary<int, int> _dico, int _charID)
     {
-        string _info = $"{_charID}#{_attackID}";
+        string _info = $"{_charID}";
 
         if (_dico != null)
         {
@@ -261,6 +261,43 @@ public class TDS_RPCManager : PunBehaviour
     }
     #endregion
 
+    #region HostMigration
+    [PunRPC]
+    public void ReceiveMigrationsInformations(string _migrationInfos)
+    {
+        if (!PhotonNetwork.isMasterClient) return;
+        //Debug.Log(_migrationInfos); 
+        //SPLIT AT '@' TO GET EXMASTER ID AT 0, FIGHTING AREA INFO AT [1] AND PROPS INFORMATIONS AT [2]
+        string _areasInfos = _migrationInfos.Split('@')[1];
+        //string _propsInfos = _migrationInfos.Split('@')[2]; 
+        if (_areasInfos != string.Empty)
+        {
+            //SPLIT AGAIN AT '&' TO GET EVERY ACTIVE ZONE (NORMALLY JUST ONE BUT JUST IN CASE)
+            string[] _allAreasInfo = _areasInfos.Split('&');
+            for (int i = 0; i < _allAreasInfo.Length; i++)
+            {
+                TDS_FightingAreaInfo _infos = new TDS_FightingAreaInfo(_allAreasInfo[i]);
+                TDS_FightingArea _area = GetFightingAreaByID(_infos.FightingAreaID);
+                if (_area == null) return;
+                _area.SpawnEnemiesUsingInfos(_infos.EnemiesInfos);
+            }
+        }
+        // if(_propsInfos != string.Empty)
+        // {
+        //     // ADD PROPS PART
+        // }
+        int _exMasterID = int.Parse(_migrationInfos.Split('@')[0]);
+        PhotonPlayer _exMaster = PhotonPlayer.Find(_exMasterID);
+        RPCManagerPhotonView.RPC("ReceptionFeeback", _exMaster);
+    }
+
+    [PunRPC]
+    public void ReceptionFeeback()
+    {
+        TDS_HostingManager.Instance.GetMigrationFeedBack();
+    }
+    #endregion
+
     #region Spawn
     /// <summary>
     /// Adds an other player in game settings
@@ -354,13 +391,11 @@ public class TDS_RPCManager : PunBehaviour
 public class TDS_AttackInfo
 {
     public int AttackerId;
-    public int AttackId;
     public List<TDS_AttackSubInfo> AllSubInfos = new List<TDS_AttackSubInfo>();
     
     public TDS_AttackInfo(string _info)
     {
-        AttackerId = int.Parse(_info.Split('|')[0].Split('#')[0]); 
-        AttackId = int.Parse(_info.Split('|')[0].Split('#')[1]);
+        AttackerId = int.Parse(_info.Split('|')[0]); 
         for (int i = 1; i < _info.Split('|').Length; i++)
         {
             AllSubInfos.Add(new TDS_AttackSubInfo(_info.Split('|')[i])); 

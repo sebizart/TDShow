@@ -88,11 +88,10 @@ public class TDS_Juggler : TDS_Player
 
         if (isCatching)
         {
-            TDS_AttackBox _catchBox = attackBoxes.Where(b => b.ID == 1).FirstOrDefault();
-            if (_catchBox != null && _catchBox.Collider != null)
+            if (attackBox.Collider != null)
             {
-                Gizmos.color = _catchBox.BoxColor;
-                Gizmos.DrawCube(transform.TransformPoint(_catchBox.Collider.center), _catchBox.Collider.size);
+                Gizmos.color = attackBox.BoxColor;
+                Gizmos.DrawCube(transform.TransformPoint(attackBox.Collider.center), attackBox.Collider.size);
                 Gizmos.color = Color.white;
             }
         }
@@ -224,7 +223,7 @@ public class TDS_Juggler : TDS_Player
         {
             while (_timer < slapTime)
             {
-                TDS_RPCManager.Instance.RPCManagerPhotonView.RPC("ApplyInfoDamages", PhotonTargets.All, TDS_RPCManager.Instance.SetInfoDamages(CheckHit(1), PhotonViewElementID, 1));
+                TDS_RPCManager.Instance.RPCManagerPhotonView.RPC("ApplyInfoDamages", PhotonTargets.All, TDS_RPCManager.Instance.SetInfoDamages(CheckHit(), PhotonViewElementID));
 
                 SetDestination(_backMovement);
 
