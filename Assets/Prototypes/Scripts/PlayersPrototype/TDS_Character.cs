@@ -58,9 +58,9 @@ public abstract class TDS_Character : TDS_DamageableElement
         CharacterAnimator.SetInteger("OrientationState", (int)_newSide); 
     }
 
-    protected void CallAction(int _attackID)
+    protected void CallAction(int _actionID)
     {
-        TDS_RPCManager.Instance.RPCManagerPhotonView.RPC("LaunchAction", PhotonTargets.All, PhotonViewElementID, _attackID);
+        TDS_RPCManager.Instance.RPCManagerPhotonView.RPC("LaunchAction", PhotonTargets.All, PhotonViewElementID, _actionID);
     }
 
     /// <summary>
@@ -68,11 +68,11 @@ public abstract class TDS_Character : TDS_DamageableElement
     /// </summary>
     /// <param name="_attackID"> ID of the attack </param>
     /// <returns></returns>
-    public virtual Dictionary<int, int> CheckHit()
+    public virtual Dictionary<int, int> CheckHit(int _minDamage, int _maxDamage)
     {
         if (!PhotonNetwork.isMasterClient) return null;
         // Get the right box         
-        return attackBox.RayCastAttack(); 
+        return attackBox.RayCastAttack(_minDamage, _maxDamage); 
     }
 
     /// <summary>
@@ -94,11 +94,11 @@ public abstract class TDS_Character : TDS_DamageableElement
     protected abstract void AttackThree();
     protected abstract void AttackTwo();
 
-    protected virtual IEnumerator Attack()
+    protected virtual IEnumerator Attack(int _minDamage, int _maxDamage)
     {
         while (true)
         {
-            TDS_RPCManager.Instance.RPCManagerPhotonView.RPC("ApplyInfoDamages", PhotonTargets.All, TDS_RPCManager.Instance.SetInfoDamages(CheckHit(), PhotonViewElementID));
+            TDS_RPCManager.Instance.RPCManagerPhotonView.RPC("ApplyInfoDamages", PhotonTargets.All, TDS_RPCManager.Instance.SetInfoDamages(CheckHit(_minDamage, _maxDamage), PhotonViewElementID));
 
             yield return new WaitForSeconds(.05f);
         }
@@ -173,9 +173,11 @@ public abstract class TDS_Character : TDS_DamageableElement
     /// <returns>Returns the first object to grab or null if none</returns>
     public virtual TDS_Throwable TryToGrabObject()
     {
-        TDS_Throwable _throwable = Physics.OverlapBox(transform.position + grabObjectZoneCenter, grabObjectZoneExtents).Where(o => o.GetComponent<TDS_Throwable>()).Select(o => o.GetComponent<TDS_Throwable>()).FirstOrDefault();
+        List<TDS_Throwable> _throwables = Physics.OverlapBox(transform.position + grabObjectZoneCenter, grabObjectZoneExtents).Where(o => o.GetComponent<TDS_Throwable>()).Select(o => o.GetComponent<TDS_Throwable>()).ToList();
 
-        return _throwable;
+        if (_throwables != null) _throwables.OrderBy(t => Vector3.Distance(transform.position, t.transform.position));
+
+        return _throwables.FirstOrDefault();
     }
     #endregion
 
@@ -231,14 +233,13 @@ public abstract class TDS_Character : TDS_DamageableElement
         if (isGrabObjectBoxVisible)
         {
             Gizmos.color = new Color(0, 1, 0, .25f);
-            Gizmos.DrawCube(transform.position + grabObjectZoneCenter, grabObjectZoneExtents);
+            Gizmos.DrawCube(transform.position + grabObjectZoneCenter, grabObjectZoneExtents * 2);
         }
         Gizmos.color = Color.white;
     }
 
     protected virtual void Start () 
     {
-        //transform.forward = Camera.main.transform.forward;
     }
 
     protected virtual void Update () 

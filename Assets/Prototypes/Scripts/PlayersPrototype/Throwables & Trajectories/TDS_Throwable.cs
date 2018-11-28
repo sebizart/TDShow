@@ -40,6 +40,11 @@ public class TDS_Throwable : PunBehaviour
 
     // The bonus damage(s) given by the character that threw it
     [SerializeField] protected int bonusDamage = 0;
+    // The minimum damages of the object
+    [SerializeField] protected int minDamage = 2;
+    // The maximum damages of the object
+    [SerializeField] protected int maxDamage = 3;
+
     // The photon ID of this object
     public int PhotonID { get { return photonViewElement.viewID; } }
     // The amount of remaining throw if this object before it disappear
@@ -50,6 +55,9 @@ public class TDS_Throwable : PunBehaviour
         protected set
         {
             value = value < 0 ? 0 : value;
+
+            remainingThrows = value;
+
             if (value == 0)
             {
                 DestroyThrowable();
@@ -61,6 +69,10 @@ public class TDS_Throwable : PunBehaviour
 
     // The speed of the object when it is throw
     [SerializeField] protected float throwForce = 1;
+
+    // Waht the object hit
+    [SerializeField] protected LayerMask whatEnemyHit = new LayerMask();
+    [SerializeField] protected LayerMask whatPlayerHit = new LayerMask();
 
     // The Photon View of this object
     [SerializeField] protected PhotonView photonViewElement = null;
@@ -77,25 +89,39 @@ public class TDS_Throwable : PunBehaviour
     /// <returns>Returns the ID of the elements hit with their damages</returns>
     public Dictionary<int, int> CheckHit()
     {
-        bool _hasHit = false;
         int _damages = 0;
+        bool _hasHitEnemy = false;
+        bool _hasHitGround = false;
         TDS_DamageableElement _target = null;
         Dictionary<int, int> _hitElements = new Dictionary<int, int>();
 
         // Get all colliders in the range of the object's attack box
-        Collider[] _touchColliders = Physics.OverlapBox(transform.position + attackBox.Collider.center, attackBox.Collider.extents);
+        Collider[] _touchColliders = Physics.OverlapBox(transform.TransformPoint(attackBox.Collider.center), Vector3.Scale(attackBox.Collider.size / 2, attackBox.Collider.transform.lossyScale), Quaternion.identity, wasGrabByPlayer ? whatPlayerHit : whatEnemyHit);
 
         // Foreach collider, check if it is an available target, and if so it this !
         foreach (Collider _collider in _touchColliders)
         {
-            if ((wasGrabByPlayer && !(_target = _collider.GetComponent<TDS_Player>())) || (_target = _collider.GetComponent<TDS_DamageableElement>()))
+            if (_target = _collider.GetComponent<TDS_DamageableElement>())
             {
-                _damages = Random.Range(attackBox.MinDamages, attackBox.MaxDamages) + bonusDamage;
+                _hasHitEnemy = true;
+
+                _damages = Random.Range(minDamage, maxDamage + 1) + bonusDamage;
 
                 _hitElements.Add(_target.PhotonViewElementID, _damages);
-
-                _hasHit = true;
             }
+            else if (_collider.gameObject.layer == LayerMask.NameToLayer("Ground"))
+            {
+                _hasHitGround = true;
+            }
+        }
+
+        if (_hasHitEnemy)
+        {
+            Hit(false);
+        }
+        else if (_hasHitGround)
+        {
+            Hit(true);
         }
 
         return _hitElements;
@@ -104,6 +130,8 @@ public class TDS_Throwable : PunBehaviour
     protected virtual void DestroyThrowable()
     {
         TDS_CustomDebug.CustomDebugLog($"Destroy throwable => {name}");
+
+        Destroy(gameObject);
     }
 
     public void Drop()
@@ -117,8 +145,13 @@ public class TDS_Throwable : PunBehaviour
 
     public virtual bool Grab(TDS_Character _bearer)
     {
+        Debug.Log("Test # 1");
+
         if (!isThrowable || isGrab || isThrown) return false;
 
+        Debug.Log("Test # 2");
+
+        gameObject.layer = LayerMask.NameToLayer("Player");
         rigidbody.isKinematic = true;
         transform.position = _bearer.transform.position + Vector3.up;
         transform.SetParent(_bearer.transform, true);
@@ -134,7 +167,7 @@ public class TDS_Throwable : PunBehaviour
         return true;
     }
 
-    public virtual void Hit()
+    public virtual void Hit(bool _isGround)
     {
         // Decreases its remaining throws value if it can be destroyed by throw
         if (canBeDestroyedByThrow)
@@ -146,6 +179,16 @@ public class TDS_Throwable : PunBehaviour
         Vector3 _orientation = Vector3.zero;
 
         canHit = false;
+
+        if (_isGround)
+        {
+            rigidbody.velocity = -(rigidbody.velocity * .15f);
+
+        }
+        else
+        {
+            rigidbody.velocity = -(rigidbody.velocity * .5f);
+        }
     }
 
     /// <summary>
@@ -155,6 +198,8 @@ public class TDS_Throwable : PunBehaviour
     public virtual void Throw(FacingSide _facingSide)
     {
         if (!isGrab) return;
+
+        gameObject.layer = LayerMask.NameToLayer("Object");
 
         rigidbody.isKinematic = false;
         transform.SetParent(null, true);
@@ -181,6 +226,7 @@ public class TDS_Throwable : PunBehaviour
 
         rigidbody.velocity = _force * throwForce;
 
+        bearer = null;
         isGrab = false;
         isThrown = true;
     }
@@ -192,11 +238,13 @@ public class TDS_Throwable : PunBehaviour
     {
         if (!isGrab || !isThrowable) return;
 
+        gameObject.layer = LayerMask.NameToLayer("Object");
+
         rigidbody.isKinematic = false;
         transform.SetParent(null, true);
 
         rigidbody.velocity = _velocity;
-
+        bearer = null;
         isGrab = false;
         isThrown = true;
     }
@@ -210,14 +258,23 @@ public class TDS_Throwable : PunBehaviour
 
     private void FixedUpdate()
     {
-        if (isThrown && rigidbody.velocity == Vector3.zero)
+        if (isThrown)
         {
-            isThrown = false;
-            canHit = true;
-        }
-        if (isGrab)
-        {
+            if (rigidbody.velocity == Vector3.zero)
+            {
+                wasGrabByPlayer = false;
+                isThrown = false;
+                canHit = true;
+            }
+            else if (canHit && PhotonNetwork.isMasterClient)
+            {
+                Dictionary<int, int> _results = CheckHit();
 
+                if (_results.Count > 0)
+                {
+                    TDS_RPCManager.Instance.RPCManagerPhotonView.RPC("ApplyInfoDamages", PhotonTargets.All, TDS_RPCManager.Instance.SetInfoDamages(_results, photonViewElement.viewID));
+                }
+            }
         }
     }
 

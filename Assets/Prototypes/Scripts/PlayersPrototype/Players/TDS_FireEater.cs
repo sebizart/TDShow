@@ -52,6 +52,7 @@ public class TDS_FireEater : TDS_Player
     // Update is called once per frame
     protected override void Update()
     {
+        if (isPreparingFire) return;
         base.Update();
     }
     #endregion
@@ -67,19 +68,24 @@ public class TDS_FireEater : TDS_Player
                 if (currentAttack != PlayerAttacks.None) return;
 
                 currentAttack = PlayerAttacks.AttackOne;
-                CharacterAnimator.SetInteger("AttackState", 1);
+                isStroking = true;
+                CharacterAnimator.SetInteger("State", 1);
                 if (PhotonNetwork.isMasterClient)
                 {
-                    currentAttackCoroutine = StartCoroutine(Attack());
+                    currentAttackCoroutine = StartCoroutine(Attack(2, 2));
                 }
                 break;
             case "AttackTwo_Good":
-                Debug.Log("Attack Two Good !!");
-                //if (currentAttack != PlayerAttacks.None) return;
+                Debug.Log("Attack Two Good !");
 
-                //currentAttack = PlayerAttacks.AttackTwo;
-                //CharacterAnimator.SetInteger("AttackState", 2);
-                // Instantiate fire ball
+                if (currentAttack != PlayerAttacks.None) return;
+
+                currentAttack = PlayerAttacks.AttackTwo;
+                isStroking = true;
+                CharacterAnimator.SetInteger("State", 2);
+
+                // Instantiates the fire ball
+                Instantiate(Resources.Load<TDS_FireBall>("Fire Ball"), transform.position + Vector3.right * (facingSide == FacingSide.Right ? 1 : -1), Quaternion.Euler(40.14f, 0, 0)).Init(new Vector3(facingSide == FacingSide.Right ? 5 : -5, 3, 0));
                 break;
             case "AttackTwo_Early":
                 Debug.Log("Attack Two Early...");
@@ -88,15 +94,17 @@ public class TDS_FireEater : TDS_Player
                 Debug.Log("Attack Two Late...");
                 break;
             case "AttackThree_Good":
-                Debug.Log("Attack Three Good !!");
-                //if (currentAttack != PlayerAttacks.AttackThree) return;
+                Debug.Log("Attack Three Good !");
 
-                //currentAttack = PlayerAttacks.AttackOne;
-                //CharacterAnimator.SetInteger("AttackState", 3);
-                //if (PhotonNetwork.isMasterClient)
-                //{
-                //    currentAttackCoroutine = StartCoroutine(Attack(2));
-                //}
+                if (currentAttack != PlayerAttacks.None) return;
+
+                currentAttack = PlayerAttacks.AttackThree;
+                isStroking = true;
+                CharacterAnimator.SetInteger("State", 3);
+                if (PhotonNetwork.isMasterClient)
+                {
+                    currentAttackCoroutine = StartCoroutine(Attack(5, 7));
+                }
                 break;
             case "AttackThree_Early":
                 Debug.Log("Attack Three Early...");

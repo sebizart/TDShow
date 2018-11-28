@@ -26,15 +26,11 @@ public class TDS_AttackBox
     [SerializeField, Header("string")] private string boxName = "New Attack Box";
     [SerializeField, Header("Int")] private int id;
     public int ID { get { return id;  } }
-    [SerializeField] private int maxDamages;
-    public int MaxDamages { get { return maxDamages; } }
-    [SerializeField] private int minDamages;
-    public int MinDamages
-    {
-        get { return minDamages; }
-    }
+
     [SerializeField, Header("Collider")] private BoxCollider collider;
     public BoxCollider Collider { get { return collider; } }
+
+    [SerializeField] private LayerMask whatHit = new LayerMask();
 
     // Gizmo utilities
     [SerializeField] private bool isVisible = false;
@@ -48,16 +44,16 @@ public class TDS_AttackBox
     /// 
     /// </summary>
     /// <returns></returns>
-    public Dictionary<int, int> RayCastAttack()
+    public Dictionary<int, int> RayCastAttack(int _minDamage, int _maxDamage)
     {
         if (!collider) return null;
 
-        int[] _elements =  Physics.OverlapBox(collider.transform.TransformPoint(collider.center), Vector3.Scale(collider.size, collider.transform.lossyScale)).Select(c => c.GetComponent<TDS_DamageableElement>()).ToArray().Where(e => e != null).Select(e => e.PhotonViewElementID).ToArray();
+        int[] _elements =  Physics.OverlapBox(collider.transform.TransformPoint(collider.center), Vector3.Scale(collider.size / 2, collider.transform.lossyScale), Quaternion.identity, whatHit).Select(c => c.GetComponent<TDS_DamageableElement>()).ToArray().Where(e => e != null).Select(e => e.PhotonViewElementID).ToArray();
         int _damages;
         Dictionary<int, int> _characterDamages = new Dictionary<int, int>();
         foreach (int id in _elements)
         {
-            _damages = Random.Range(minDamages, maxDamages);
+            _damages = Random.Range(_minDamage, _maxDamage);
             _characterDamages.Add(id, _damages); 
         }
         return _characterDamages; 

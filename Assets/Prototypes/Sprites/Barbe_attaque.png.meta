@@ -1,11 +1,15 @@
 fileFormatVersion: 2
-guid: e64abb3d5394ec64b8b5208fc2aff926
+guid: 67e4c014b58becc47a0efc3792f29587
 TextureImporter:
   fileIDToRecycleName:
-    21300000: Barbe_attaque_4
-    21300002: Barbe_attaque_3
+    21300000: Barbe_attaque_0
+    21300002: Barbe_attaque_1
     21300004: Barbe_attaque_2
-    21300006: Barbe_attaque_1
+    21300006: Barbe_attaque_3
+    21300008: Barbe_attaque_5
+    21300010: Barbe_attaque_7
+    21300012: Barbe_attaque_8
+    21300014: Barbe_attaque_9
   externalObjects: {}
   serializedVersion: 7
   mipmaps:
@@ -88,41 +92,41 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Barbe_attaque_4
+      name: Barbe_attaque_0
       rect:
         serializedVersion: 2
-        x: 75
-        y: 2574
-        width: 1351
-        height: 825
-      alignment: 1
-      pivot: {x: 0, y: 1}
+        x: 76
+        y: 3565
+        width: 1349
+        height: 826
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d5996136c4026b44d9a99e446acfb1df
+      spriteID: d3cf46ef2a5db0344a32669a3abc584f
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Barbe_attaque_3
+      name: Barbe_attaque_1
       rect:
         serializedVersion: 2
-        x: 123
-        y: 1672
-        width: 1119
-        height: 712
-      alignment: 1
-      pivot: {x: 0, y: 1}
+        x: 126
+        y: 2666
+        width: 1116
+        height: 710
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f78f6e7fd1c104a43b23801e00083220
+      spriteID: 34856b91ffe9ae4489f8f8f568309243
       vertices: []
       indices: 
       edges: []
@@ -132,37 +136,117 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 129
-        y: 922
-        width: 912
-        height: 644
-      alignment: 1
-      pivot: {x: 0, y: 1}
+        y: 1913
+        width: 911
+        height: 646
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ff16aa02fce00cd4ab0ed6c07bc40180
+      spriteID: 20cf1da622c6d364280f3f8ebdbfef3b
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Barbe_attaque_1
+      name: Barbe_attaque_3
       rect:
         serializedVersion: 2
-        x: 171
-        y: 89
-        width: 588
-        height: 667
-      alignment: 1
-      pivot: {x: 0, y: 1}
+        x: 1565
+        y: 1997
+        width: 521
+        height: 324
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 593db0cb531da8042b495294ec80d956
+      spriteID: e969ca4ae535c0448b2e398299a6942a
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Barbe_attaque_5
+      rect:
+        serializedVersion: 2
+        x: 170
+        y: 1082
+        width: 590
+        height: 668
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ad3b339680b54f643bc834e716a4841f
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Barbe_attaque_7
+      rect:
+        serializedVersion: 2
+        x: 1238
+        y: 1410
+        width: 597
+        height: 274
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 16b1ef217d171914ca87462b68d3f833
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Barbe_attaque_8
+      rect:
+        serializedVersion: 2
+        x: 269
+        y: 38
+        width: 376
+        height: 890
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0da0234692ddb0b4b8137940c4c3fc56
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Barbe_attaque_9
+      rect:
+        serializedVersion: 2
+        x: 1277
+        y: 748
+        width: 319
+        height: 264
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4f792231ee90cd443bffb90a3f07b750
       vertices: []
       indices: 
       edges: []
@@ -170,7 +254,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 594e7947ab568ad44b868ff21416817e
+    spriteID: 40596fe55d5a9bc458e82d9f7c71f8d9
     vertices: []
     indices: 
     edges: []

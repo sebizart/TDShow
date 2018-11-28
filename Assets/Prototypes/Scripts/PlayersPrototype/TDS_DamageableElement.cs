@@ -41,6 +41,10 @@ public abstract class TDS_DamageableElement : PunBehaviour
         }
     }
 
+    [SerializeField] protected bool isInvulnerable = false;
+
+    [SerializeField, Header("Float")] protected float invulnerabilityTime = 1f;
+
     [SerializeField, Header("Int")] protected int health; 
     public int Health
     {
@@ -71,13 +75,28 @@ public abstract class TDS_DamageableElement : PunBehaviour
     #endregion
 
     #region Methods
+    protected virtual IEnumerator SetInvulnerability()
+    {
+        isInvulnerable = true;
+
+        yield return new WaitForSeconds(invulnerabilityTime);
+
+        isInvulnerable = false;
+    }
+
     /// <summary>
     /// Makes the object take damages and so decreases its health
     /// </summary>
     /// <param name="_damages">Damages amount to inflict</param>
     public virtual void TakeDamage(int _damages)
     {
+        if (isInvulnerable) return;
+
         Health -= _damages;
+        Instantiate(Resources.Load<TDS_DamageBehaviour>("Damage"), transform.position + Vector3.up, Quaternion.Euler(40.14f, 0, 0)).Init(_damages.ToString());
+
+        StartCoroutine(SetInvulnerability());
+
         OnTakingDamages?.Invoke();
     }
 
