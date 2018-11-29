@@ -72,7 +72,7 @@ public class TDS_FireEater : TDS_Player
                 CharacterAnimator.SetInteger("State", 1);
                 if (PhotonNetwork.isMasterClient)
                 {
-                    currentAttackCoroutine = StartCoroutine(Attack(2, 2));
+                    currentAttackCoroutine = StartCoroutine(Attack(7, 10));
                 }
                 break;
             case "AttackTwo_Good":
@@ -103,7 +103,7 @@ public class TDS_FireEater : TDS_Player
                 CharacterAnimator.SetInteger("State", 3);
                 if (PhotonNetwork.isMasterClient)
                 {
-                    currentAttackCoroutine = StartCoroutine(Attack(5, 7));
+                    currentAttackCoroutine = StartCoroutine(Attack(15, 19));
                 }
                 break;
             case "AttackThree_Early":

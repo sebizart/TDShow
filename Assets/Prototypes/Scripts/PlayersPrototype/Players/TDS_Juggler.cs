@@ -32,7 +32,7 @@ public class TDS_Juggler : TDS_Player
     // Cross indicating the end of a projectile's trajectory
     [SerializeField] private GameObject cross = null;
     // The mystery ball attack projectile prefab
-    [SerializeField] private GameObject mysteryBall = null;
+    [SerializeField] private TDS_MysteryBall mysteryBall = null;
 
     // The amount of projectile(s) currently in the hands of the Juggler
     [SerializeField] public int ProjectileAmount
@@ -263,7 +263,7 @@ public class TDS_Juggler : TDS_Player
         {
             while (_timer < slapTime)
             {
-                TDS_RPCManager.Instance.RPCManagerPhotonView.RPC("ApplyInfoDamages", PhotonTargets.All, TDS_RPCManager.Instance.SetInfoDamages(CheckHit(1, 1), PhotonViewElementID));
+                TDS_RPCManager.Instance.RPCManagerPhotonView.RPC("ApplyInfoDamages", PhotonTargets.All, TDS_RPCManager.Instance.SetInfoDamages(CheckHit(3, 5), PhotonViewElementID));
 
                 SetDestination(_backMovement);
 
@@ -510,12 +510,12 @@ public class TDS_Juggler : TDS_Player
 
     public void ThrowMysteryBall(Vector3 _velocity)
     {
-        Instantiate(mysteryBall, transform.position, Quaternion.identity).GetComponent<Rigidbody>().velocity = _velocity;
+        Instantiate(mysteryBall, transform.position, Quaternion.Euler(40.14f, 0, 0)).Init(_velocity, Random.Range(2, 4));
     }
 
     public void ThrowObject(Vector3 _velocity)
     {
-        projectiles[SelectedProjectileIndex].Throw(_velocity);
+        projectiles[SelectedProjectileIndex].Throw(_velocity, Random.Range(3, 5));
         projectiles.RemoveAt(SelectedProjectileIndex);
 
         SelectedProjectileIndex = 0;

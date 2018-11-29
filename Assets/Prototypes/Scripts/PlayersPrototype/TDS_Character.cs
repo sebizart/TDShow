@@ -240,6 +240,13 @@ public abstract class TDS_Character : TDS_DamageableElement
 
     protected virtual void Start () 
     {
+        OnDiying += () => CharacterAnimator.SetBool("IsDead", true);
+
+        SpriteRenderer[] _spriteRenderer = null;
+        if ((_spriteRenderer = GetComponentsInChildren<SpriteRenderer>()).Length > 0)
+        {
+            TDS_SpriteOrderer.Instance.AddSprite(_spriteRenderer);
+        }
     }
 
     protected virtual void Update () 

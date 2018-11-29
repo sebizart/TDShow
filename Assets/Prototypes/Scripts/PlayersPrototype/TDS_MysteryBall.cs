@@ -14,14 +14,44 @@ public class TDS_MysteryBall : MonoBehaviour
     #endregion
 
     #region Fields / Accessors
+    // The damages of the ball
+    [SerializeField] private int damages = 1;
 
+    // What the object collides on
+    [SerializeField] private LayerMask whatCollides = new LayerMask();
+
+    // The rigidbody of the object
+    [SerializeField] private new Rigidbody rigidbody = null;
     #endregion
 
     #region Methods
-    #region Unity Methods
-    private void OnCollisionEnter(Collision collision)
+    #region Original Methods
+    /// <summary>
+    /// Initializes the mystery ball by a velocity and an amount of damages to deal
+    /// </summary>
+    /// <param name="_velocity">Velocity to give to thsi object rigidbody</param>
+    /// <param name="_damages">Damages to deal with the object</param>
+    public void Init(Vector3 _velocity, int _damages)
     {
-        Destroy(gameObject);
+        if (!rigidbody) rigidbody = GetComponent<Rigidbody>();
+        rigidbody.velocity = _velocity;
+        damages = _damages;
+    }
+    #endregion
+
+    #region Unity Methods
+    private void OnTriggerEnter(Collider other)
+    {
+        Debug.Log(other.name);
+        if (whatCollides == (whatCollides | (1 << other.gameObject.layer)))
+        {
+            if (other.GetComponent<TDS_DamageableElement>())
+            {
+                other.GetComponent<TDS_DamageableElement>().TakeDamage(damages);
+            }
+
+            Destroy(gameObject);
+        }
     }
 
     // Use this for initialization
@@ -35,10 +65,6 @@ public class TDS_MysteryBall : MonoBehaviour
     {
 		
 	}
-    #endregion
-	
-    #region Original Methods
-	
     #endregion
     #endregion
 }

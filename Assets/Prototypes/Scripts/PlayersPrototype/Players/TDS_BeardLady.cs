@@ -159,9 +159,7 @@ public class TDS_BeardLady : TDS_Player
         BeardDurability++;
         growingBeardValue = 0;
 
-        base.EndAttack();
-
-        yield return null;
+        yield return base.EndAttack();
 
         InvokeRepeating("GrowBeard", 1, 1);
     }
@@ -174,36 +172,36 @@ public class TDS_BeardLady : TDS_Player
         switch (_actionID)
         {
             case "AttackOne":
-                if (currentBeardState == BeardState.Short || currentAttack != PlayerAttacks.None) return;
+                if (currentAttack != PlayerAttacks.None) return;
 
                 CancelInvoke("GrowBeard");
                 currentAttack = PlayerAttacks.AttackOne;
                 CharacterAnimator.SetInteger("State", 1);
                 if (PhotonNetwork.isMasterClient)
                 {
-                    currentAttackCoroutine = StartCoroutine(Attack(3, 4));
+                    currentAttackCoroutine = StartCoroutine(Attack(5, 8));
                 }
                 break;
             case "AttackTwo":
-                if (currentBeardState == BeardState.Short || currentAttack != PlayerAttacks.None) return;
+                if (currentAttack != PlayerAttacks.None) return;
 
                 CancelInvoke("GrowBeard");
                 currentAttack = PlayerAttacks.AttackTwo;
                 CharacterAnimator.SetInteger("State", 2);
                 if (PhotonNetwork.isMasterClient)
                 {
-                    currentAttackCoroutine = StartCoroutine(Attack(5, 6));
+                    currentAttackCoroutine = StartCoroutine(Attack(8, 12));
                 }
                 break;
             case "AttackThree":
-                if (currentBeardState == BeardState.Short || currentAttack != PlayerAttacks.None) return;
+                if (currentAttack != PlayerAttacks.None) return;
 
                 CancelInvoke("GrowBeard");
                 currentAttack = PlayerAttacks.AttackThree;
                 CharacterAnimator.SetInteger("State", 3);
                 if (PhotonNetwork.isMasterClient)
                 {
-                    currentAttackCoroutine = StartCoroutine(Attack(2, 3));
+                    currentAttackCoroutine = StartCoroutine(Attack(7, 9));
                 }
                 break;
             default:

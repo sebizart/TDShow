@@ -195,7 +195,7 @@ public class TDS_Throwable : PunBehaviour
     /// Throw the object in the direction of the facing side
     /// </summary>
     /// <param name="_facingSide">Facing side to look at</param>
-    public virtual void Throw(FacingSide _facingSide)
+    public virtual void Throw(FacingSide _facingSide, int _bonusDamages = 0)
     {
         if (!isGrab) return;
 
@@ -225,6 +225,7 @@ public class TDS_Throwable : PunBehaviour
         }
 
         rigidbody.velocity = _force * throwForce;
+        bonusDamage = _bonusDamages;
 
         bearer = null;
         isGrab = false;
@@ -234,7 +235,7 @@ public class TDS_Throwable : PunBehaviour
     /// Throw the object in a direction with a given velocity
     /// </summary>
     /// <param name="_velocity"></param>
-    public virtual void Throw(Vector3 _velocity)
+    public virtual void Throw(Vector3 _velocity, int _bonusDamages = 0)
     {
         if (!isGrab || !isThrowable) return;
 
@@ -244,6 +245,8 @@ public class TDS_Throwable : PunBehaviour
         transform.SetParent(null, true);
 
         rigidbody.velocity = _velocity;
+        bonusDamage = _bonusDamages;
+
         bearer = null;
         isGrab = false;
         isThrown = true;

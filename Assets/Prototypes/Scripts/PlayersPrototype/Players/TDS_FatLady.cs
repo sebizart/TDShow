@@ -68,10 +68,9 @@ public class TDS_FatLady : TDS_Player
                 isStroking = true;
                 CharacterAnimator.SetInteger("State", 1);
 
-                Debug.Log("Set State");
                 if (PhotonNetwork.isMasterClient)
                 {
-                    currentAttackCoroutine = StartCoroutine(Attack((int)(2 * (isInRageMode ? rageModeMultiplier : 1)), (int)(3 * (isInRageMode ? rageModeMultiplier : 1))));
+                    currentAttackCoroutine = StartCoroutine(Attack((int)(5 * (isInRageMode ? rageModeMultiplier : 1)), (int)(10 * (isInRageMode ? rageModeMultiplier : 1))));
                 }
                 break;
             case "AttackTwo":
@@ -82,7 +81,7 @@ public class TDS_FatLady : TDS_Player
                 CharacterAnimator.SetInteger("State", 2);
                 if (PhotonNetwork.isMasterClient)
                 {
-                    currentAttackCoroutine = StartCoroutine(Attack((int)(4 * (isInRageMode ? rageModeMultiplier : 1)), (int)(5 * (isInRageMode ? rageModeMultiplier : 1))));
+                    currentAttackCoroutine = StartCoroutine(Attack((int)(6 * (isInRageMode ? rageModeMultiplier : 1)), (int)(9 * (isInRageMode ? rageModeMultiplier : 1))));
                 }
                 break;
             case "AttackThree":
@@ -93,7 +92,7 @@ public class TDS_FatLady : TDS_Player
                 CharacterAnimator.SetInteger("State", 3);
                 if (PhotonNetwork.isMasterClient)
                 {
-                    currentAttackCoroutine = StartCoroutine(Attack((int)(3 * (isInRageMode ? rageModeMultiplier : 1)), (int)(5 * (isInRageMode ? rageModeMultiplier : 1))));
+                    currentAttackCoroutine = StartCoroutine(Attack((int)(7 * (isInRageMode ? rageModeMultiplier : 1)), (int)(11 * (isInRageMode ? rageModeMultiplier : 1))));
                 }
                 break;
             default:

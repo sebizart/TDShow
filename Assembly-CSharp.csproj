@@ -166,6 +166,8 @@
     <Compile Include="Assets\Prototypes\Scripts\PlayersPrototype\TDS_Item.cs" />
     <Compile Include="Assets\Prototypes\Scripts\PlayersPrototype\TDS_MysteryBall.cs" />
     <Compile Include="Assets\Prototypes\Scripts\PlayersPrototype\TDS_PunInheritance.cs" />
+    <Compile Include="Assets\Prototypes\Scripts\PlayersPrototype\TDS_ShadowBehaviour.cs" />
+    <Compile Include="Assets\Prototypes\Scripts\PlayersPrototype\TDS_SpriteOrderer.cs" />
     <Compile Include="Assets\Prototypes\Scripts\PlayersPrototype\TDS_Usable.cs" />
     <Compile Include="Assets\Prototypes\Scripts\PlayersPrototype\Throwables &amp; Trajectories\LineRendererExtension.cs" />
     <Compile Include="Assets\Prototypes\Scripts\PlayersPrototype\Throwables &amp; Trajectories\TDS_ProjectileUtils.cs" />

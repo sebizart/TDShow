@@ -226,8 +226,6 @@ public class TDS_FreakController : MonoBehaviour
             // Increases the timer
             _timer += Time.deltaTime;
         }
-
-        Debug.Log("End Jump...");
     }
 
     /// <summary>

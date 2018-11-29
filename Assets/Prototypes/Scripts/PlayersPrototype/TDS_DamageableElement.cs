@@ -90,7 +90,7 @@ public abstract class TDS_DamageableElement : PunBehaviour
     /// <param name="_damages">Damages amount to inflict</param>
     public virtual void TakeDamage(int _damages)
     {
-        if (isInvulnerable) return;
+        if (isInvulnerable || !isAlive) return;
 
         Health -= _damages;
         Instantiate(Resources.Load<TDS_DamageBehaviour>("Damage"), transform.position + Vector3.up, Quaternion.Euler(40.14f, 0, 0)).Init(_damages.ToString());

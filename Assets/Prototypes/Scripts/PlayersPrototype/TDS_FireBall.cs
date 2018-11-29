@@ -27,7 +27,7 @@ public class TDS_FireBall : MonoBehaviour
         {
             if (other.GetComponent<TDS_DamageableElement>())
             {
-                other.GetComponent<TDS_DamageableElement>().TakeDamage(2);
+                other.GetComponent<TDS_DamageableElement>().TakeDamage(Random.Range(7, 9));
             }
 
             Destroy(gameObject);

@@ -117,6 +117,8 @@ public class TDS_Networking : PunBehaviour
     {
         base.OnJoinedRoom();
 
+        TDS_UIManager.Instance.RefreshCharacterSelection();
+
         if (!PhotonNetwork.isMasterClient)
         {
             TDS_RPCManager.Instance.RPCManagerPhotonView.RPC("SendInGamePlayers", PhotonTargets.MasterClient);
@@ -135,7 +137,7 @@ public class TDS_Networking : PunBehaviour
     public override void OnLeftRoom()
     {
         base.OnLeftRoom();
-        TDS_RPCManager.Instance.RPCManagerPhotonView.RPC("RemovePlayer", PhotonTargets.Others, (int)localPlayer);
+        //TDS_RPCManager.Instance.RPCManagerPhotonView.RPC("RemovePlayer", PhotonTargets.Others, (int)localPlayer);
     }
     #endregion
 }

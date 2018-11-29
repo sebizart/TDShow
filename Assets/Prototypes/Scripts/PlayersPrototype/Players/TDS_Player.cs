@@ -147,8 +147,6 @@ public abstract class TDS_Player : TDS_Character
 
     protected virtual IEnumerator EndAttack()
     {
-        Debug.Log("End");
-
         if (currentAttackCoroutine != null)
         {
             StopCoroutine(currentAttackCoroutine);
@@ -364,6 +362,8 @@ public abstract class TDS_Player : TDS_Character
     {
         base.Start();
 
+        CharacterAnimator.SetInteger("OrientationState", (int)facingSide);
+
         if (photonViewElement.isMine)
         {
             TDS_Camera.Instance.SetPlayer(controller);
@@ -377,22 +377,22 @@ public abstract class TDS_Player : TDS_Character
     {
         base.Update();
 
-        // Change character button
-        if (Input.GetButtonDown("Menu"))
-        {
-            DropObject();
-            TDS_GameManager.Instance.LeaveParty(character);
-            PhotonNetwork.Destroy(photonViewElement);
-            Destroy(gameObject);
-            return;
-        }
-
         // If the player is dodging, catching or stroking, return
         if (isDodging || isCatching || isStroking) return;
 
         // If it's the player's avatar : Checks the inputs of the player
         if (photonViewElement.isMine)
         {
+            // Change character button
+            if (Input.GetButtonDown("Menu"))
+            {
+                DropObject();
+                TDS_GameManager.Instance.LeaveParty(character);
+                PhotonNetwork.Destroy(photonViewElement);
+                Destroy(gameObject);
+                return;
+            }
+
             Move();
             Actions();
         }
