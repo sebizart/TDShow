@@ -510,7 +510,7 @@ public class TDS_Juggler : TDS_Player
 
     public void ThrowMysteryBall(Vector3 _velocity)
     {
-        Instantiate(mysteryBall, transform.position, Quaternion.Euler(40.14f, 0, 0)).Init(_velocity, Random.Range(2, 4));
+        Instantiate(mysteryBall, transform.position, Quaternion.Euler(Camera.main.transform.localEulerAngles.x, 0, 0)).Init(_velocity, Random.Range(2, 4));
     }
 
     public void ThrowObject(Vector3 _velocity)

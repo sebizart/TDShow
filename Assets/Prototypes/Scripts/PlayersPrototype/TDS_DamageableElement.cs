@@ -93,7 +93,7 @@ public abstract class TDS_DamageableElement : PunBehaviour
         if (isInvulnerable || !isAlive) return;
 
         Health -= _damages;
-        Instantiate(Resources.Load<TDS_DamageBehaviour>("Damage"), transform.position + Vector3.up, Quaternion.Euler(40.14f, 0, 0)).Init(_damages.ToString());
+        Instantiate(Resources.Load<TDS_DamageBehaviour>("Damage"), transform.position + Vector3.up, Quaternion.Euler(Camera.main.transform.localEulerAngles.x, 0, 0)).Init(_damages.ToString());
 
         StartCoroutine(SetInvulnerability());
 

@@ -365,7 +365,7 @@ MonoBehaviour:
   JumpMaxTime: 0.5
   initialSpeed: 1
   maxSpeed: 1
-  speed: 2.5
+  speed: 3.25
   groundBox:
     color: {r: 1, g: 0.7052167, b: 0, a: 1}
     center: {x: 0, y: -0.46, z: -0.21}

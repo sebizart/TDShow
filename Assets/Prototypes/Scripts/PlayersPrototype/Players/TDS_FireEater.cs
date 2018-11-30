@@ -85,7 +85,7 @@ public class TDS_FireEater : TDS_Player
                 CharacterAnimator.SetInteger("State", 2);
 
                 // Instantiates the fire ball
-                Instantiate(Resources.Load<TDS_FireBall>("Fire Ball"), transform.position + Vector3.right * (facingSide == FacingSide.Right ? 1 : -1), Quaternion.Euler(40.14f, 0, 0)).Init(new Vector3(facingSide == FacingSide.Right ? 5 : -5, 3, 0));
+                Instantiate(Resources.Load<TDS_FireBall>("Fire Ball"), transform.position + Vector3.right * (facingSide == FacingSide.Right ? 1 : -1), Quaternion.Euler(Camera.main.transform.localEulerAngles.x, 0, 0)).Init(new Vector3(facingSide == FacingSide.Right ? 5 : -5, 3, 0));
                 break;
             case "AttackTwo_Early":
                 Debug.Log("Attack Two Early...");

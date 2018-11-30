@@ -1,0 +1,351 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &100100000
+Prefab:
+  m_ObjectHideFlags: 1
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications: []
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 0}
+  m_RootGameObject: {fileID: 1180759841512574}
+  m_IsPrefabAsset: 1
+--- !u!1 &1180759841512574
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4888280037030982}
+  - component: {fileID: 114843274457213530}
+  - component: {fileID: 114516683934231452}
+  - component: {fileID: 114896417718611450}
+  - component: {fileID: 114564288275766060}
+  - component: {fileID: 114588156536814810}
+  - component: {fileID: 114591379081382656}
+  m_Layer: 0
+  m_Name: Logic
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4888280037030982
+Transform:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1180759841512574}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114516683934231452
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1180759841512574}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ownerId: 0
+  group: 0
+  OwnerShipWasTransfered: 0
+  prefixBackup: -1
+  synchronization: 0
+  onSerializeTransformOption: 3
+  onSerializeRigidBodyOption: 2
+  ownershipTransfer: 0
+  ObservedComponents:
+  - {fileID: 0}
+  ObservedComponentsFoldoutOpen: 1
+  viewIdField: 0
+  instantiationId: -1
+  currentMasterID: -1
+  isRuntimeInstantiated: 0
+--- !u!114 &114564288275766060
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1180759841512574}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05de184a8c9c8444189082cd1bb12be0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &114588156536814810
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1180759841512574}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9816cba28a6d474ba223ae2e41847cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  leftStickX: 0
+  leftStickY: 0
+  rightStickX: 0
+  rightStickY: 0
+  dpadx: 0
+  dpady: 0
+  rightTrigger: 0
+  leftTrigger: 0
+  aButtonDown: 0
+  aButtonUp: 0
+  aButton: 0
+  bButtonDown: 0
+  bButtonUp: 0
+  bButton: 0
+  xButtonDown: 0
+  xButtonUp: 0
+  xButton: 0
+  yButtonDown: 0
+  yButtonUp: 0
+  yButton: 0
+  startButtonDown: 0
+  startButtonUp: 0
+  startButton: 0
+  backButtonDown: 0
+  backButtonUp: 0
+  backButton: 0
+  rightBumperDown: 0
+  leftBumperDown: 0
+  rightBumperUp: 0
+  leftBumperUp: 0
+  rightBumper: 0
+  leftBumper: 0
+  leftStickClickDown: 0
+  leftStickClickUp: 0
+  leftStickClick: 0
+  rightStickClickDown: 0
+  rightStickClickUp: 0
+  rightStickClick: 0
+  mouseX: 0
+  mouseY: 0
+  leftClick: 0
+  leftClickDown: 0
+  leftClickUp: 0
+  rightClick: 0
+  rightClickDown: 0
+  rightClickUp: 0
+  wheelClick: 0
+  wheelClickDown: 0
+  wheelClickUp: 0
+  alphaOneKeyboard: 0
+  alphaOneKeyboardDown: 0
+  alphaOneKeyboardUp: 0
+  alphaTwoKeyboard: 0
+  alphaTwoKeyboardDown: 0
+  alphaTwoKeyboardUp: 0
+  alphaThreeKeyboard: 0
+  alphaThreeKeyboardDown: 0
+  alphaThreeKeyboardUp: 0
+  alphFourKeyboard: 0
+  alphFourKeyboardDown: 0
+  alphFourKeyboardUp: 0
+  alphaFiveKeyboard: 0
+  alphaFiveKeyboardDown: 0
+  alphaFiveKeyboardUp: 0
+  alphaSixKeyboard: 0
+  alphaSixKeyboardDown: 0
+  alphaSixKeyboardUp: 0
+  alphaSevenKeyboard: 0
+  alphaSevenKeyboardDown: 0
+  alphaSevenKeyboardUp: 0
+  alphaEightKeyboard: 0
+  alphaEightKeyboardDown: 0
+  alphaEightKeyboardUp: 0
+  alphaNineKeyboard: 0
+  alphaNineKeyboardDown: 0
+  alphaNineKeyboardUp: 0
+  alphaZeroKeyboard: 0
+  alphaZeroKeyboardDown: 0
+  alphaZeroKeyboardUp: 0
+  downArrow: 0
+  downArrowDown: 0
+  downArrowUp: 0
+  leftArrow: 0
+  leftArrowDown: 0
+  leftArrowUp: 0
+  rightArrow: 0
+  rightArrowDown: 0
+  rightArrowUp: 0
+  upArrow: 0
+  upArrowDown: 0
+  upArrowUp: 0
+  keypadZeroKeyboard: 0
+  keypadZeroKeyboardDown: 0
+  keypadZeroKeyboardUp: 0
+  keypadOneKeyboard: 0
+  keypadOneKeyboardDown: 0
+  keypadOneKeyboardUp: 0
+  keypadTwoKeyboard: 0
+  keypadTwoKeyboardDown: 0
+  keypadTwoKeyboardUp: 0
+  keypadThreeKeyboard: 0
+  keypadThreeKeyboardDown: 0
+  keypadThreeKeyboardUp: 0
+  keypadFourKeyboard: 0
+  keypadFourKeyboardDown: 0
+  keypadFourKeyboardUp: 0
+  keypadFiveKeyboard: 0
+  keypadFiveKeyboardDown: 0
+  keypadFiveKeyboardUp: 0
+  keypadSixKeyboard: 0
+  keypadSixKeyboardDown: 0
+  keypadSixKeyboardUp: 0
+  keypadSevenKeyboard: 0
+  keypadSevenKeyboardDown: 0
+  keypadSevenKeyboardUp: 0
+  keypadEightKeyboard: 0
+  keypadEightKeyboardDown: 0
+  keypadEightKeyboardUp: 0
+  keypadNineKeyboard: 0
+  keypadNineKeyboardDown: 0
+  keypadNineKeyboardUp: 0
+  aKeyboard: 0
+  aKeyboardDown: 0
+  aKeyboardUp: 0
+  zKeyboard: 0
+  zKeyboardDown: 0
+  zKeyboardUp: 0
+  eKeyboard: 0
+  eKeyboardDown: 0
+  eKeyboardUp: 0
+  rKeyboard: 0
+  rKeyboardDown: 0
+  rKeyboardUp: 0
+  tKeyboard: 0
+  tKeyboardDown: 0
+  tKeyboardUp: 0
+  yKeyboard: 0
+  yKeyboardDown: 0
+  yKeyboardUp: 0
+  uKeyboard: 0
+  uKeyboardDown: 0
+  uKeyboardUp: 0
+  iKeyboard: 0
+  iKeyboardDown: 0
+  iKeyboardUp: 0
+  oKeyboard: 0
+  oKeyboardDown: 0
+  oKeyboardUp: 0
+  pKeyboard: 0
+  pKeyboardDown: 0
+  pKeyboardUp: 0
+  qKeyboard: 0
+  qKeyboardDown: 0
+  qKeyboardUp: 0
+  sKeyboard: 0
+  sKeyboardDown: 0
+  sKeyboardUp: 0
+  dKeyboard: 0
+  dKeyboardDown: 0
+  dKeyboardUp: 0
+  fKeyboard: 0
+  fKeyboardDown: 0
+  fKeyboardUp: 0
+  gKeyboard: 0
+  gKeyboardDown: 0
+  gKeyboardUp: 0
+  hKeyboard: 0
+  hKeyboardDown: 0
+  hKeyboardUp: 0
+  jKeyboard: 0
+  jKeyboardDown: 0
+  jKeyboardUp: 0
+  kKeyboard: 0
+  kKeyboardDown: 0
+  kKeyboardUp: 0
+  lKeyboard: 0
+  lKeyboardDown: 0
+  lKeyboardUp: 0
+  mKeyboard: 0
+  mKeyboardDown: 0
+  mKeyboardUp: 0
+  wKeyboard: 0
+  wKeyboardDown: 0
+  wKeyboardUp: 0
+  xKeyboard: 0
+  xKeyboardDown: 0
+  xKeyboardUp: 0
+  cKeyboard: 0
+  cKeyboardDown: 0
+  cKeyboardUp: 0
+  vKeyboard: 0
+  vKeyboardDown: 0
+  vKeyboardUp: 0
+  bKeyboard: 0
+  bKeyboardDown: 0
+  bKeyboardUp: 0
+  nKeyboard: 0
+  nKeyboardDown: 0
+  nKeyboardUp: 0
+  escape: 0
+  escapeDown: 0
+  escapeUp: 0
+--- !u!114 &114591379081382656
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1180759841512574}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf8e1b9edb324774ca67694733883d62, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sprites:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+--- !u!114 &114843274457213530
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1180759841512574}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4b70c6e02a9ce242a8c4a2285abe484, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spawnPoints: []
+  playerName: Player
+  networkId: {fileID: 0}
+--- !u!114 &114896417718611450
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1180759841512574}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa47249dbe973f442aa7a42e50da2783, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  RPCManagerPhotonView: {fileID: 114516683934231452}
