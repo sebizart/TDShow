@@ -45,10 +45,10 @@ public class TDS_PointsManager
     {
         List<TDS_SpawningInformation> _informations = new List<TDS_SpawningInformation>();
         List<TDS_WavePoint> _wavePoints = allWavePoints.FindAll(p => _waveNumber == p.WaveNumber); 
-        if(_wavePoints.Count == 0)
-        {
-            return null;
-        }
+        //if(_wavePoints.Count == 0)
+        //{
+        //    return null;
+        //}
         foreach (TDS_WavePoint point in _wavePoints)
         {
             _informations.AddRange(point.GetSpawnInformations()); 

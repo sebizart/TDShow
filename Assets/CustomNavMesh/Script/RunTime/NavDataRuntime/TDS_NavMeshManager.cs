@@ -101,7 +101,6 @@ public class TDS_NavMeshManager : MonoBehaviour
                 {
                     pair.Value.HasBeenSelected = false; 
                 }
-
                 return true;
             }
             //Get all linked points from the current point
@@ -109,13 +108,24 @@ public class TDS_NavMeshManager : MonoBehaviour
             for (int i = 0; i < _linkedPoints.Length; i++)
             {
                 TDS_NavPoint _linkedPoint = _linkedPoints[i];
+                TDS_NavPoint _parentPoint; 
                 // If the linked points is not selected yet
                 if (!_linkedPoint.HasBeenSelected)
                 {
                     // Calculate the heuristic cost from start of the linked point
                     float _cost = _currentPoint.HeuristicCostFromStart + HeuristicCost(_currentPoint, _linkedPoint);
+                    _linkedPoint.HeuristicCostFromStart = _cost; 
                     if (!_openList.Contains(_linkedPoint) || _cost < _linkedPoint.HeuristicCostFromStart)
                     {
+                        if(IsInLineOfSight(_cameFrom[_currentPoint], _linkedPoint))
+                        {
+                            _cost = HeuristicCost(_cameFrom[_currentPoint], _linkedPoint);
+                            _parentPoint = _cameFrom[_currentPoint]; 
+                        }
+                        else
+                        {
+                            _parentPoint = _currentPoint; 
+                        }
                         // Set the heuristic cost from start for the linked point
                         _linkedPoint.HeuristicCostFromStart = _cost;
                         //Its heuristic cost is equal to its cost from start plus the heuristic cost between the point and the destination
@@ -123,7 +133,7 @@ public class TDS_NavMeshManager : MonoBehaviour
                         //Set the point selected and add it to the open and closed list
                         _linkedPoint.HasBeenSelected = true;
                         _openList.Add(_linkedPoint);
-                        _cameFrom.Add(_linkedPoint, _currentPoint); 
+                        _cameFrom.Add(_linkedPoint, _parentPoint);
                     }
                 }
             }
@@ -132,6 +142,33 @@ public class TDS_NavMeshManager : MonoBehaviour
         return false;
     }
 
+    /// <summary>
+    /// Check the cost 
+    /// GEt if there is a triangle in the direction from the next point to the parent point
+    /// </summary>
+    /// <param name="_previousPoint">Parent Point</param>
+    /// <param name="_nextPoint">Linked Point</param>
+    /// <returns>if the link between the previous and the next point can be set</returns>
+    bool IsInLineOfSight(TDS_NavPoint _previousPoint, TDS_NavPoint _nextPoint)
+    {
+        //A AMELIORER
+        //AUGMENTER LA PRECISION DU CHECK DES TRIANGLES
+        float _cost = _previousPoint.HeuristicCostFromStart + HeuristicCost(_previousPoint, _nextPoint);
+        if (_cost > _nextPoint.HeuristicCostFromStart) return false;
+        Vector3 _dir = (_nextPoint.Position - _previousPoint.Position).normalized;
+        _dir.y = 0;
+        return AnyTriangleContainingPointExists(_nextPoint.Position + _dir); 
+    }
+
+    /// <summary>
+    /// Get if the position is contained in any triangle
+    /// </summary>
+    /// <param name="_position">position</param>
+    /// <returns>Any triangle containing the position</returns>
+    bool AnyTriangleContainingPointExists(Vector3 _position)
+    {
+        return triangles.Any(t => IsInTriangle(_position, t)); 
+    }
     #endregion
 
     #region float 
@@ -157,7 +194,7 @@ public class TDS_NavMeshManager : MonoBehaviour
     /// </summary>
     /// <param name="_position">Position</param>
     /// <returns>Triangle where the position is contained</returns>
-    TDS_Triangle GetTriangleContainingPosition(Vector3 _position)
+    public TDS_Triangle GetTriangleContainingPosition(Vector3 _position)
     {
         RaycastHit _hit;
         if (Physics.Raycast(_position, Vector3.down, out _hit, 5))
@@ -192,8 +229,6 @@ public class TDS_NavMeshManager : MonoBehaviour
         return _containingTriangles.ToArray();
     }
     #endregion
-
-
     #region NavPoints
     /// <summary>
     /// Get all linked points from a selected point
@@ -241,9 +276,7 @@ public class TDS_NavMeshManager : MonoBehaviour
         _points.RemoveAt(bestIndex);
         return _bestNavPoint;
     }
-
     #endregion
-
 
     #region void
     /// <summary>

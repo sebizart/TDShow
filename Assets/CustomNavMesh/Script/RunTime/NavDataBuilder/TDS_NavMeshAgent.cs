@@ -1,47 +1,78 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq; 
 using UnityEngine;
+
 
 public class TDS_NavMeshAgent : MonoBehaviour
 {
+    #region Events
+    public event Action OnDestinationReached; 
+    #endregion
+
+    #region FieldsAndProperty
     [SerializeField] TDS_CustomNavPath currentPath;
-    [SerializeField] Transform target;
-    int indexTarget = 0; 
+    public TDS_CustomNavPath CurrentPath { get { return currentPath; } }
+
+    CalculatingState pathState = CalculatingState.Waiting;
+    public CalculatingState PathState { get { return pathState; } }
 
     bool isMoving = false; 
+    public bool IsMoving { get { return isMoving; } }
 
+    [SerializeField] Transform target; 
+    #endregion
+
+    #region Methods
+    /// <summary>
+    /// Calculate a path until reaching a destination
+    /// </summary>
+    /// <param name="_position">destination to reach</param>
+    public void SetDestination(Vector3 _position)
+    {
+        currentPath.ClearPath();
+        pathState = CalculatingState.Calculating; 
+        if (TDS_NavMeshManager.Instance.CalculatePath(transform.position, _position, currentPath))
+            pathState = CalculatingState.Ready; 
+    }
+
+    /// <summary>
+    /// Make the agent follows the path
+    /// </summary>
+    /// <param name="_speed">speed</param>
+    /// <returns></returns>
+    public IEnumerator FollowPath(float _speed)
+    {
+        isMoving = true; 
+        TDS_CustomNavPath _pathToFollow = CurrentPath;
+        int _index = 1;
+        while (Vector3.Distance(transform.position, _pathToFollow.NavigationPoints.Last().Position) > .5f)
+        {
+            if (Vector3.Distance(transform.position, _pathToFollow.NavigationPoints[_index].Position) <= .5f)
+            {
+                _index = _index + 1;
+            }
+            transform.position = Vector3.MoveTowards(transform.position, _pathToFollow.NavigationPoints[_index].Position, Time.deltaTime * _speed);
+            yield return new WaitForEndOfFrame();
+        }
+        yield return new WaitForEndOfFrame();
+        pathState = CalculatingState.Waiting;
+        isMoving = false;
+        CurrentPath.ClearPath();
+        OnDestinationReached?.Invoke(); 
+        yield break;
+    }
+    #endregion
+
+    #region UnityMethods
     private void Start()
     {
-        
     }
 
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Mouse0))
-        {
-            if (TDS_NavMeshManager.Instance.CalculatePath(transform.position, target.position, currentPath))
-            {
-                isMoving = true;
-            }
-        }
-        if (!isMoving) return;
-        Move(); 
-    }
-
-    private void Move()
-    {
-        Vector3 _targetedPosition = currentPath.NavigationPoints[indexTarget].Position;
-        transform.position = Vector3.MoveTowards(transform.position, _targetedPosition , Time.deltaTime * 2); 
-        if(Vector3.Distance(transform.position, _targetedPosition ) <= .1f)
-        {
-            indexTarget++; 
-            if(indexTarget == currentPath.NavigationPoints.Count)
-            {
-                isMoving = false;
-                indexTarget = 0;
-                currentPath.NavigationPoints.Clear(); 
-            }
-        }
+       
     }
 
     private void OnDrawGizmos()
@@ -55,11 +86,12 @@ public class TDS_NavMeshAgent : MonoBehaviour
         {
             Gizmos.DrawLine(currentPath.NavigationPoints[i].Position, currentPath.NavigationPoints[i + 1].Position); 
         }
-
-        Gizmos.color = Color.green;
-        Gizmos.DrawSphere(currentPath.StartPosition, .2f);
-        Gizmos.color = Color.cyan;
-        Gizmos.DrawSphere(currentPath.EndPosition, .2f);
-
     }
+    #endregion
+}
+public enum CalculatingState
+{
+    Waiting, 
+    Calculating, 
+    Ready
 }

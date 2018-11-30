@@ -20,7 +20,8 @@ Description:
 public class TDS_WavePoint
 {
     #region Fields and Properties
-    public string Name { get; set; }
+    [SerializeField] string name = "Wave Point"; 
+    public string Name { get { return name; } }
 
     [SerializeField] int waveNumber = 0; 
     public int WaveNumber { get { return waveNumber; } set { waveNumber = value; } }
@@ -41,7 +42,7 @@ public class TDS_WavePoint
     #region Constructor
     public TDS_WavePoint(int _id)
     {
-        Name = "Wave Point n°" + _id;
+        name = "Wave Point n°" + _id;
     }
     #endregion
 

@@ -68,7 +68,8 @@ public class TDS_FightingAreaEditor : Editor
         //DETECTION AREA
         p_target.DetectionArea.CenterPosition = EditorGUILayout.Vector3Field("Center Position", p_target.DetectionArea.CenterPosition); 
         p_target.DetectionArea.DebugColor = EditorGUILayout.ColorField("Debug color", p_target.DetectionArea.DebugColor);
-        
+        //IS LOOPING
+        p_target.IsLooping = EditorGUILayout.Toggle("Is Looping", p_target.IsLooping); 
     }
     
     /// <summary>

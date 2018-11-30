@@ -33,7 +33,8 @@ public class TDS_FightingArea : PunBehaviour
     [SerializeField] int waveNumber = 0; 
 
     private bool isFirstWave = true;
-
+    [SerializeField] bool isLooping = false; 
+    public bool IsLooping { get { return isLooping; } set { isLooping = value; } }
 
     [SerializeField] TDS_DetectionArea detectionArea = new TDS_DetectionArea();
     public TDS_DetectionArea DetectionArea { get { return detectionArea; } }
@@ -43,9 +44,11 @@ public class TDS_FightingArea : PunBehaviour
 
     [SerializeField] List<TDS_Enemy> spawnedEnemies = new List<TDS_Enemy>();
     public List<TDS_Enemy> SpawnedEnemies { get { return spawnedEnemies; } }
+
+    List<TDS_Enemy> destroyingEnemies = new List<TDS_Enemy>(); 
+
     [SerializeField] PhotonView areaPhotonView;
     public PhotonView AreaPhotonView { get { return areaPhotonView; } }
-
     #endregion
 
     #region UnityMethods
@@ -88,6 +91,36 @@ public class TDS_FightingArea : PunBehaviour
 
     #region Methods
     /// <summary>
+    /// Destroy all dead enemies
+    /// </summary>
+    public void ClearDeadEnemies()
+    {
+        destroyingEnemies.ForEach(e => Destroy(e.gameObject));
+        destroyingEnemies.Clear();
+    }
+
+    /// <summary>
+    /// Get an enemy in the spawned enemies list and remove it 
+    /// Go on next wave when all the enemies are killed
+    /// </summary>
+    /// <param name="_enemy">enemy to remove</param>
+    public void RemoveEnemy(TDS_Enemy _enemy)
+    {
+        int _index = spawnedEnemies.IndexOf(spawnedEnemies.Select(e => e).Where(e => e.PhotonViewElementID == _enemy.PhotonViewElementID).FirstOrDefault());
+        spawnedEnemies.RemoveAt(_index);
+        destroyingEnemies.Add(_enemy); 
+        if(spawnedEnemies.Count == 0)
+        {
+            ClearDeadEnemies(); 
+            if(!isLooping)
+            {
+                waveNumber++; 
+            }
+            OnNextWave?.Invoke();
+        }
+    }
+
+    /// <summary>
     /// Get the points and spawn enemies in it 
     /// Then add the enemy to the spawned enemies list
     /// </summary>
@@ -104,6 +137,7 @@ public class TDS_FightingArea : PunBehaviour
         for (int i = 0; i < _spawnInformations.Count; i++)
         {
             TDS_Enemy _enemy = PhotonNetwork.Instantiate(((EnemyName)_spawnInformations[i].PrefabId).ToString(), _spawnInformations[i].SpawnPosition + Vector3.up, Quaternion.identity, 0).GetComponent<TDS_Enemy>();
+            _enemy.SetOwner(this); 
             spawnedEnemies.Add(_enemy); 
         }
 
@@ -122,10 +156,6 @@ public class TDS_FightingArea : PunBehaviour
             spawnedEnemies.Add(_enemy);
         }
     }
-    #endregion
-
-    #region EditorMethods
-    
     #endregion
 }
 
