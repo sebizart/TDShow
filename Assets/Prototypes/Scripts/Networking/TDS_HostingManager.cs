@@ -109,8 +109,8 @@ public class TDS_HostingManager : PunBehaviour
         string _info = $"{ hostingManagerPhotonView.owner.ID }@";
         for (int i = 0; i < allAreas.Count; i++)
         {
-            
-            TDS_FightingArea _area = allAreas[i]; 
+            TDS_FightingArea _area = allAreas[i];
+            _area.ClearDeadEnemies(); 
             if (_area.DetectionState == SpawnPointState.Enable)
             {
                 // SEPARATE WITH & AND ADD OTHER INFOMATIONS

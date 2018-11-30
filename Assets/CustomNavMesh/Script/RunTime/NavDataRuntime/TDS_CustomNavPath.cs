@@ -7,29 +7,19 @@ using UnityEngine;
 [Serializable]
 public class TDS_CustomNavPath
 {
-    [SerializeField] Vector3 startPosition; 
-    public Vector3 StartPosition { get { return startPosition; } }
-
-    [SerializeField] Vector3 endPosition; 
-    public Vector3 EndPosition { get { return endPosition; } }
-
     [SerializeField] List<TDS_NavPoint> navigationPoints = new List<TDS_NavPoint>(); 
-    public List<TDS_NavPoint> NavigationPoints
-    {
-        get
-        {
-            return navigationPoints;
-        }
-        set
-        {
-            navigationPoints = value;
-        }
-    }
+    public List<TDS_NavPoint> NavigationPoints { get {return navigationPoints; }}
 
+    [SerializeField] List<TDS_NavPoint> simplifiedPath = new List<TDS_NavPoint>();
+    public List<TDS_NavPoint> SimplifiedPath { get { return simplifiedPath; } }
+
+    /// <summary>
+    /// Build a path using Astar resources
+    /// Get the last point and get all its parent to build the path
+    /// </summary>
+    /// <param name="_pathToBuild">Astar resources</param>
     public void BuildPath(Dictionary<TDS_NavPoint, TDS_NavPoint> _pathToBuild)
     {
-        startPosition = _pathToBuild.First().Key.Position;
-        endPosition = _pathToBuild.Last().Value.Position;
         TDS_NavPoint _currentPoint = _pathToBuild.Last().Key;
         while (_currentPoint != _pathToBuild.First().Key)
         {
@@ -37,7 +27,15 @@ public class TDS_CustomNavPath
             _currentPoint = _pathToBuild[_currentPoint]; 
         }
         navigationPoints.Add(_currentPoint);
-        navigationPoints.Reverse(); 
+        navigationPoints.Reverse();
     }
 
+    /// <summary>
+    /// Clear the path datas
+    /// </summary>
+    public void ClearPath()
+    {
+        navigationPoints.Clear(); 
+    }
+   
 }

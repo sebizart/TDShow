@@ -8,6 +8,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.SceneManagement; 
 using Random = UnityEngine.Random;
+using Debug = UnityEngine.Debug; 
 
 /*
 [Script Header] TDS_CustomNavMesh Version 0.0.1
@@ -225,7 +226,6 @@ public class TDS_NavMeshBuilder : MonoBehaviour
         _dataSaved.TrianglesInfos = triangles;
         _navDataSaver.SaveFile(SavingDirectory, SceneManager.GetActiveScene().name, _dataSaved, ".txt");
     }
-    
     #endregion
     #endregion
 

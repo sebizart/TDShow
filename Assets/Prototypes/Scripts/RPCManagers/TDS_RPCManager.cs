@@ -340,6 +340,8 @@ public class TDS_RPCManager : PunBehaviour
     [PunRPC]
     public void RemovePlayer(int _playerCharacter)
     {
+        Debug.Log("Remove => " + (PlayerCharacter)_playerCharacter);
+
         TDS_GameManager.Instance.InGamePlayers[(PlayerCharacter)_playerCharacter] = false;
         TDS_UIManager.Instance.RemovePlayer((PlayerCharacter)_playerCharacter);
     }

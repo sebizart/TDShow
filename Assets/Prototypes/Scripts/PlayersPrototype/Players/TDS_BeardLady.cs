@@ -154,12 +154,12 @@ public class TDS_BeardLady : TDS_Player
     /// Add one to the beard Durability
     /// set growing beardValue to zero
     /// </summary>
-    protected override void EndAttack()
+    protected override IEnumerator EndAttack()
     {
         BeardDurability++;
         growingBeardValue = 0;
 
-        base.EndAttack();
+        yield return base.EndAttack();
 
         InvokeRepeating("GrowBeard", 1, 1);
     }
@@ -172,36 +172,36 @@ public class TDS_BeardLady : TDS_Player
         switch (_actionID)
         {
             case "AttackOne":
-                if (currentBeardState == BeardState.Short || currentAttack != PlayerAttacks.None) return;
+                if (currentAttack != PlayerAttacks.None) return;
 
                 CancelInvoke("GrowBeard");
                 currentAttack = PlayerAttacks.AttackOne;
-                CharacterAnimator.SetInteger("AttackState", 1);
+                CharacterAnimator.SetInteger("State", 1);
                 if (PhotonNetwork.isMasterClient)
                 {
-                    currentAttackCoroutine = StartCoroutine(Attack());
+                    currentAttackCoroutine = StartCoroutine(Attack(5, 8));
                 }
                 break;
             case "AttackTwo":
-                if (currentBeardState == BeardState.Short || currentAttack != PlayerAttacks.None) return;
+                if (currentAttack != PlayerAttacks.None) return;
 
                 CancelInvoke("GrowBeard");
                 currentAttack = PlayerAttacks.AttackTwo;
-                CharacterAnimator.SetInteger("AttackState", 2);
+                CharacterAnimator.SetInteger("State", 2);
                 if (PhotonNetwork.isMasterClient)
                 {
-                    currentAttackCoroutine = StartCoroutine(Attack());
+                    currentAttackCoroutine = StartCoroutine(Attack(8, 12));
                 }
                 break;
             case "AttackThree":
-                if (currentBeardState == BeardState.Short || currentAttack != PlayerAttacks.None) return;
+                if (currentAttack != PlayerAttacks.None) return;
 
                 CancelInvoke("GrowBeard");
                 currentAttack = PlayerAttacks.AttackThree;
-                CharacterAnimator.SetInteger("AttackState", 3);
+                CharacterAnimator.SetInteger("State", 3);
                 if (PhotonNetwork.isMasterClient)
                 {
-                    currentAttackCoroutine = StartCoroutine(Attack());
+                    currentAttackCoroutine = StartCoroutine(Attack(7, 9));
                 }
                 break;
             default:
@@ -247,8 +247,12 @@ public class TDS_BeardLady : TDS_Player
 
     protected override IEnumerator Catching()
     {
+        if (currentBeardState == BeardState.Short || currentAttack != PlayerAttacks.None) yield break;
+
+        CancelInvoke("GrowBeard");
         currentAttack = PlayerAttacks.Catch;
         isCatching = true;
+        CharacterAnimator.SetInteger("State", 4);
 
         if (PhotonNetwork.isMasterClient)
         {
@@ -256,7 +260,7 @@ public class TDS_BeardLady : TDS_Player
 
             while (_timer < catchTime)
             {
-                TDS_RPCManager.Instance.RPCManagerPhotonView.RPC("ApplyInfoDamages", PhotonTargets.All, TDS_RPCManager.Instance.SetInfoDamages(CheckHit(), PhotonViewElementID));
+                TDS_RPCManager.Instance.RPCManagerPhotonView.RPC("ApplyInfoDamages", PhotonTargets.All, TDS_RPCManager.Instance.SetInfoDamages(CheckHit(1, 1), PhotonViewElementID));
 
                 yield return new WaitForSeconds(.05f);
 
@@ -270,6 +274,7 @@ public class TDS_BeardLady : TDS_Player
 
         currentAttack = PlayerAttacks.None;
         isCatching = false;
+        InvokeRepeating("GrowBeard", 1, 1);
     }
     #endregion
     #endregion

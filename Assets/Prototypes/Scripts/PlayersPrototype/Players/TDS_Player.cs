@@ -86,14 +86,6 @@ public abstract class TDS_Player : TDS_Character
     protected virtual void Actions()
     {
         // Actions verifications
-        if (Input.GetButtonDown("Menu"))
-        {
-            TDS_GameManager.Instance.LeaveParty(character);
-            PhotonNetwork.Destroy(photonViewElement);
-            Destroy(gameObject);
-            return;
-        }
-
         if (currentAttack != PlayerAttacks.None) return;
 
         controller.Jump("Jump", true);
@@ -148,20 +140,21 @@ public abstract class TDS_Player : TDS_Character
         }
     }
 
-    protected override IEnumerator Attack()
+    protected override IEnumerator Attack(int _minDamage, int _maxDamage)
     {
-        isStroking = true;
-        return base.Attack();
+        return base.Attack(_minDamage, _maxDamage);
     }
 
-    protected virtual void EndAttack()
+    protected virtual IEnumerator EndAttack()
     {
         if (currentAttackCoroutine != null)
         {
             StopCoroutine(currentAttackCoroutine);
         }
 
-        CharacterAnimator.SetInteger("AttackState", 0);
+        CharacterAnimator.SetInteger("State", 0);
+
+        yield return null;
 
         currentAttack = PlayerAttacks.None;
         isStroking = false;
@@ -191,21 +184,21 @@ public abstract class TDS_Player : TDS_Character
         float _vertical = Input.GetAxis("Vertical");
 
         // Set the orientation side of the player
-        if (_horizontal >= .1F)
+        if (_horizontal >= .01F)
         {
             if (facingSide != FacingSide.Right)
             {
                 ChangeSide(FacingSide.Right);
             }
         }
-        else if (_horizontal <= -.1f)
+        else if (_horizontal <= -.01f)
         {
             if (facingSide != FacingSide.Left)
             {
                 ChangeSide(FacingSide.Left);
             }
         }
-        else if (_vertical > 0)
+        /*else if (_vertical > 0)
         {
             if (facingSide != FacingSide.Back)
             {
@@ -218,7 +211,7 @@ public abstract class TDS_Player : TDS_Character
             {
                 ChangeSide(FacingSide.Face);
             }
-        }
+        }*/
 
         // Set the destination of the player's inputs
         SetDestination(new Vector3(_horizontal, 0, _vertical));
@@ -284,7 +277,7 @@ public abstract class TDS_Player : TDS_Character
             }
 
             // Set the orientation side of the player
-            if (_horizontal >= .5F)
+            if (_horizontal >= .5f)
             {
                 if (facingSide != FacingSide.Right)
                 {
@@ -369,6 +362,8 @@ public abstract class TDS_Player : TDS_Character
     {
         base.Start();
 
+        CharacterAnimator.SetInteger("OrientationState", (int)facingSide);
+
         if (photonViewElement.isMine)
         {
             TDS_Camera.Instance.SetPlayer(controller);
@@ -382,12 +377,22 @@ public abstract class TDS_Player : TDS_Character
     {
         base.Update();
 
-        // If the player is dodging, return
+        // If the player is dodging, catching or stroking, return
         if (isDodging || isCatching || isStroking) return;
 
         // If it's the player's avatar : Checks the inputs of the player
         if (photonViewElement.isMine)
         {
+            // Change character button
+            if (Input.GetButtonDown("Menu"))
+            {
+                DropObject();
+                TDS_GameManager.Instance.LeaveParty(character);
+                PhotonNetwork.Destroy(photonViewElement);
+                Destroy(gameObject);
+                return;
+            }
+
             Move();
             Actions();
         }

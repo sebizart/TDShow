@@ -115,6 +115,8 @@ public class TDS_UIManager : MonoBehaviour
 
         OtherPlayersHealth.Add(_player, _playerH);
 
+        Debug.Log("Add => " + _player);
+
         RefreshCharacterSelection();
     }
 
@@ -135,6 +137,8 @@ public class TDS_UIManager : MonoBehaviour
     /// <param name="_player">Player type to remove</param>
     public void RemovePlayer(PlayerCharacter _player)
     {
+        Debug.Log("Remove => " + _player);
+
         Destroy(OtherPlayersHealth[_player].gameObject);
         OtherPlayersHealth.Remove(_player);
 
@@ -214,6 +218,11 @@ public class TDS_UIManager : MonoBehaviour
         fatLadySB.onClick.AddListener(() => TDS_GameManager.Instance.Spawn(PlayerCharacter.FatLady));
         fireEaterSB.onClick.AddListener(() => TDS_GameManager.Instance.Spawn(PlayerCharacter.FireEater));
         jugglerSB.onClick.AddListener(() => TDS_GameManager.Instance.Spawn(PlayerCharacter.Juggler));
+
+        beardLadySB.interactable = false;
+        fatLadySB.interactable = false;
+        fireEaterSB.interactable = false;
+        jugglerSB.interactable = false;
 
         if (!animator) animator = GetComponent<Animator>();
     }

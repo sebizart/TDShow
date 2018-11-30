@@ -32,7 +32,7 @@ public class TDS_Juggler : TDS_Player
     // Cross indicating the end of a projectile's trajectory
     [SerializeField] private GameObject cross = null;
     // The mystery ball attack projectile prefab
-    [SerializeField] private GameObject mysteryBall = null;
+    [SerializeField] private TDS_MysteryBall mysteryBall = null;
 
     // The amount of projectile(s) currently in the hands of the Juggler
     [SerializeField] public int ProjectileAmount
@@ -47,6 +47,41 @@ public class TDS_Juggler : TDS_Player
     [SerializeField] private int MysteryBallThrowAngle = 45;
     // The amount of points to draw for the projectile's trajectory preview
     [SerializeField] private int trajectoryPointsAmount = 10;
+    // The index of the selected projectile
+    [SerializeField] private int selectedProjectileIndex = 0;
+    [SerializeField]
+    public int SelectedProjectileIndex
+    {
+        get { return selectedProjectileIndex; }
+        private set
+        {
+            if (value > ProjectileAmount - 1) value = 0;
+            else if (value < 0) value = ProjectileAmount - 1;
+
+            switch (ProjectileAmount)
+            {
+                case 1:
+                    projectiles[0].transform.position = transform.position + Vector3.up * 1.5f;
+                    break;
+                case 2:
+                    projectiles[value].transform.position = transform.position + Vector3.up * 1.5f;
+
+                    projectiles[value == 0 ? 1 : 0].transform.position = transform.position + Vector3.up * 2f + Vector3.left;
+                    break;
+                case 3:
+                    projectiles[value].transform.position = transform.position + Vector3.up * 1.5f;
+
+                    projectiles[value == 0 ? 1 : value == 1 ? 2 : 0].transform.position = transform.position + Vector3.up * 2f + Vector3.left;
+
+                    projectiles[value == 0 ? 2 : value == 1 ? 0 : 1].transform.position = transform.position + Vector3.up * 2f + Vector3.right;
+                    break;
+                default:
+                    break;
+            }
+
+            selectedProjectileIndex = value;
+        }
+    }
 
     // The time of the slap action
     [SerializeField] private float slapTime = .75f;
@@ -75,11 +110,18 @@ public class TDS_Juggler : TDS_Player
     {
         base.Awake();
         character = PlayerCharacter.Juggler;
+
+        InputsManager.OnDpadxButton += ChangeProjectile;
     }
 
     protected override void FixedUpdate()
     {
         base.FixedUpdate();
+    }
+
+    private void OnDestroy()
+    {
+        InputsManager.OnDpadxButton -= ChangeProjectile;
     }
 
     protected override void OnDrawGizmos()
@@ -184,10 +226,8 @@ public class TDS_Juggler : TDS_Player
         {
             Catch();
         }
-        if (Input.GetButtonDown("Jump"))
-        {
-            // JUMP
-        }
+
+        controller.Jump("Jump", true);
     }
 
     protected override IEnumerator Catching()
@@ -223,7 +263,7 @@ public class TDS_Juggler : TDS_Player
         {
             while (_timer < slapTime)
             {
-                TDS_RPCManager.Instance.RPCManagerPhotonView.RPC("ApplyInfoDamages", PhotonTargets.All, TDS_RPCManager.Instance.SetInfoDamages(CheckHit(), PhotonViewElementID));
+                TDS_RPCManager.Instance.RPCManagerPhotonView.RPC("ApplyInfoDamages", PhotonTargets.All, TDS_RPCManager.Instance.SetInfoDamages(CheckHit(3, 5), PhotonViewElementID));
 
                 SetDestination(_backMovement);
 
@@ -247,9 +287,63 @@ public class TDS_Juggler : TDS_Player
         isCatching = false;
     }
 
+    private void ChangeProjectile(int _increase)
+    {
+        if (_increase != 0) SelectedProjectileIndex += _increase;
+    }
+
+    /// <summary>
+    /// Drop the graned object
+    /// </summary>
+    public override void DropObject()
+    {
+        // If the character doesn't have a projectile to drop, return
+        if (ProjectileAmount <= 0) return;
+
+        // Drop the projectile and remove it from the current weared object
+        projectiles.ForEach(p => p.Drop());
+        projectiles.Clear();
+    }
+
+    /// <summary>
+    /// Grabs an object
+    /// </summary>
+    /// <param name="_objectID">ID of the object to grab</param>
+    public override void GrabObject(int _objectID)
+    {
+        // If the character already have a projectile, return
+        if (ProjectileAmount >= projectileMaxAmount) return;
+
+        // Find the object via photon ID & get its Throwable component
+        PhotonView _objectPhoton = PhotonView.Find(_objectID);
+
+        if (_objectPhoton)
+        {
+            TDS_Throwable _projectile = _objectPhoton.GetComponent<TDS_Throwable>();
+
+            if (!_projectile)
+            {
+                TDS_CustomDebug.CustomDebugLogWarning($"The object \"{_objectPhoton.name}\" couldn't be found");
+                return;
+            }
+
+            // If the character can grab the object, stock it
+            if (_projectile.Grab(this))
+            {
+                projectiles.Add(_projectile);
+                SelectedProjectileIndex = ProjectileAmount - 1;
+            }
+        }
+        else
+        {
+            TDS_CustomDebug.CustomDebugLogWarning($"The object with PhotonID \"{_objectID}\" doesn't have the \"TDS_Throwable\" component !");
+            return;
+        }
+    }
+
     protected override void InteractWithObjects()
     {
-        if (!projectile)
+        if (ProjectileAmount < projectileMaxAmount)
         {
             TDS_RPCManager.Instance.RPCManagerPhotonView.RPC("TryToGrabObject", PhotonTargets.MasterClient, PhotonViewElementID);
         }
@@ -300,15 +394,15 @@ public class TDS_Juggler : TDS_Player
         }
 
         // Get the velocity of the default destination
-        projectileVelocity = TDS_ProjectileUtils.GetProjectileVelocityAsVector3(projectile ? projectile.transform.position : transform.position, projectileDestination, _angle);
+        projectileVelocity = TDS_ProjectileUtils.GetProjectileVelocityAsVector3(ProjectileAmount - 1 >= selectedProjectileIndex ? projectiles[selectedProjectileIndex].transform.position : transform.position, projectileDestination, _angle);
         // Get the positions of projectile's trajectory for preview
-        trajectoryPositions = TDS_ProjectileUtils.GetProjectileMotionPoints(projectile ? projectile.transform.position : transform.position, projectileDestination, projectileVelocity.magnitude, _angle, trajectoryPointsAmount);
+        trajectoryPositions = TDS_ProjectileUtils.GetProjectileMotionPoints(ProjectileAmount - 1 >= selectedProjectileIndex ? projectiles[selectedProjectileIndex].transform.position : transform.position, projectileDestination, projectileVelocity.magnitude, _angle, trajectoryPointsAmount);
 
         // While the player keep the input down, let him prepare the object's trajectory
         while (Input.GetAxis("Joystick Triggers") > .5f)
         {
             // If the juggler doesn't have projectile & is not preparing a mystery ball, he cannot throw anything, so cancel the throw
-            if (currentThrow != ThrowType.MysteryBall && !projectile) break;
+            if (currentThrow != ThrowType.MysteryBall && ProjectileAmount <= 0) break;
 
             // Get the horizontal & vertical movement
             float _lookX = Input.GetAxis("Look X");
@@ -356,9 +450,9 @@ public class TDS_Juggler : TDS_Player
             }
 
             // Get the velocity of the default destination
-            projectileVelocity = TDS_ProjectileUtils.GetProjectileVelocityAsVector3(currentThrow == ThrowType.MysteryBall ? transform.position : projectile.transform.position, projectileDestination, _angle);
+            projectileVelocity = TDS_ProjectileUtils.GetProjectileVelocityAsVector3(currentThrow == ThrowType.MysteryBall ? transform.position : projectiles[selectedProjectileIndex].transform.position, projectileDestination, _angle);
             // Get the positions of projectile's trajectory for preview
-            trajectoryPositions = TDS_ProjectileUtils.GetProjectileMotionPoints(currentThrow == ThrowType.MysteryBall ? transform.position : projectile.transform.position, projectileDestination, projectileVelocity.magnitude, _angle, trajectoryPointsAmount);
+            trajectoryPositions = TDS_ProjectileUtils.GetProjectileMotionPoints(currentThrow == ThrowType.MysteryBall ? transform.position : projectiles[selectedProjectileIndex].transform.position, projectileDestination, projectileVelocity.magnitude, _angle, trajectoryPointsAmount);
 
             // Positions to send to draw the trajectory's preview
             Vector3[] _previewPositions = trajectoryPositions;
@@ -369,7 +463,7 @@ public class TDS_Juggler : TDS_Player
             for (int _i = 0; _i < trajectoryPositions.Length - 1; _i++)
             {
                 // If something was hit, set this point as end of the trajectory
-                if (Physics.Linecast(trajectoryPositions[_i], trajectoryPositions[_i + 1], out _raycastHit))
+                if (Physics.Linecast(trajectoryPositions[_i], trajectoryPositions[_i + 1], out _raycastHit, controller.WhatCollides))
                 {
                     _previewPositions = new Vector3[_i + 2];
                     for (int _j = 0; _j <= _i; _j++)
@@ -398,7 +492,7 @@ public class TDS_Juggler : TDS_Player
             // Throws a mystery ball
             TDS_RPCManager.Instance.RPCManagerPhotonView.RPC("ThrowMysteryBall", PhotonTargets.All, PhotonViewElementID, projectileVelocity);
         }
-        else if (projectile)
+        else if (ProjectileAmount > 0)
         {
             // Throws the projectile
             TDS_RPCManager.Instance.RPCManagerPhotonView.RPC("ThrowObject", PhotonTargets.All, PhotonViewElementID, projectileVelocity);
@@ -416,13 +510,15 @@ public class TDS_Juggler : TDS_Player
 
     public void ThrowMysteryBall(Vector3 _velocity)
     {
-        Instantiate(mysteryBall, transform.position, Quaternion.identity).GetComponent<Rigidbody>().velocity = _velocity;
+        Instantiate(mysteryBall, transform.position, Quaternion.Euler(40.14f, 0, 0)).Init(_velocity, Random.Range(2, 4));
     }
 
     public void ThrowObject(Vector3 _velocity)
     {
-        projectile.Throw(_velocity);
-        projectile = null;
+        projectiles[SelectedProjectileIndex].Throw(_velocity, Random.Range(3, 5));
+        projectiles.RemoveAt(SelectedProjectileIndex);
+
+        SelectedProjectileIndex = 0;
     }
 
     #region On Photon Serialize View
@@ -540,7 +636,7 @@ public class TDS_Juggler : TDS_Player
 
     public override void ThrowObject()
     {
-        if (projectile || currentThrow == ThrowType.MysteryBall)
+        if (ProjectileAmount > 0 || currentThrow == ThrowType.MysteryBall)
         {
             StartCoroutine("PrepareThrow");
         }
