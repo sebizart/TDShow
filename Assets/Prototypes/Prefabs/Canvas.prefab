@@ -362,7 +362,11 @@ MonoBehaviour:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+=======
+    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 3}
+>>>>>>> Pre-Proto
 =======
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 3}
 >>>>>>> Pre-Proto
@@ -474,7 +478,11 @@ MonoBehaviour:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+=======
+    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 3}
+>>>>>>> Pre-Proto
 =======
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 3}
 >>>>>>> Pre-Proto
@@ -523,7 +531,11 @@ MonoBehaviour:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+=======
+    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 3}
+>>>>>>> Pre-Proto
 =======
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 3}
 >>>>>>> Pre-Proto
@@ -653,7 +665,11 @@ MonoBehaviour:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+=======
+    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 3}
+>>>>>>> Pre-Proto
 =======
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 3}
 >>>>>>> Pre-Proto
@@ -690,6 +706,7 @@ MonoBehaviour:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   m_Script: {fileID: 1980459831, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
@@ -703,6 +720,11 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
+=======
+  m_Script: {fileID: 0}
+  m_Name: 
+  m_EditorClassIdentifier: 
+>>>>>>> Pre-Proto
 =======
   m_Script: {fileID: 0}
   m_Name: 
@@ -746,7 +768,11 @@ MonoBehaviour:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+=======
+  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 3}
+>>>>>>> Pre-Proto
 =======
   m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 3}
 >>>>>>> Pre-Proto
@@ -857,7 +883,11 @@ MonoBehaviour:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+=======
+  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 3}
+>>>>>>> Pre-Proto
 =======
   m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 3}
 >>>>>>> Pre-Proto
@@ -996,7 +1026,11 @@ MonoBehaviour:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+=======
+    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 3}
+>>>>>>> Pre-Proto
 =======
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 3}
 >>>>>>> Pre-Proto
@@ -1044,7 +1078,11 @@ MonoBehaviour:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   m_Sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+=======
+  m_Sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 3}
+>>>>>>> Pre-Proto
 =======
   m_Sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 3}
 >>>>>>> Pre-Proto
@@ -1099,7 +1137,11 @@ MonoBehaviour:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+=======
+  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 3}
+>>>>>>> Pre-Proto
 =======
   m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 3}
 >>>>>>> Pre-Proto
@@ -1142,7 +1184,11 @@ MonoBehaviour:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+=======
+  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 3}
+>>>>>>> Pre-Proto
 =======
   m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 3}
 >>>>>>> Pre-Proto
@@ -1185,7 +1231,11 @@ MonoBehaviour:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+=======
+  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 3}
+>>>>>>> Pre-Proto
 =======
   m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 3}
 >>>>>>> Pre-Proto
