@@ -306,21 +306,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf8e1b9edb324774ca67694733883d62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-  sprites: []
-=======
-=======
->>>>>>> Pre-Proto
-=======
->>>>>>> Pre-Proto
-=======
->>>>>>> Pre-Proto
-=======
->>>>>>> Pre-Proto
   sprites:
   - {fileID: 0}
   - {fileID: 0}
@@ -338,19 +323,6 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
->>>>>>> Pre-Proto
-=======
->>>>>>> Pre-Proto
-=======
->>>>>>> Pre-Proto
-=======
->>>>>>> Pre-Proto
-=======
->>>>>>> Pre-Proto
 --- !u!114 &114843274457213530
 MonoBehaviour:
   m_ObjectHideFlags: 1
