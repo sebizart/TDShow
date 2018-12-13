@@ -49,6 +49,11 @@ public class TDS_FightingArea : PunBehaviour
 
     [SerializeField] PhotonView areaPhotonView;
     public PhotonView AreaPhotonView { get { return areaPhotonView; } }
+
+    [SerializeField] Canvas enemyCanvas;
+    public Canvas EnemyCanvas { get { return enemyCanvas; } set { enemyCanvas = value; } }
+    [SerializeField] TDS_FilledBar lifeBarPrefab;
+    public TDS_FilledBar LifeBarPrefab { get { return lifeBarPrefab; } set { lifeBarPrefab = value; } }
     #endregion
 
     #region UnityMethods
@@ -137,10 +142,18 @@ public class TDS_FightingArea : PunBehaviour
         for (int i = 0; i < _spawnInformations.Count; i++)
         {
             TDS_Enemy _enemy = PhotonNetwork.Instantiate(((EnemyName)_spawnInformations[i].PrefabId).ToString(), _spawnInformations[i].SpawnPosition + Vector3.up, Quaternion.identity, 0).GetComponent<TDS_Enemy>();
+            if(enemyCanvas && lifeBarPrefab)
+            {
+                Debug.Log("UI");
+                Vector3 _pos = new Vector3(_enemy.transform.position.x, .1f, _enemy.transform.position.z);
+                Quaternion _rotation = Quaternion.Euler(90, 0, 0); 
+                TDS_FilledBar _bar = PhotonNetwork.Instantiate(lifeBarPrefab.name, _pos, _rotation, 0).GetComponent<TDS_FilledBar>();
+                _bar.transform.SetParent(enemyCanvas.transform);
+                _enemy.SetLifeBar(_bar); 
+            }
             _enemy.SetOwner(this); 
             spawnedEnemies.Add(_enemy); 
         }
-
     }
 
     /// <summary>

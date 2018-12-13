@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq; 
 using UnityEngine;
+using UnityEngine.UI; 
 
 /*
 [Script Header] TDS_Enemy Version 0.0.1
@@ -54,6 +55,9 @@ public class TDS_Enemy : TDS_Character
     #endregion 
     [Header("Bool")]
     [SerializeField] bool isCalculatingPath = false;
+
+    [Header("Life Bar")]
+    [SerializeField] TDS_FilledBar lifeBar; 
     #endregion
 
     #region Methods
@@ -69,6 +73,15 @@ public class TDS_Enemy : TDS_Character
     {
     }
 
+    public override void TakeDamage(int _damages)
+    {
+        base.TakeDamage(_damages);
+        if(lifeBar)
+        {
+            lifeBar.TakingDamages(); 
+        }
+    }
+
     protected override void SetDestination(Vector3 _position)
     {
     }
@@ -79,6 +92,11 @@ public class TDS_Enemy : TDS_Character
         ownerArea = _owner; 
     }
 
+    public void SetLifeBar(TDS_FilledBar _bar)
+    {
+        lifeBar = _bar;
+        lifeBar.Owner = this; 
+    }
     //
 
     /// <summary>
@@ -108,6 +126,12 @@ public class TDS_Enemy : TDS_Character
             default:
                 break;
         }
+    }
+
+    protected void DestroyLifeBar()
+    {
+        if (!lifeBar) return;
+        Destroy(lifeBar); 
     }
 
     /// <summary>
@@ -191,6 +215,7 @@ public class TDS_Enemy : TDS_Character
     {
         navMeshAgent.OnDestinationReached += EndMoving;
         OnDiying += RemoveEnemyFromFightingArea;
+        OnDiying += DestroyLifeBar; 
     }
 
     protected override void Start () 
