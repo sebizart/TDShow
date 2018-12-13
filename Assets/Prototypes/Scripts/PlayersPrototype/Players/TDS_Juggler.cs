@@ -176,14 +176,18 @@ public class TDS_Juggler : TDS_Player
             return;
         }
 
+        // Get the mouse movement
+        float _mouseScroll = Input.GetAxis("Mouse ScrollWheel");
+        if (_mouseScroll != 0) ChangeProjectile((int)_mouseScroll);
+
         // Get the triggers pression
         float _triggers = Input.GetAxis("Joystick Triggers");
 
-        if (_triggers > .5f && !isPreparingThrow)
+        if ((_triggers > .5f || Input.GetButtonDown("Throw")) && !isPreparingThrow)
         {
             ThrowObject();
         }
-        else if (_triggers < -.5f && !isPreparingThrow)
+        else if ((_triggers < -.5f || Input.GetButtonDown("Dodge")) && !isPreparingThrow)
         {
             StartCoroutine(Dodge());
             return;
@@ -399,7 +403,7 @@ public class TDS_Juggler : TDS_Player
         trajectoryPositions = TDS_ProjectileUtils.GetProjectileMotionPoints(ProjectileAmount - 1 >= selectedProjectileIndex ? projectiles[selectedProjectileIndex].transform.position : transform.position, projectileDestination, projectileVelocity.magnitude, _angle, trajectoryPointsAmount);
 
         // While the player keep the input down, let him prepare the object's trajectory
-        while (Input.GetAxis("Joystick Triggers") > .5f)
+        while (Input.GetAxis("Joystick Triggers") > .5f || Input.GetButton("Throw"))
         {
             // If the juggler doesn't have projectile & is not preparing a mystery ball, he cannot throw anything, so cancel the throw
             if (currentThrow != ThrowType.MysteryBall && ProjectileAmount <= 0) break;

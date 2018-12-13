@@ -96,9 +96,24 @@ public abstract class TDS_Character : TDS_DamageableElement
 
     protected virtual IEnumerator Attack(int _minDamage, int _maxDamage)
     {
+        List<int> _allTouchedIDs = new List<int>();
+        Dictionary<int, int> _newTouched = new Dictionary<int, int>();
+
         while (true)
         {
-            TDS_RPCManager.Instance.RPCManagerPhotonView.RPC("ApplyInfoDamages", PhotonTargets.All, TDS_RPCManager.Instance.SetInfoDamages(CheckHit(_minDamage, _maxDamage), PhotonViewElementID));
+            _newTouched = new Dictionary<int, int>();
+
+            Dictionary<int, int> _touchedElements = CheckHit(_minDamage, _maxDamage);
+            foreach (KeyValuePair<int, int> _element in _touchedElements)
+            {
+                if (!_allTouchedIDs.Contains(_element.Key))
+                {
+                    _newTouched.Add(_element.Key, _element.Value);
+                    _allTouchedIDs.Add(_element.Key);
+                }
+            }
+
+            TDS_RPCManager.Instance.RPCManagerPhotonView.RPC("ApplyInfoDamages", PhotonTargets.All, TDS_RPCManager.Instance.SetInfoDamages(_newTouched, PhotonViewElementID));
 
             yield return new WaitForSeconds(.05f);
         }

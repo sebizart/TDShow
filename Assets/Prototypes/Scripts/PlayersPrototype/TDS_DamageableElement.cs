@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon;
+using Random = UnityEngine.Random;
 
 /*
 [Script Header] TDS_DamageableElement Version 0.0.1
@@ -79,7 +80,8 @@ public abstract class TDS_DamageableElement : PunBehaviour
     {
         isInvulnerable = true;
 
-        yield return new WaitForSeconds(invulnerabilityTime);
+        //yield return new WaitForSeconds(invulnerabilityTime);
+        yield return null;
 
         isInvulnerable = false;
     }
@@ -93,7 +95,7 @@ public abstract class TDS_DamageableElement : PunBehaviour
         if (isInvulnerable || !isAlive) return;
 
         Health -= _damages;
-        Instantiate(Resources.Load<TDS_DamageBehaviour>("Damage"), transform.position + Vector3.up, Quaternion.Euler(Camera.main.transform.localEulerAngles.x, 0, 0)).Init(_damages.ToString());
+        Instantiate(Resources.Load<TDS_DamageBehaviour>("Damage"), transform.position + new Vector3(Random.Range(-1f, 1f), Random.Range(1f, 2f), 0), Quaternion.Euler(Camera.main.transform.localEulerAngles.x, 0, 0)).Init(_damages.ToString());
 
         StartCoroutine(SetInvulnerability());
 
