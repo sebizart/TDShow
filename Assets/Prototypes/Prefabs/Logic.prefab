@@ -307,8 +307,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
 <<<<<<< HEAD
+<<<<<<< HEAD
   sprites: []
 =======
+=======
+>>>>>>> Pre-Proto
   sprites:
   - {fileID: 0}
   - {fileID: 0}
@@ -326,6 +329,9 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+<<<<<<< HEAD
+>>>>>>> Pre-Proto
+=======
 >>>>>>> Pre-Proto
 --- !u!114 &114843274457213530
 MonoBehaviour:
