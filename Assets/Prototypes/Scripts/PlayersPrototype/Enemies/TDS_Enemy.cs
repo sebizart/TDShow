@@ -251,7 +251,7 @@ public enum EnemyName
     MightyMan, 
     Mime, 
     Punk, 
-    TmpManequin
+    Dummy
 }
 public enum EnemyState
 {
