@@ -70,8 +70,12 @@ public class TDS_FightingAreaEditor : Editor
         p_target.DetectionArea.DebugColor = EditorGUILayout.ColorField("Debug color", p_target.DetectionArea.DebugColor);
         //IS LOOPING
         p_target.IsLooping = EditorGUILayout.Toggle("Is Looping", p_target.IsLooping); 
+        //ENEMYCANVAS
+        p_target.EnemyCanvas = EditorGUILayout.ObjectField("Enemy canvas", p_target.EnemyCanvas, typeof(Canvas), true) as Canvas;
+        //ENEMYLIFEBARPREFAB
+        p_target.LifeBarPrefab = EditorGUILayout.ObjectField("LifeBarPrefab", p_target.LifeBarPrefab, typeof(TDS_FilledBar), false) as TDS_FilledBar;
     }
-    
+
     /// <summary>
     /// Show the point manager settings
     /// Edit its position

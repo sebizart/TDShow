@@ -6348,6 +6348,9 @@ MonoBehaviour:
         randomValues: 
   spawnedEnemies: []
   areaPhotonView: {fileID: 0}
+  enemyCanvas: {fileID: 266849035}
+  lifeBarPrefab: {fileID: 114938007819431420, guid: 8f003579143729e49a08de13aa2579c3,
+    type: 2}
 --- !u!114 &1495051511
 MonoBehaviour:
   m_ObjectHideFlags: 0
