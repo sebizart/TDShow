@@ -19,20 +19,13 @@ public class TDS_FilledBar : MonoBehaviour
     #region Methods
     private void UpdateFilledAmount()
     {
-        if (!filledImage) return;
-        if(filledImage.fillAmount <= 0.01f)
-        {
-            Destroy(gameObject);
-            return; 
-        }
-        if(currentValue == filledImage.fillAmount) return;
-        filledImage.fillAmount = Mathf.Lerp(filledImage.fillAmount, currentValue, Time.deltaTime * speed); 
-        
+        if (!filledImage || currentValue == filledImage.fillAmount) return;
+        filledImage.fillAmount = Mathf.Lerp(filledImage.fillAmount, currentValue, Time.deltaTime); 
     }
 
     public void TakingDamages()
     {
-        currentValue = Mathf.Clamp((float)Owner.Health / Owner.MaxHealth, 0, 1);
+        currentValue = (float)Owner.Health / Owner.MaxHealth;
     }
     #endregion
 
