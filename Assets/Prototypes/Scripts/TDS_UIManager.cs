@@ -21,6 +21,9 @@ public class TDS_UIManager : MonoBehaviour
     // Buttons to select a character in the menu
     [SerializeField] private Button beardLadySB, fatLadySB, fireEaterSB, jugglerSB = null;
 
+    // Button to quit the application
+    [SerializeField] private Button quittingButton; 
+
     // The player selection menu's parent game object
     [SerializeField] private GameObject playerSelectMenu = null;
     #endregion
@@ -225,6 +228,11 @@ public class TDS_UIManager : MonoBehaviour
         jugglerSB.interactable = false;
 
         if (!animator) animator = GetComponent<Animator>();
+
+        if(quittingButton && TDS_GameManager.Instance)
+        {
+            quittingButton.onClick.AddListener(() => TDS_GameManager.Instance.QuitApplication()); 
+        }
     }
 
     private void FixedUpdate()

@@ -144,7 +144,6 @@ public class TDS_FightingArea : PunBehaviour
             TDS_Enemy _enemy = PhotonNetwork.Instantiate(((EnemyName)_spawnInformations[i].PrefabId).ToString(), _spawnInformations[i].SpawnPosition + Vector3.up, Quaternion.identity, 0).GetComponent<TDS_Enemy>();
             if(enemyCanvas && lifeBarPrefab)
             {
-                Debug.Log("UI");
                 Vector3 _pos = new Vector3(_enemy.transform.position.x, .1f, _enemy.transform.position.z);
                 Quaternion _rotation = Quaternion.Euler(90, 0, 0); 
                 TDS_FilledBar _bar = PhotonNetwork.Instantiate(lifeBarPrefab.name, _pos, _rotation, 0).GetComponent<TDS_FilledBar>();
