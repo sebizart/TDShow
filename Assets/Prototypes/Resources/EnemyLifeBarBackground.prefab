@@ -96,7 +96,7 @@ MonoBehaviour:
   ObservedComponents: []
   ObservedComponentsFoldoutOpen: 1
   viewIdField: 0
-  instantiationId: -1
+  instantiationId: 0
   currentMasterID: -1
   isRuntimeInstantiated: 0
 --- !u!114 &114809017176875132

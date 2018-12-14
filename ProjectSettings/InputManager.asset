@@ -74,7 +74,7 @@ InputManager:
     descriptiveName: Third Action
     descriptiveNegativeName: 
     negativeButton: 
-    positiveButton: a
+    positiveButton: e
     altNegativeButton: 
     altPositiveButton: 
     gravity: 1000
@@ -346,7 +346,7 @@ InputManager:
     descriptiveName: First alternative Action
     descriptiveNegativeName: 
     negativeButton: 
-    positiveButton: e
+    positiveButton: a
     altNegativeButton: 
     altPositiveButton: joystick button 4
     gravity: 1000

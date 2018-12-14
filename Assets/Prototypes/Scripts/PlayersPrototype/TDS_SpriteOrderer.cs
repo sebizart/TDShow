@@ -26,32 +26,24 @@ public class TDS_SpriteOrderer : MonoBehaviour
     /// Adds a sprite to the list of Sprite Renderers being ordered
     /// </summary>
     /// <param name="_sprite">Sprite Renderer to add</param>
-    public void AddSprite(SpriteRenderer _sprite, bool _doRotate = true)
+    public void AddSprite(SpriteRenderer _sprite)
     {
         if ((whatIsShadow != (whatIsShadow | (1 << _sprite.gameObject.layer))) && !sprites.Contains(_sprite))
         {
             sprites.Add(_sprite);
-
-            if (_doRotate)
-            {
-                _sprite.transform.forward = Camera.main.transform.forward;
-            }
+            _sprite.transform.forward = Camera.main.transform.forward;
         }
     }
     /// <summary>
     /// Adds an array of sprites to the list of Sprite Renderers being ordered
     /// </summary>
     /// <param name="_sprites">Array of Sprite Renderers to add</param>
-    public void AddSprite(SpriteRenderer[] _sprites, bool _doRotate = true)
+    public void AddSprite(SpriteRenderer[] _sprites)
     {
         _sprites = _sprites.ToList().Where(s => (whatIsShadow != (whatIsShadow | (1 << s.gameObject.layer))) && !sprites.Contains(s)).ToArray();
 
         _sprites.ToList().ForEach(s => sprites.Add(s));
-
-        if (_doRotate)
-        {
-            _sprites.ToList().ForEach(s => s.transform.forward = Camera.main.transform.forward);
-        }
+        _sprites.ToList().ForEach(s => s.transform.forward = Camera.main.transform.forward);
     }
 
     public void Order()
@@ -66,9 +58,7 @@ public class TDS_SpriteOrderer : MonoBehaviour
             }
             else
             {
-                _sprite.sortingOrder = -(int)((_sprite.transform.position.z - (_sprite.transform.TransformDirection(_sprite.transform.position).z)) * 1000);
-
-                _sprite.sortingOrder = (int)Camera.main.WorldToScreenPoint(_sprite.transform.position).z * -1;
+                _sprite.sortingOrder = -(int)((_sprite.transform.parent ? _sprite.transform.parent.position.z + _sprite.transform.localPosition.z : _sprite.transform.position.z) * 1000);
             }
         }
 
