@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections;
-using System.Linq;
+using System.Collections.Generic;
 using UnityEngine;
 
 /*
@@ -129,11 +129,11 @@ public abstract class TDS_Player : TDS_Character
             // Get the triggers pression
             float _triggers = Input.GetAxis("Joystick Triggers");
 
-            if (_triggers > .5f || Input.GetButtonDown("Throw"))
+            if (_triggers > .5f)
             {
                 ThrowObject();
             }
-            else if (_triggers < -.5f || Input.GetButtonDown("Dodge"))
+            else if (_triggers < -.5f)
             {
                 StartCoroutine(Dodge());
             }
@@ -361,9 +361,6 @@ public abstract class TDS_Player : TDS_Character
     protected override void Start() 
     {
         base.Start();
-
-        transform.GetChild(0).GetComponentsInChildren<SpriteRenderer>().ToList().ForEach(s => s.transform.rotation = Quaternion.identity);
-        transform.GetChild(0).transform.forward = Camera.main.transform.forward;
 
         CharacterAnimator.SetInteger("OrientationState", (int)facingSide);
 
