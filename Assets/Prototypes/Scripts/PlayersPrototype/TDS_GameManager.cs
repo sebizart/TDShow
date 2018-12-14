@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics; 
 using UnityEngine;
 
 public class TDS_GameManager : MonoBehaviour
@@ -9,6 +10,7 @@ public class TDS_GameManager : MonoBehaviour
     #endregion
 
     #region Fields / Properties
+    private const string SURVEY_LINK = "https://goo.gl/forms/7T8vu0IHRgpol3HK2";
     // All available player characters associated with a bool indicating if their are already in game
     public Dictionary<PlayerCharacter, bool> InGamePlayers = new Dictionary<PlayerCharacter, bool>();
     #endregion
@@ -45,6 +47,12 @@ public class TDS_GameManager : MonoBehaviour
         TDS_RPCManager.Instance.RPCManagerPhotonView.RPC("AddPlayer", PhotonTargets.Others, (int)_player);
         TDS_Networking.Instance.Spawn(_player);
 
+    }
+
+    public void QuitApplication()
+    {
+        Process.Start(SURVEY_LINK); 
+        Application.Quit(); 
     }
     #endregion
 
