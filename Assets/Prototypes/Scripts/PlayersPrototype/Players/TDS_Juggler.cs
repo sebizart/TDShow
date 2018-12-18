@@ -467,7 +467,7 @@ public class TDS_Juggler : TDS_Player
             for (int _i = 0; _i < trajectoryPositions.Length - 1; _i++)
             {
                 // If something was hit, set this point as end of the trajectory
-                if (Physics.Linecast(trajectoryPositions[_i], trajectoryPositions[_i + 1], out _raycastHit, controller.WhatCollides))
+                if (Physics.Linecast(trajectoryPositions[_i], trajectoryPositions[_i + 1], out _raycastHit, controller.WhatIsObstacle))
                 {
                     _previewPositions = new Vector3[_i + 2];
                     for (int _j = 0; _j <= _i; _j++)

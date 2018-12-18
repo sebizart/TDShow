@@ -88,7 +88,9 @@ public class TDS_FreakController : MonoBehaviour
 
     [Header("Layer Mask :")]
     // What the character should be stoped by
-    public LayerMask WhatCollides = new LayerMask();
+    public LayerMask WhatIsObstacle = new LayerMask();
+    // What the character should be able to jump on
+    public LayerMask WhatIsGround = new LayerMask();
 
     [Header("Rigidbody :")]
     // Rigidbody of the character
@@ -166,7 +168,7 @@ public class TDS_FreakController : MonoBehaviour
     private void GroundCheck()
     {
         // If something is detected in the ground box detection, then character is grounded, otherwise not
-        isGrounded = RaycastZone(GetGroundBoxCenterPosition, groundBox.Extents);
+        isGrounded = RaycastZone(GetGroundBoxCenterPosition, groundBox.Extents, WhatIsGround);
     }
 
     #region Jump
@@ -332,7 +334,7 @@ public class TDS_FreakController : MonoBehaviour
         isInCumbersomeCollider = false;
 
         // If the character is not currently into some cumbersome collider, restrict its moves into the zone where there's no collider (only in X & Z axis)
-        if (RaycastZone(GetColliderCenterPosition, colliderExtents))
+        if (RaycastZone(GetColliderCenterPosition, colliderExtents, WhatIsObstacle))
         {
             // Améliorer en ne raycastant que la toute petite zone qui a été franchie
             // entre la précédente position et l'actuelle
@@ -340,7 +342,7 @@ public class TDS_FreakController : MonoBehaviour
             Debug.Log("Get back ! Get back ! Get back to where you once belonged !");
 
             // If the previous real position is clean from bad colliders, for each axis, set the raycast position as previous if the movement was not allowed
-            if (!RaycastZone(previousRealPosition + GetColliderCenterSpace, colliderExtents))
+            if (!RaycastZone(previousRealPosition + GetColliderCenterSpace, colliderExtents, WhatIsObstacle))
             {
                 // Raycast in the 3 different axis in the zone between the previous position and the actual one
                 bool[] _raycastResults = RaycastZoneOutsideBox(previousRealPosition, transform.position, colliderExtents);
@@ -384,17 +386,17 @@ public class TDS_FreakController : MonoBehaviour
         if (!isInCumbersomeCollider)
         {
             // If the final position is blocked by something, do not move
-            if (Physics.OverlapBox(new Vector3(_newPosition.x, _raycastPosition.y, _raycastPosition.z) + GetColliderCenterSpace, colliderExtents, Quaternion.identity, WhatCollides, QueryTriggerInteraction.Ignore).Length > 0)
+            if (Physics.OverlapBox(new Vector3(_newPosition.x, _raycastPosition.y, _raycastPosition.z) + GetColliderCenterSpace, colliderExtents, Quaternion.identity, WhatIsObstacle, QueryTriggerInteraction.Ignore).Length > 0)
             {
                 Debug.Log("No movement posible in X !");
                 _newPosition = new Vector3(transform.position.x, _newPosition.y, _newPosition.z);
             }
-            if (Physics.OverlapBox(new Vector3(_raycastPosition.x, _newPosition.y, _raycastPosition.z) + GetColliderCenterSpace, colliderExtents, Quaternion.identity, WhatCollides, QueryTriggerInteraction.Ignore).Length > 0)
+            if (Physics.OverlapBox(new Vector3(_raycastPosition.x, _newPosition.y, _raycastPosition.z) + GetColliderCenterSpace, colliderExtents, Quaternion.identity, WhatIsObstacle, QueryTriggerInteraction.Ignore).Length > 0)
             {
                 Debug.Log("No movement posible in Y !");
                 _newPosition = new Vector3(_newPosition.x, transform.position.y, _newPosition.z);
             }
-            if (Physics.OverlapBox(new Vector3(_raycastPosition.x, _raycastPosition.y, _newPosition.z) + GetColliderCenterSpace, colliderExtents, Quaternion.identity, WhatCollides, QueryTriggerInteraction.Ignore).Length > 0)
+            if (Physics.OverlapBox(new Vector3(_raycastPosition.x, _raycastPosition.y, _newPosition.z) + GetColliderCenterSpace, colliderExtents, Quaternion.identity, WhatIsObstacle, QueryTriggerInteraction.Ignore).Length > 0)
             {
                 Debug.Log("No movement posible in Z !");
                 _newPosition = new Vector3(_newPosition.x, _newPosition.y, transform.position.z);
@@ -427,7 +429,7 @@ public class TDS_FreakController : MonoBehaviour
         // X axis
         if (_movement.x != 0)
         {
-            _result[0] = RaycastZone(new Vector3(_firstBoxCenter.x + (_extents.x * Mathf.Sign(_movement.x)) + (_movement.x / 2), _firstBoxCenter.y, _firstBoxCenter.z) + GetColliderCenterSpace, new Vector3(Mathf.Abs(_movement.x / 2), _extents.y, _extents.z));
+            _result[0] = RaycastZone(new Vector3(_firstBoxCenter.x + (_extents.x * Mathf.Sign(_movement.x)) + (_movement.x / 2), _firstBoxCenter.y, _firstBoxCenter.z) + GetColliderCenterSpace, new Vector3(Mathf.Abs(_movement.x / 2), _extents.y, _extents.z), WhatIsObstacle);
 
         }
         else
@@ -437,7 +439,7 @@ public class TDS_FreakController : MonoBehaviour
         // Y axis
         if (_movement.y != 0)
         {
-            _result[1] = RaycastZone(new Vector3(_firstBoxCenter.x, _firstBoxCenter.y + (_extents.y * Mathf.Sign(_movement.y)) + (_movement.y / 2), _firstBoxCenter.z) + GetColliderCenterSpace, new Vector3(_extents.x, Mathf.Abs(_movement.y / 2), _extents.z));
+            _result[1] = RaycastZone(new Vector3(_firstBoxCenter.x, _firstBoxCenter.y + (_extents.y * Mathf.Sign(_movement.y)) + (_movement.y / 2), _firstBoxCenter.z) + GetColliderCenterSpace, new Vector3(_extents.x, Mathf.Abs(_movement.y / 2), _extents.z), WhatIsObstacle);
         }
         else
         {
@@ -446,7 +448,7 @@ public class TDS_FreakController : MonoBehaviour
         // Z axis
         if (_movement.z != 0)
         {
-            _result[2] = RaycastZone(new Vector3(_firstBoxCenter.x, _firstBoxCenter.y, _firstBoxCenter.z + (_extents.z * Mathf.Sign(_movement.z)) + (_movement.z / 2)) + GetColliderCenterSpace, new Vector3(_extents.x, _extents.y, Mathf.Abs(_movement.z / 2)));
+            _result[2] = RaycastZone(new Vector3(_firstBoxCenter.x, _firstBoxCenter.y, _firstBoxCenter.z + (_extents.z * Mathf.Sign(_movement.z)) + (_movement.z / 2)) + GetColliderCenterSpace, new Vector3(_extents.x, _extents.y, Mathf.Abs(_movement.z / 2)), WhatIsObstacle);
         }
         else
         {
@@ -463,9 +465,9 @@ public class TDS_FreakController : MonoBehaviour
     /// <param name="_center">Center position to raycast from</param>
     /// <param name="_extents">Extents (half size) of the cube zone to raycast</param>
     /// <returns>Returns true if a collider is touched, else way false</returns>
-    private bool RaycastZone(Vector3 _center, Vector3 _extents)
+    private bool RaycastZone(Vector3 _center, Vector3 _extents, LayerMask _layer)
     {
-        return Physics.OverlapBox(_center, _extents, Quaternion.identity, WhatCollides, QueryTriggerInteraction.Ignore).Length > 0;
+        return Physics.OverlapBox(_center, _extents, Quaternion.identity, _layer, QueryTriggerInteraction.Ignore).Length > 0;
     }
 
     // Debug Utility

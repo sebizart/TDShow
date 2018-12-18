@@ -58,7 +58,7 @@ public class TDS_SpriteOrderer : MonoBehaviour
             }
             else
             {
-                _sprite.sortingOrder = -(int)((_sprite.transform.parent ? _sprite.transform.parent.position.z + _sprite.transform.localPosition.z : _sprite.transform.position.z) * 1000);
+                _sprite.sortingOrder = -(int)Camera.main.WorldToScreenPoint(_sprite.transform.position).z;
             }
         }
 

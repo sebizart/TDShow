@@ -957,7 +957,7 @@ GameObject:
   - component: {fileID: 281723943}
   - component: {fileID: 281723942}
   - component: {fileID: 281723941}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Plane
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2475,7 +2475,7 @@ GameObject:
   m_Component:
   - component: {fileID: 783580560}
   - component: {fileID: 783580561}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Collider Limit L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2490,7 +2490,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 783580559}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 4.22, z: 0.38}
+  m_LocalPosition: {x: 0, y: 4.22, z: -3.03}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 841502170}
@@ -2970,6 +2970,7 @@ Transform:
   - {fileID: 281723944}
   - {fileID: 1026131929}
   - {fileID: 1420992428}
+  - {fileID: 1426483010}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3062,7 +3063,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1026131929}
   - component: {fileID: 1026131930}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: BOUND
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4119,7 +4120,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1306106313}
   - component: {fileID: 1306106314}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Collider Limit R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4134,7 +4135,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1306106312}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 4.22, z: 0.38}
+  m_LocalPosition: {x: 0, y: 4.22, z: 3.33}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1132122863}
@@ -4666,7 +4667,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1420992428}
   - component: {fileID: 1420992429}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: BOUND (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4681,7 +4682,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1420992427}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 2.43, y: 4.06, z: -5.548904}
+  m_LocalPosition: {x: 2.43, y: 4.06, z: -5.39}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 975265988}
@@ -4699,6 +4700,50 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 30, y: 8, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &1426483009
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1426483010}
+  - component: {fileID: 1426483011}
+  m_Layer: 11
+  m_Name: Infinity Ground
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1426483010
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1426483009}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 975265988}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &1426483011
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1426483009}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 250, y: 5, z: 250}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1426961936
 GameObject:
