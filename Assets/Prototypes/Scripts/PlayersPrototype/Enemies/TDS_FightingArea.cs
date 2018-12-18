@@ -148,7 +148,7 @@ public class TDS_FightingArea : PunBehaviour
                 Vector3 _pos = new Vector3(_enemy.transform.position.x, .1f, _enemy.transform.position.z);
                 Quaternion _rotation = Quaternion.Euler(90, 0, 0); 
                 TDS_FilledBar _bar = PhotonNetwork.Instantiate(lifeBarName, _pos, _rotation, 0).GetComponent<TDS_FilledBar>();
-                _bar.transform.SetParent(enemyCanvas.transform);
+                _bar.SetCanvas(enemyCanvas); 
                 _enemy.SetLifeBar(_bar); 
             }
             _enemy.SetOwner(this); 
