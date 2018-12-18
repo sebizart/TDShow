@@ -88,7 +88,7 @@ GameObject:
   - component: {fileID: 114938007819431420}
   - component: {fileID: 114400265116156718}
   m_Layer: 5
-  m_Name: EnemyLifeBarBackground
+  m_Name: EnemyLifeBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -185,7 +185,8 @@ MonoBehaviour:
   onSerializeTransformOption: 3
   onSerializeRigidBodyOption: 2
   ownershipTransfer: 0
-  ObservedComponents: []
+  ObservedComponents:
+  - {fileID: 0}
   ObservedComponentsFoldoutOpen: 1
   viewIdField: 0
   instantiationId: -1

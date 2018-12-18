@@ -5017,7 +5017,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1495051508}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.29, y: 0, z: -0.52}
+  m_LocalPosition: {x: 0.29, y: 0, z: -4}
   m_LocalScale: {x: 1, y: 1, z: -1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -5097,8 +5097,7 @@ MonoBehaviour:
   spawnedEnemies: []
   areaPhotonView: {fileID: 0}
   enemyCanvas: {fileID: 1205916625}
-  lifeBarPrefab: {fileID: 114938007819431420, guid: 8f003579143729e49a08de13aa2579c3,
-    type: 3}
+  lifeBarName: EnemyLifeBar
 --- !u!114 &1495051511
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5122,8 +5121,8 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 0}
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 1
-  instantiationId: 1
+  viewIdField: 13
+  instantiationId: 13
   currentMasterID: -1
   isRuntimeInstantiated: 0
 --- !u!65 &1495051512
@@ -5911,6 +5910,39 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &1921797084 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7345467061283182361, guid: 60c7ab31965761248b84c0a283c620a0,
+    type: 3}
+  m_PrefabInstance: {fileID: 7345467060307952855}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1921797088
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1921797084}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ownerId: 0
+  group: 0
+  OwnerShipWasTransfered: 0
+  prefixBackup: -1
+  synchronization: 0
+  onSerializeTransformOption: 3
+  onSerializeRigidBodyOption: 2
+  ownershipTransfer: 0
+  ObservedComponents:
+  - {fileID: 0}
+  ObservedComponentsFoldoutOpen: 1
+  viewIdField: 1
+  instantiationId: 1
+  currentMasterID: -1
+  isRuntimeInstantiated: 0
 --- !u!1 &1935975299
 GameObject:
   m_ObjectHideFlags: 0
@@ -7084,6 +7116,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: ANCHOR
       objectReference: {fileID: 0}
+    - target: {fileID: 7345467061283182342, guid: 60c7ab31965761248b84c0a283c620a0,
+        type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 1058032031}
     - target: {fileID: 7345467061214268277, guid: 60c7ab31965761248b84c0a283c620a0,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -7149,10 +7186,5 @@ PrefabInstance:
       propertyPath: instantiationId
       value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 7345467061283182342, guid: 60c7ab31965761248b84c0a283c620a0,
-        type: 3}
-      propertyPath: m_Camera
-      value: 
-      objectReference: {fileID: 1058032031}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 60c7ab31965761248b84c0a283c620a0, type: 3}

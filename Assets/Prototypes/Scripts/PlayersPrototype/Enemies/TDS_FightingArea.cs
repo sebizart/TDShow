@@ -52,8 +52,8 @@ public class TDS_FightingArea : PunBehaviour
 
     [SerializeField] Canvas enemyCanvas;
     public Canvas EnemyCanvas { get { return enemyCanvas; } set { enemyCanvas = value; } }
-    [SerializeField] TDS_FilledBar lifeBarPrefab;
-    public TDS_FilledBar LifeBarPrefab { get { return lifeBarPrefab; } set { lifeBarPrefab = value; } }
+    [SerializeField] string lifeBarName;
+    public string LifeBarName { get { return lifeBarName; } set { lifeBarName = value; } }
     #endregion
 
     #region UnityMethods
@@ -100,7 +100,7 @@ public class TDS_FightingArea : PunBehaviour
     /// </summary>
     public void ClearDeadEnemies()
     {
-        destroyingEnemies.ForEach(e => Destroy(e.gameObject));
+        destroyingEnemies.ForEach(e => PhotonNetwork.Destroy(e.gameObject));
         destroyingEnemies.Clear();
     }
 
@@ -111,9 +111,10 @@ public class TDS_FightingArea : PunBehaviour
     /// <param name="_enemy">enemy to remove</param>
     public void RemoveEnemy(TDS_Enemy _enemy)
     {
-        int _index = spawnedEnemies.IndexOf(spawnedEnemies.Select(e => e).Where(e => e.PhotonViewElementID == _enemy.PhotonViewElementID).FirstOrDefault());
+        int _index = spawnedEnemies.IndexOf(spawnedEnemies.Where(e => e.PhotonViewElementID == _enemy.PhotonViewElementID).FirstOrDefault());
         spawnedEnemies.RemoveAt(_index);
-        destroyingEnemies.Add(_enemy); 
+        destroyingEnemies.Add(_enemy);
+        if (_enemy.LifeBar) PhotonNetwork.Destroy(_enemy.LifeBar.gameObject); 
         if(spawnedEnemies.Count == 0)
         {
             ClearDeadEnemies(); 
@@ -142,11 +143,11 @@ public class TDS_FightingArea : PunBehaviour
         for (int i = 0; i < _spawnInformations.Count; i++)
         {
             TDS_Enemy _enemy = PhotonNetwork.Instantiate(((EnemyName)_spawnInformations[i].PrefabId).ToString(), _spawnInformations[i].SpawnPosition + Vector3.up, Quaternion.identity, 0).GetComponent<TDS_Enemy>();
-            if(enemyCanvas && lifeBarPrefab)
+            if(enemyCanvas && (lifeBarName != string.Empty))
             {
                 Vector3 _pos = new Vector3(_enemy.transform.position.x, .1f, _enemy.transform.position.z);
                 Quaternion _rotation = Quaternion.Euler(90, 0, 0); 
-                TDS_FilledBar _bar = PhotonNetwork.Instantiate(lifeBarPrefab.name, _pos, _rotation, 0).GetComponent<TDS_FilledBar>();
+                TDS_FilledBar _bar = PhotonNetwork.Instantiate(lifeBarName, _pos, _rotation, 0).GetComponent<TDS_FilledBar>();
                 _bar.transform.SetParent(enemyCanvas.transform);
                 _enemy.SetLifeBar(_bar); 
             }
@@ -165,6 +166,7 @@ public class TDS_FightingArea : PunBehaviour
         foreach (TDS_EnemyInfo _info in _enemiesInfo)
         {
             TDS_Enemy _enemy = PhotonNetwork.Instantiate(((EnemyName)_info.EnemyType).ToString(), _info.EnemyPosition, Quaternion.identity, 0).GetComponent<TDS_Enemy>();
+            _enemy.SetOwner(this); 
             spawnedEnemies.Add(_enemy);
         }
     }
@@ -205,6 +207,7 @@ public class TDS_EnemyInfo
     public int EnemyId;
     public Vector3 EnemyPosition;
     public int EnemyType;
+
     //Add all transfered informations (animation state, life, etc...)
 
     public TDS_EnemyInfo(string _info)

@@ -58,6 +58,7 @@ public class TDS_Enemy : TDS_Character
 
     [Header("Life Bar")]
     [SerializeField] TDS_FilledBar lifeBar; 
+    public TDS_FilledBar LifeBar { get { return lifeBar; } }
     #endregion
 
     #region Methods
@@ -97,7 +98,8 @@ public class TDS_Enemy : TDS_Character
         lifeBar = _bar;
         lifeBar.Owner = this; 
     }
-    //
+
+    #region  WORK IN PROGRESS
 
     /// <summary>
     /// Behaviour of the enemy
@@ -198,8 +200,10 @@ public class TDS_Enemy : TDS_Character
         yield break; 
     }
 
+    #endregion
     private void RemoveEnemyFromFightingArea()
     {
+        if (!PhotonNetwork.isMasterClient) return; 
         ownerArea.RemoveEnemy(this); 
     }
     #endregion

@@ -1916,16 +1916,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7345467061214268277}
     m_Modifications:
-    - target: {fileID: 114591379081382656, guid: cd95efb8b9eb9f14eb472ca36cf4e097,
-        type: 3}
-      propertyPath: sprites.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114591379081382656, guid: cd95efb8b9eb9f14eb472ca36cf4e097,
-        type: 3}
-      propertyPath: whatIsShadow.m_Bits
-      value: 16384
-      objectReference: {fileID: 0}
     - target: {fileID: 4888280037030982, guid: cd95efb8b9eb9f14eb472ca36cf4e097, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -1967,6 +1957,16 @@ PrefabInstance:
         type: 3}
       propertyPath: instantiationId
       value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114591379081382656, guid: cd95efb8b9eb9f14eb472ca36cf4e097,
+        type: 3}
+      propertyPath: sprites.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114591379081382656, guid: cd95efb8b9eb9f14eb472ca36cf4e097,
+        type: 3}
+      propertyPath: whatIsShadow.m_Bits
+      value: 16384
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cd95efb8b9eb9f14eb472ca36cf4e097, type: 3}
