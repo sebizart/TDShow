@@ -105,6 +105,30 @@
     <Reference Include="Unity.Analytics.DataPrivacy">
       <HintPath>C:/Users/EPIIC - Etudiant/Desktop/The Dreadful Show/TDShow - GitHub/TDShow/Library/ScriptAssemblies/Unity.Analytics.DataPrivacy.dll</HintPath>
     </Reference>
+    <Reference Include="Unity.2D.Animation.Runtime">
+      <HintPath>C:/Users/EPIIC - Etudiant/Desktop/The Dreadful Show/TDShow - GitHub/TDShow/Library/ScriptAssemblies/Unity.2D.Animation.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.ProBuilder.AddOns.Editor">
+      <HintPath>C:/Users/EPIIC - Etudiant/Desktop/The Dreadful Show/TDShow - GitHub/TDShow/Library/ScriptAssemblies/Unity.ProBuilder.AddOns.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.InternalAPIEngineBridge.001">
+      <HintPath>C:/Users/EPIIC - Etudiant/Desktop/The Dreadful Show/TDShow - GitHub/TDShow/Library/ScriptAssemblies/Unity.InternalAPIEngineBridge.001.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.2D.Common.Runtime">
+      <HintPath>C:/Users/EPIIC - Etudiant/Desktop/The Dreadful Show/TDShow - GitHub/TDShow/Library/ScriptAssemblies/Unity.2D.Common.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.2D.Animation.Editor">
+      <HintPath>C:/Users/EPIIC - Etudiant/Desktop/The Dreadful Show/TDShow - GitHub/TDShow/Library/ScriptAssemblies/Unity.2D.Animation.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.2D.Triangle.Runtime">
+      <HintPath>C:/Users/EPIIC - Etudiant/Desktop/The Dreadful Show/TDShow - GitHub/TDShow/Library/ScriptAssemblies/Unity.2D.Triangle.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.2D.Common.Editor">
+      <HintPath>C:/Users/EPIIC - Etudiant/Desktop/The Dreadful Show/TDShow - GitHub/TDShow/Library/ScriptAssemblies/Unity.2D.Common.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.InternalAPIEditorBridge.001">
+      <HintPath>C:/Users/EPIIC - Etudiant/Desktop/The Dreadful Show/TDShow - GitHub/TDShow/Library/ScriptAssemblies/Unity.InternalAPIEditorBridge.001.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine.AIModule">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2018.3.0f2/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>
     </Reference>
@@ -371,6 +395,30 @@
     </Reference>
     <Reference Include="UnityEditor.Purchasing">
       <HintPath>C:/Users/EPIIC - Etudiant/Desktop/The Dreadful Show/TDShow - GitHub/TDShow/Library/PackageCache/com.unity.purchasing@2.0.3/Editor/UnityEditor.Purchasing.dll</HintPath>
+    </Reference>
+    <Reference Include="ProBuilderMeshOps">
+      <HintPath>C:/Users/EPIIC - Etudiant/Desktop/The Dreadful Show/TDShow - GitHub/TDShow/Library/PackageCache/com.unity.probuilder@3.0.9/ProBuilder/Classes/ProBuilderMeshOps.dll</HintPath>
+    </Reference>
+    <Reference Include="Poly2Tri">
+      <HintPath>C:/Users/EPIIC - Etudiant/Desktop/The Dreadful Show/TDShow - GitHub/TDShow/Library/PackageCache/com.unity.probuilder@3.0.9/ProBuilder/Classes/ClassesLib/Poly2Tri.dll</HintPath>
+    </Reference>
+    <Reference Include="ProBuilderEditor">
+      <HintPath>C:/Users/EPIIC - Etudiant/Desktop/The Dreadful Show/TDShow - GitHub/TDShow/Library/PackageCache/com.unity.probuilder@3.0.9/ProBuilder/Editor/ProBuilderEditor.dll</HintPath>
+    </Reference>
+    <Reference Include="AssetIdRemapUtility">
+      <HintPath>C:/Users/EPIIC - Etudiant/Desktop/The Dreadful Show/TDShow - GitHub/TDShow/Library/PackageCache/com.unity.probuilder@3.0.9/ProBuilder/AssetIdRemapUtility/Editor/AssetIdRemapUtility.dll</HintPath>
+    </Reference>
+    <Reference Include="ProBuilderCore">
+      <HintPath>C:/Users/EPIIC - Etudiant/Desktop/The Dreadful Show/TDShow - GitHub/TDShow/Library/PackageCache/com.unity.probuilder@3.0.9/ProBuilder/Classes/ProBuilderCore.dll</HintPath>
+    </Reference>
+    <Reference Include="KdTreeLib">
+      <HintPath>C:/Users/EPIIC - Etudiant/Desktop/The Dreadful Show/TDShow - GitHub/TDShow/Library/PackageCache/com.unity.probuilder@3.0.9/ProBuilder/Classes/ClassesLib/KdTreeLib.dll</HintPath>
+    </Reference>
+    <Reference Include="NSubstitute">
+      <HintPath>C:/Users/EPIIC - Etudiant/Desktop/The Dreadful Show/TDShow - GitHub/TDShow/Library/PackageCache/com.unity.2d.common@1.0.10-preview/Tests/Editor/Lib/NSubstitute/NSubstitute.dll</HintPath>
+    </Reference>
+    <Reference Include="pb_Stl">
+      <HintPath>C:/Users/EPIIC - Etudiant/Desktop/The Dreadful Show/TDShow - GitHub/TDShow/Library/PackageCache/com.unity.probuilder@3.0.9/ProBuilder/Classes/ClassesLib/pb_Stl.dll</HintPath>
     </Reference>
     <Reference Include="mscorlib">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2018.3.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/mscorlib.dll</HintPath>

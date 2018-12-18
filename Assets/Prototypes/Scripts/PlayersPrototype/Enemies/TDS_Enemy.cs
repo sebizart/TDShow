@@ -128,12 +128,6 @@ public class TDS_Enemy : TDS_Character
         }
     }
 
-    protected void DestroyLifeBar()
-    {
-        if (!lifeBar) return;
-        Destroy(lifeBar); 
-    }
-
     /// <summary>
     /// Change the state of the enemy to searching
     /// Called on the navMeshAgent's OnDestinationReached event
@@ -215,7 +209,6 @@ public class TDS_Enemy : TDS_Character
     {
         navMeshAgent.OnDestinationReached += EndMoving;
         OnDiying += RemoveEnemyFromFightingArea;
-        OnDiying += DestroyLifeBar; 
     }
 
     protected override void Start () 
