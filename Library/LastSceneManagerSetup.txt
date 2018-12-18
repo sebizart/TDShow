@@ -1,4 +1,1 @@
-sceneSetups:
-- path: Assets/Prototypes/Camera Proto/Scene/ProtoCamera.unity
-  isLoaded: 1
-  isActive: 1
+sceneSetups: []
