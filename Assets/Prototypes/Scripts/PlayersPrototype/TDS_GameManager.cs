@@ -123,11 +123,6 @@ public class TDS_GameManager : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
     {
-        Event e = Event.current;
-        if (e.isKey)
-        {
-            Debug.Log(e.keyCode);
-        }
     }
     #endregion
     #endregion
