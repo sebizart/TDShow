@@ -1,6 +1,6 @@
 Win64
 PlayerPath?
-C:/Users/EPIIC - Etudiant/Desktop/The Dreadful Show/TDShow - GitHub/TDShow/Build/New Proto/The Dreadful Show.exe
+C:/Users/EPIIC - Etudiant/Documents/CATA_Unity/TDShow/Build/AlexisTestMultiplayerBuild/The Dreadful Show.exe
 SceneListBegin?
 Assets/_DEMO/Scene/Scene_Proto_Lucas.unity
 SceneListEnd?
@@ -158,7 +158,7 @@ b3ab2106268377ffe25dd18ac23dca28 Unity.TextMeshPro.dll:TMPro.TMP_Asset
 17c6b61ef664ddb751d783bf4c747c64 Assembly-CSharp.dll:.OnClickDestroy
 4fd8bf02e3089425d3502e26c44ba31a Unity.TextMeshPro.dll:TMPro.TextContainer
 213d6803c36b4db28018c0258bad1977 Assembly-CSharp.dll:.CATA_PointLightScript
-6272a4ac3e4d9351e27cb6f2e3bb9550 Assembly-CSharp.dll:.TDS_FightingArea
+cf8e1078ca4ea55f3e0da516d9734e2b Assembly-CSharp.dll:.TDS_FightingArea
 03bb3f5df287755da12af21e19667a16 Assembly-CSharp.dll:.TDS_GroundedElement
 d4dacc6750ca362eb286d08d4a339689 Assembly-CSharp.dll:.PickupItem
 d5584bcaf2084d78c420fb7112917ba0 Assembly-CSharp.dll:.TDS_Camera

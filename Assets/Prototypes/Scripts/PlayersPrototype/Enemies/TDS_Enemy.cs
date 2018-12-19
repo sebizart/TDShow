@@ -103,9 +103,9 @@ public class TDS_Enemy : TDS_Character
     {
         //transform.position = _enemyInfo.EnemyPosition;
         Health = _enemyInfo.EnemyHealth;
-        if(Health > 0)
+        if(Health > 0 )
         {
-            lifeBar.UpdateCurrentValue();
+            if(lifeBar) lifeBar.UpdateCurrentValue();
         }
         else
         {

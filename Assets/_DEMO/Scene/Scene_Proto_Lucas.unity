@@ -2306,6 +2306,45 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &877036955 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3694638218680988595, guid: 61153dc7222166344bafda880137017f,
+    type: 3}
+  m_PrefabInstance: {fileID: 4497301182282699160}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &877036956
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 877036955}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ownerId: 0
+  group: 0
+  OwnerShipWasTransfered: 0
+  prefixBackup: -1
+  synchronization: 0
+  onSerializeTransformOption: 3
+  onSerializeRigidBodyOption: 2
+  ownershipTransfer: 0
+  ObservedComponents:
+  - {fileID: 0}
+  ObservedComponentsFoldoutOpen: 1
+  viewIdField: 1
+  instantiationId: 1
+  currentMasterID: -1
+  isRuntimeInstantiated: 0
+--- !u!223 &877036959 stripped
+Canvas:
+  m_CorrespondingSourceObject: {fileID: 3775830315995336446, guid: 61153dc7222166344bafda880137017f,
+    type: 3}
+  m_PrefabInstance: {fileID: 4497301182282699160}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &939117906
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4172,9 +4211,8 @@ MonoBehaviour:
         randomValues: 
   spawnedEnemies: []
   areaPhotonView: {fileID: 0}
-  enemyCanvas: {fileID: 0}
-  lifeBarPrefab: {fileID: 114938007819431420, guid: 8f003579143729e49a08de13aa2579c3,
-    type: 3}
+  enemyCanvas: {fileID: 877036959}
+  lifeBarName: EnemyLifeBarBackground
 --- !u!114 &1495051511
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4198,8 +4236,8 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 0}
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 1
-  instantiationId: 1
+  viewIdField: 7
+  instantiationId: 7
   currentMasterID: -1
   isRuntimeInstantiated: 0
 --- !u!65 &1495051512
