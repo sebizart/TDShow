@@ -73,7 +73,7 @@ public class TDS_FightingAreaEditor : Editor
         //ENEMYCANVAS
         p_target.EnemyCanvas = EditorGUILayout.ObjectField("Enemy canvas", p_target.EnemyCanvas, typeof(Canvas), true) as Canvas;
         //ENEMYLIFEBARPREFAB
-        p_target.LifeBarPrefab = EditorGUILayout.ObjectField("LifeBarPrefab", p_target.LifeBarPrefab, typeof(TDS_FilledBar), false) as TDS_FilledBar;
+        p_target.LifeBarName = EditorGUILayout.TextField("LifeBarPrefab", p_target.LifeBarName); 
     }
 
     /// <summary>

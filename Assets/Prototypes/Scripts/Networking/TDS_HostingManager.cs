@@ -70,27 +70,6 @@ public class TDS_HostingManager : PunBehaviour
     /// <summary>
     /// 
     /// </summary>
-    /// <param name="_areaID"></param>
-    /// <param name="_enemies"></param>
-    /// <returns></returns>
-    private string SetFightingAreaInfos(TDS_FightingArea _area)
-    {
-        string _info = $"{_area.AreaPhotonView.viewID}";
-        foreach (TDS_Enemy _enemy in _area.SpawnedEnemies.ToList())
-        {
-            //PrefabName#PosX#PosY#PosZ
-            Debug.Log(_enemy.transform.position); 
-            _info += $"|{((int)_enemy.PrefabName)}#{_enemy.transform.position.x}#{_enemy.transform.position.y}#{_enemy.transform.position.z}";
-        }
-        // THIS PART IS USED WHEN THE PLAYER DOES NOT LEAVE
-        //_area.SpawnedEnemies.Clear();
-        // END OF THE PART
-        return _info;
-    }
-
-    /// <summary>
-    /// 
-    /// </summary>
     /// <returns></returns>
     private string SetPropsInformations()
     {
@@ -115,7 +94,7 @@ public class TDS_HostingManager : PunBehaviour
             {
                 // SEPARATE WITH & AND ADD OTHER INFOMATIONS
                 if (i >= 1) _info += '&';
-                _info += SetFightingAreaInfos(_area);
+                _info += _area.GetFightingAreaInfos();
             }
         }
         //ADD PROPS INFORMATIONS + SEPARATE WITH @

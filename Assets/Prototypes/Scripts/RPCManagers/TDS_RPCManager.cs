@@ -27,47 +27,18 @@ public class TDS_RPCManager : PunBehaviour
     #endregion
 
     #region Methods
-    // TRY TO GLOBALIZE THE METHODS IN ONE 
-
     /// <summary>
-    /// Get the character with its photonView ID
+    /// Get component with its photon view ID
     /// </summary>
-    /// <param name="_characterID">photonview ID</param>
+    /// <typeparam name="T">Desired Component</typeparam>
+    /// <param name="_photonViewID">Photon view ID</param>
     /// <returns></returns>
-    private TDS_Character GetCharacterByID(int _characterID)
+    private T GetTypeWithID<T>(int _photonViewID)
     {
-        // Search a character with the _characterID
-        PhotonView _playerPhotonView = PhotonView.Find(_characterID);
-        if (!_playerPhotonView) return null;
-        TDS_Character _char = _playerPhotonView.GetComponent<TDS_Character>();
-        return _char;
-    }
-
-    /// <summary>
-    /// Get the DamageableElement with its PhotonView ID
-    /// </summary>
-    /// <param name="_elementID"></param>
-    /// <returns></returns>
-    private TDS_DamageableElement GetDamageableElementByID(int _elementID)
-    {
-
-        PhotonView _playerPhotonView = PhotonView.Find(_elementID);
-        if (!_playerPhotonView) return null;
-        TDS_DamageableElement _elem = _playerPhotonView.GetComponent<TDS_DamageableElement>();
-        return _elem;
-    }
-
-    /// <summary>
-    /// Get the Fighting Area with its PhotonView ID
-    /// </summary>
-    /// <param name="_areaID"></param>
-    /// <returns></returns>
-    private TDS_FightingArea GetFightingAreaByID(int _areaID)
-    {
-        PhotonView _areaPhotonView = PhotonView.Find(_areaID);
-        if (!_areaPhotonView) return null;
-        TDS_FightingArea _elem = _areaPhotonView.GetComponent<TDS_FightingArea>();
-        return _elem;
+        PhotonView _areaPhotonView = PhotonView.Find(_photonViewID);
+        if (!_areaPhotonView) return default;
+        T _component = _areaPhotonView.GetComponent<T>();
+        return _component;
     }
 
     // END GLOBALIZATION
@@ -104,7 +75,7 @@ public class TDS_RPCManager : PunBehaviour
     [PunRPC]
     public void LaunchAction(int _characterID, string _actionID)
     {
-        TDS_Character _char = GetCharacterByID(_characterID);
+        TDS_Character _char = GetTypeWithID<TDS_Character>(_characterID);
         if (_char == null)
         {
             TDS_CustomDebug.CustomDebugLog($"No Character found with the ID {_characterID}");
@@ -124,7 +95,7 @@ public class TDS_RPCManager : PunBehaviour
     {
         TDS_AttackInfo _infos = new TDS_AttackInfo(_infoDamages);
         //TDS_Character _character = GetCharacterByID(_infos.AttackerId);
-        _infos.AllSubInfos.ForEach(i => (GetDamageableElementByID(i.TargetId)).TakeDamage(i.Damages));
+        _infos.AllSubInfos.ForEach(i => (GetTypeWithID<TDS_DamageableElement>(i.TargetId)).TakeDamage(i.Damages));
     }
     #endregion
 
@@ -134,9 +105,45 @@ public class TDS_RPCManager : PunBehaviour
     {
         if (!PhotonNetwork.isMasterClient) return;
         TDS_FightingAreaInfo _infos = new TDS_FightingAreaInfo(_areaInfo);
-        TDS_FightingArea _area = GetFightingAreaByID(_infos.FightingAreaID);
+        TDS_FightingArea _area = GetTypeWithID<TDS_FightingArea>(_infos.FightingAreaID);
         if (_area == null) return;
         _area.SpawnEnemiesUsingInfos(_infos.EnemiesInfos);
+    }
+
+    public void UpdateAreaInformations(int _photonViewID)
+    {
+        if (PhotonNetwork.isMasterClient) return;
+        RPCManagerPhotonView.RPC("AskAreaInformations", PhotonTargets.MasterClient, PhotonNetwork.player.ID, _photonViewID);
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="_playerID"></param>
+    /// <param name="_photonID"></param>
+    [PunRPC]
+    public void AskAreaInformations(int _playerID, int _photonID)
+    {
+        if (!PhotonNetwork.isMasterClient) return;
+        PhotonPlayer _player = PhotonPlayer.Find(_playerID); 
+        if (_player == null) return;
+        TDS_FightingArea _area = GetTypeWithID<TDS_FightingArea>(_photonID);
+        if (!_area) return;
+        string _areaInfo = _area.GetFightingAreaInfos(); 
+        RPCManagerPhotonView.RPC("ReceiveAreaInformations", _player, _areaInfo); 
+    }
+
+    [PunRPC]
+    public void ReceiveAreaInformations(string _areaInfo)
+    {
+        TDS_FightingAreaInfo _receivedInfo = new TDS_FightingAreaInfo(_areaInfo);
+        foreach (TDS_EnemyInfo _enemyInfo in _receivedInfo.EnemiesInfos)
+        {
+            TDS_Enemy _e = GetTypeWithID<TDS_Enemy>(_enemyInfo.EnemyId);
+            if (!_e) continue;
+            _e.ApplyInfo(_enemyInfo); 
+        }
+        
     }
     #endregion
 
@@ -148,7 +155,7 @@ public class TDS_RPCManager : PunBehaviour
     [PunRPC]
     public void DropObject(int _characterID)
     {
-        TDS_Character _char = GetCharacterByID(_characterID);
+        TDS_Character _char = GetTypeWithID<TDS_Character>(_characterID);
         if (_char == null)
         {
             TDS_CustomDebug.CustomDebugLog($"No Character found with the ID {_characterID}");
@@ -166,7 +173,7 @@ public class TDS_RPCManager : PunBehaviour
     {
         string[] _split = _characterAndObject.Split('|');
         int _characterID = int.Parse(_split[0]);
-        TDS_Character _char = GetCharacterByID(_characterID);
+        TDS_Character _char = GetTypeWithID<TDS_Character>(_characterID);
         if (_char == null)
         {
             TDS_CustomDebug.CustomDebugLog($"No Character found with the ID {_characterID}");
@@ -182,7 +189,7 @@ public class TDS_RPCManager : PunBehaviour
     [PunRPC]
     public void ThrowObject(int _characterID)
     {
-        TDS_Character _char = GetCharacterByID(_characterID);
+        TDS_Character _char = GetTypeWithID<TDS_Character>(_characterID);
         if (_char == null)
         {
             TDS_CustomDebug.CustomDebugLog($"No Character found with the ID {_characterID}");
@@ -198,7 +205,7 @@ public class TDS_RPCManager : PunBehaviour
     [PunRPC]
     public void ThrowObject(int _characterID, Vector3 _velocity)
     {
-        TDS_Character _char = GetCharacterByID(_characterID);
+        TDS_Character _char = GetTypeWithID<TDS_Character>(_characterID);
         if (_char == null)
         {
             TDS_CustomDebug.CustomDebugLog($"No Character found with the ID {_characterID}");
@@ -220,7 +227,7 @@ public class TDS_RPCManager : PunBehaviour
     [PunRPC]
     public void ThrowMysteryBall(int _characterID, Vector3 _velocity)
     {
-        TDS_Character _char = GetCharacterByID(_characterID);
+        TDS_Character _char = GetTypeWithID<TDS_Character>(_characterID);
         if (_char == null)
         {
             TDS_CustomDebug.CustomDebugLog($"No Character found with the ID {_characterID}");
@@ -242,7 +249,7 @@ public class TDS_RPCManager : PunBehaviour
     public void TryToGrabObject(int _characterID)
     {
         if (!PhotonNetwork.isMasterClient) return;
-        TDS_Character _char = GetCharacterByID(_characterID);
+        TDS_Character _char = GetTypeWithID<TDS_Character>(_characterID);
         TDS_Throwable _throwable = null;
         if (_char == null)
         {
@@ -277,7 +284,7 @@ public class TDS_RPCManager : PunBehaviour
             for (int i = 0; i < _allAreasInfo.Length; i++)
             {
                 TDS_FightingAreaInfo _infos = new TDS_FightingAreaInfo(_allAreasInfo[i]);
-                TDS_FightingArea _area = GetFightingAreaByID(_infos.FightingAreaID);
+                TDS_FightingArea _area = GetTypeWithID<TDS_FightingArea>(_infos.FightingAreaID);
                 if (_area == null) return;
                 _area.SpawnEnemiesUsingInfos(_infos.EnemiesInfos);
             }
@@ -340,14 +347,7 @@ public class TDS_RPCManager : PunBehaviour
     [PunRPC]
     public void RemovePlayer(int _playerCharacter)
     {
-        TDS_Player _this = FindObjectsOfType<TDS_Player>().Where(p => p.PhotonViewElement.isMine).FirstOrDefault();
-
-        if (_this && _this.Character == (PlayerCharacter)_playerCharacter)
-        {
-            _this.DestroyCharacter();
-
-            return;
-        }
+        Debug.Log("Remove => " + (PlayerCharacter)_playerCharacter);
 
         TDS_GameManager.Instance.InGamePlayers[(PlayerCharacter)_playerCharacter] = false;
         TDS_UIManager.Instance.RemovePlayer((PlayerCharacter)_playerCharacter);
@@ -376,6 +376,50 @@ public class TDS_RPCManager : PunBehaviour
         RPCManagerPhotonView.RPC("ReceiveInGamePlayers", PhotonTargets.Others, _toSend);
     }
     #endregion
+
+    #region EnemyLifeBar
+    public void AskForParent(int _photonID)
+    {
+        RPCManagerPhotonView.RPC("AskLifeBarInformations", PhotonTargets.MasterClient, PhotonNetwork.player.ID, _photonID); 
+    }
+
+    /// <summary>
+    /// The master sends its informations to the player to the lifebar with the photon id  
+    /// </summary>
+    /// <param name="_playerID">PLAYER</param>
+    /// <param name="_photonID">LIFEBAR PHOTON ID</param>
+    [PunRPC]
+    public void AskLifeBarInformations(int _playerID, int _photonID)
+    {
+        if (!PhotonNetwork.isMasterClient) return;
+        TDS_FilledBar _bar = PhotonView.Find(_photonID).GetComponent<TDS_FilledBar>(); 
+        if(_bar != null)
+        {
+            int _enemyID = _bar.Owner.PhotonViewElementID;
+            int _canvasID = _bar.transform.parent.GetComponent<PhotonView>().viewID;
+            PhotonPlayer _player = PhotonPlayer.Find(_playerID);
+            RPCManagerPhotonView.RPC("ReceiveLifeBarInformations", _player, _photonID, _enemyID, _canvasID); 
+        }
+    }
+
+    /// <summary>
+    /// Receive and apply informations sent by the master
+    /// </summary>
+    /// <param name="_photonID"></param>
+    /// <param name="_enemyID"></param>
+    /// <param name="_parentID"></param>
+    [PunRPC]
+    public void ReceiveLifeBarInformations(int _photonID, int _enemyID, int _parentID)
+    {
+        TDS_FilledBar _bar = PhotonView.Find(_photonID).GetComponent<TDS_FilledBar>();
+        TDS_Enemy _e = PhotonView.Find(_enemyID).GetComponent<TDS_Enemy>();
+        Transform _t = PhotonView.Find(_parentID).transform;
+        if (!_bar || !_e || !_t) return;
+        _e.SetLifeBar(_bar); 
+        _bar.transform.SetParent(_t);
+        _bar.UpdateCurrentValue(); 
+    }
+    #endregion
     #endregion
     #endregion
 
@@ -387,11 +431,13 @@ public class TDS_RPCManager : PunBehaviour
 
     void Start () 
 	{
+		
 	}
 
     void Update () 
 	{
-    }
+		
+	}
     #endregion
 }
 

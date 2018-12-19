@@ -58,6 +58,7 @@ public class TDS_Enemy : TDS_Character
 
     [Header("Life Bar")]
     [SerializeField] TDS_FilledBar lifeBar; 
+    public TDS_FilledBar LifeBar { get { return lifeBar; } }
     #endregion
 
     #region Methods
@@ -78,7 +79,7 @@ public class TDS_Enemy : TDS_Character
         base.TakeDamage(_damages);
         if(lifeBar)
         {
-            lifeBar.TakingDamages(); 
+            lifeBar.UpdateCurrentValue(); 
         }
     }
 
@@ -97,7 +98,23 @@ public class TDS_Enemy : TDS_Character
         lifeBar = _bar;
         lifeBar.Owner = this; 
     }
-    //
+
+    public void ApplyInfo(TDS_EnemyInfo _enemyInfo)
+    {
+        //transform.position = _enemyInfo.EnemyPosition;
+        Health = _enemyInfo.EnemyHealth;
+        if(Health > 0)
+        {
+            lifeBar.UpdateCurrentValue();
+        }
+        else
+        {
+            transform.position = _enemyInfo.EnemyPosition; 
+        }
+        // ADD OTHER INFORMATIONS
+    }
+
+    #region  WORK IN PROGRESS
 
     /// <summary>
     /// Behaviour of the enemy
@@ -198,8 +215,10 @@ public class TDS_Enemy : TDS_Character
         yield break; 
     }
 
+    #endregion
     private void RemoveEnemyFromFightingArea()
     {
+        if (!PhotonNetwork.isMasterClient) return; 
         ownerArea.RemoveEnemy(this); 
     }
     #endregion
