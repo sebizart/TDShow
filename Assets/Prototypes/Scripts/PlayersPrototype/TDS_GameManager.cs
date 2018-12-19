@@ -93,7 +93,7 @@ public class TDS_GameManager : MonoBehaviour
     {
         yield return new WaitForEndOfFrame();
         isReadyToQuit = true;
-        Application.Quit();    
+        Application.Quit();
     }
     #endregion
 

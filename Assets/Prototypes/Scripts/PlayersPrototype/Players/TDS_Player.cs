@@ -118,11 +118,11 @@ public abstract class TDS_Player : TDS_Character
         {
             AttackThree();
         }
-        else if (Input.GetButtonDown("Alt Fire1"))
+        else if (Input.GetButtonDown("Alt Fire2"))
         {
             InteractWithObjects();
         }
-        else if (Input.GetButtonDown("Alt Fire2"))
+        else if (Input.GetButtonDown("Alt Fire1"))
         {
             Catch();
         }

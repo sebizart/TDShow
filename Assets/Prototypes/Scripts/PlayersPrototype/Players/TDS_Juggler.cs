@@ -229,7 +229,7 @@ public class TDS_Juggler : TDS_Player
         }
         else
         {
-            if (Input.GetButton("Alt Fire1"))
+            if (Input.GetButton("Alt Fire2"))
             {
                 dropObjectTimer += Time.deltaTime;
 
@@ -240,7 +240,7 @@ public class TDS_Juggler : TDS_Player
                 }
             }
 
-            else if (Input.GetButtonDown("Alt Fire2"))
+            else if (Input.GetButtonDown("Alt Fire1"))
             {
                 Catch();
             }
