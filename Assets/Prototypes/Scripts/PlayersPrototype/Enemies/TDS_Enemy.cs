@@ -79,7 +79,7 @@ public class TDS_Enemy : TDS_Character
         base.TakeDamage(_damages);
         if(lifeBar)
         {
-            lifeBar.TakingDamages(); 
+            lifeBar.UpdateCurrentValue(); 
         }
     }
 
@@ -97,6 +97,21 @@ public class TDS_Enemy : TDS_Character
     {
         lifeBar = _bar;
         lifeBar.Owner = this; 
+    }
+
+    public void ApplyInfo(TDS_EnemyInfo _enemyInfo)
+    {
+        //transform.position = _enemyInfo.EnemyPosition;
+        Health = _enemyInfo.EnemyHealth;
+        if(Health > 0)
+        {
+            lifeBar.UpdateCurrentValue();
+        }
+        else
+        {
+            transform.position = _enemyInfo.EnemyPosition; 
+        }
+        // ADD OTHER INFORMATIONS
     }
 
     #region  WORK IN PROGRESS
