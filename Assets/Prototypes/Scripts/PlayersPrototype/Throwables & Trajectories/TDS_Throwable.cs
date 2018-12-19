@@ -145,11 +145,7 @@ public class TDS_Throwable : PunBehaviour
 
     public virtual bool Grab(TDS_Character _bearer)
     {
-        Debug.Log("Test # 1");
-
-        if (!isThrowable || isGrab || isThrown) return false;
-
-        Debug.Log("Test # 2");
+        if (!isThrowable || isGrab) return false;
 
         gameObject.layer = LayerMask.NameToLayer("Player");
         rigidbody.isKinematic = true;

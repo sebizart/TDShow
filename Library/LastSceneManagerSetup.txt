@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/_DEMO/Scene/Scene_Proto.unity
+- path: Assets/_DEMO/Scene/Scene_Proto_Lucas.unity
   isLoaded: 1
   isActive: 1

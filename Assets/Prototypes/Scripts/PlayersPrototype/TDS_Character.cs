@@ -260,7 +260,7 @@ public abstract class TDS_Character : TDS_DamageableElement
         SpriteRenderer[] _spriteRenderer = null;
         if ((_spriteRenderer = GetComponentsInChildren<SpriteRenderer>()).Length > 0)
         {
-            TDS_SpriteOrderer.Instance.AddSprite(_spriteRenderer);
+            TDS_SpriteOrderer.Instance.AddSprite(_spriteRenderer, true);
         }
     }
 

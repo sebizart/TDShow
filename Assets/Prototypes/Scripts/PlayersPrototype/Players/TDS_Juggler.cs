@@ -83,6 +83,9 @@ public class TDS_Juggler : TDS_Player
         }
     }
 
+    // The timer for dropping object
+    private float dropObjectTimer = 0;
+
     // The time of the slap action
     [SerializeField] private float slapTime = .75f;
 
@@ -226,9 +229,23 @@ public class TDS_Juggler : TDS_Player
         {
             InteractWithObjects();
         }
-        else if (Input.GetButtonDown("Alt Fire2"))
+        else
         {
-            Catch();
+            if (Input.GetButton("Alt Fire1"))
+            {
+                dropObjectTimer += Time.deltaTime;
+
+                if (dropObjectTimer >= .5f)
+                {
+                    DropSelectedObject();
+                    dropObjectTimer = 0;
+                }
+            }
+
+            else if (Input.GetButtonDown("Alt Fire2"))
+            {
+                Catch();
+            }
         }
 
         controller.Jump("Jump", true);
@@ -297,7 +314,7 @@ public class TDS_Juggler : TDS_Player
     }
 
     /// <summary>
-    /// Drop the graned object
+    /// Drop all grabbed object
     /// </summary>
     public override void DropObject()
     {
@@ -307,6 +324,19 @@ public class TDS_Juggler : TDS_Player
         // Drop the projectile and remove it from the current weared object
         projectiles.ForEach(p => p.Drop());
         projectiles.Clear();
+    }
+
+    /// <summary>
+    /// Drop the selected object
+    /// </summary>
+    public void DropSelectedObject()
+    {
+        // If the character doesn't have a projectile to drop, return
+        if (ProjectileAmount <= 0) return;
+
+        // Drop the projectile and remove it from the current weared object
+        projectiles[SelectedProjectileIndex].Drop();
+        projectiles.RemoveAt(SelectedProjectileIndex);
     }
 
     /// <summary>
@@ -562,7 +592,7 @@ public class TDS_Juggler : TDS_Player
         lineRenderer.DrawTrajectory(_previewPositions);
 
         // Set the cross position indicating the end of the trajectory
-        cross.transform.position = _previewPositions.Last() + ((cross.transform.rotation * Vector3.up) * 0.001f);
+        cross.transform.position = Vector3.Lerp(cross.transform.position, _previewPositions.Last() + ((cross.transform.rotation * Vector3.up) * 0.001f), Time.deltaTime * 25);
     }
 
     protected override void OnPhotonSerializeView(PhotonStream _stream, PhotonMessageInfo _messageInfo)

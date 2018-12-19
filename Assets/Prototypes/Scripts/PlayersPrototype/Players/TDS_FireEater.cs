@@ -32,7 +32,7 @@ public class TDS_FireEater : TDS_Player
 
     protected override void FixedUpdate()
     {
-        if (isPreparingFire) return;
+        //if (isPreparingFire) return;
         base.FixedUpdate();
     }
 
@@ -52,12 +52,19 @@ public class TDS_FireEater : TDS_Player
     // Update is called once per frame
     protected override void Update()
     {
-        if (isPreparingFire) return;
+        //if (isPreparingFire) return;
         base.Update();
     }
     #endregion
 
     #region Original Methods
+    protected override void Actions()
+    {
+        if (isPreparingFire) return;
+
+        base.Actions();
+    }
+
     public override void ExecuteAction(string _actionID)
     {
         base.ExecuteAction(_actionID);
