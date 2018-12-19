@@ -66,7 +66,10 @@ public class TDS_FightingArea : PunBehaviour
         if (areaPhotonView == null)
         {
             areaPhotonView = GetComponent<PhotonView>();
-            Debug.Log("GET PHOTON"); 
+        }
+        if(!PhotonNetwork.isMasterClient)
+        {
+            StartCoroutine("GetEnemiesInformations");
         }
 	}
     private void OnDrawGizmos()
@@ -170,7 +173,44 @@ public class TDS_FightingArea : PunBehaviour
             spawnedEnemies.Add(_enemy);
         }
     }
+
+    IEnumerator GetEnemiesInformations()
+    {
+        while (!PhotonNetwork.inRoom)
+        {
+            yield return new WaitForEndOfFrame();
+        }
+        if (PhotonNetwork.isMasterClient) yield break;
+        TDS_RPCManager.Instance.UpdateAreaInformations(areaPhotonView.viewID); 
+    }
     #endregion
+
+    #region FigthingAreaInformations
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="_areaID"></param>
+    /// <param name="_enemies"></param>
+    /// <returns></returns>
+    public string GetFightingAreaInfos()
+    {
+        string _info = $"{areaPhotonView.viewID}";
+        foreach (TDS_Enemy _enemy in spawnedEnemies.ToList())
+        {
+            //PrefabName#PosX#PosY#PosZ
+            _info += $"|{((int)_enemy.PrefabName)}#{_enemy.transform.position.x}#{_enemy.transform.position.y}#{_enemy.transform.position.z}#{_enemy.Health}#{_enemy.PhotonViewElementID}";
+        }
+        foreach (TDS_Enemy _enemy in destroyingEnemies)
+        {
+            _info += $"|{((int)_enemy.PrefabName)}#{_enemy.transform.position.x}#{_enemy.transform.position.y}#{_enemy.transform.position.z}#0#{_enemy.PhotonViewElementID}";
+        }
+        // THIS PART IS USED WHEN THE PLAYER DOES NOT LEAVE
+        //_area.SpawnedEnemies.Clear();
+        // END OF THE PART
+        return _info;
+    }
+    #endregion
+
 }
 
 public enum SpawnPointState
@@ -207,6 +247,7 @@ public class TDS_EnemyInfo
     public int EnemyId;
     public Vector3 EnemyPosition;
     public int EnemyType;
+    public int EnemyHealth; 
 
     //Add all transfered informations (animation state, life, etc...)
 
@@ -217,6 +258,9 @@ public class TDS_EnemyInfo
         float _yPos = float.Parse(_info.Split('#')[2]);
         float _zPos = float.Parse(_info.Split('#')[3]);
         EnemyPosition = new Vector3(_xPos, _yPos, _zPos);
+        EnemyHealth = int.Parse(_info.Split('#')[4]);
+        EnemyId = int.Parse(_info.Split('#')[5]); 
+
     }
 
 }
