@@ -1,7 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics; 
+using System.Diagnostics;
+using System.Linq;
 using UnityEngine;
+using Debug = UnityEngine.Debug;
 
 public class TDS_GameManager : MonoBehaviour
 {
@@ -13,6 +15,8 @@ public class TDS_GameManager : MonoBehaviour
     private const string SURVEY_LINK = "https://goo.gl/forms/7T8vu0IHRgpol3HK2";
     // All available player characters associated with a bool indicating if their are already in game
     public Dictionary<PlayerCharacter, bool> InGamePlayers = new Dictionary<PlayerCharacter, bool>();
+
+    private bool isReadyToQuit = true;
     #endregion
 
     #region Singleton
@@ -30,8 +34,16 @@ public class TDS_GameManager : MonoBehaviour
     {
         InGamePlayers[_player] = false;
 
-        TDS_RPCManager.Instance.RPCManagerPhotonView.RPC("RemovePlayer", PhotonTargets.Others, (int)_player);
         TDS_UIManager.Instance.LeaveParty();
+
+        if (isReadyToQuit)
+        {
+            TDS_RPCManager.Instance.RPCManagerPhotonView.RPC("RemovePlayer", PhotonTargets.Others, (int)_player);
+        }
+        else
+        {
+            StartCoroutine(Quit());
+        }
     }
 
     /// <summary>
@@ -49,10 +61,39 @@ public class TDS_GameManager : MonoBehaviour
 
     }
 
-    public void QuitApplication()
+    private bool QuitSystem()
     {
-        Process.Start(SURVEY_LINK); 
-        Application.Quit(); 
+        if (isReadyToQuit && FindObjectsOfType<TDS_Player>().Where(p => p.PhotonViewElement.isMine).FirstOrDefault() != null)
+        {
+            isReadyToQuit = false;
+
+            TDS_RPCManager.Instance.RPCManagerPhotonView.RPC("RemovePlayer", PhotonTargets.All, (int)FindObjectsOfType<TDS_Player>().Where(p => p.PhotonViewElement.isMine).First().Character);
+
+            return false;
+        }
+
+        if (isReadyToQuit)
+        {
+            isReadyToQuit = false;
+
+            // DEBUG
+            //System.IO.File.AppendAllLines(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "/Debug.txt", new string[] { "Debug|" });
+
+            Application.OpenURL(SURVEY_LINK);
+
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    IEnumerator Quit()
+    {
+        yield return new WaitForEndOfFrame();
+        isReadyToQuit = true;
+        Application.Quit();    
     }
     #endregion
 
@@ -61,6 +102,11 @@ public class TDS_GameManager : MonoBehaviour
     {
         if (!Instance) Instance = this;
         else Destroy(this);
+
+        if (!Application.isEditor)
+        {
+            Application.wantsToQuit += QuitSystem;
+        }
 
         InGamePlayers.Add(PlayerCharacter.BeardLady, false);
         InGamePlayers.Add(PlayerCharacter.FatLady, false);
@@ -71,14 +117,18 @@ public class TDS_GameManager : MonoBehaviour
     // Use this for initialization
     void Start ()
     {
-		
+        isReadyToQuit = true;
 	}
 	
 	// Update is called once per frame
 	void Update ()
     {
-		
-	}
+        Event e = Event.current;
+        if (e.isKey)
+        {
+            Debug.Log(e.keyCode);
+        }
+    }
     #endregion
     #endregion
 }

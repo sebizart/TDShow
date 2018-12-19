@@ -231,7 +231,7 @@ public class TDS_UIManager : MonoBehaviour
 
         if(quittingButton && TDS_GameManager.Instance)
         {
-            quittingButton.onClick.AddListener(() => TDS_GameManager.Instance.QuitApplication()); 
+            quittingButton.onClick.AddListener(() => Application.Quit());
         }
     }
 

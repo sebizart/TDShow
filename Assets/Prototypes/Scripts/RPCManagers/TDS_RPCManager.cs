@@ -340,7 +340,14 @@ public class TDS_RPCManager : PunBehaviour
     [PunRPC]
     public void RemovePlayer(int _playerCharacter)
     {
-        Debug.Log("Remove => " + (PlayerCharacter)_playerCharacter);
+        TDS_Player _this = FindObjectsOfType<TDS_Player>().Where(p => p.PhotonViewElement.isMine).FirstOrDefault();
+
+        if (_this && _this.Character == (PlayerCharacter)_playerCharacter)
+        {
+            _this.DestroyCharacter();
+
+            return;
+        }
 
         TDS_GameManager.Instance.InGamePlayers[(PlayerCharacter)_playerCharacter] = false;
         TDS_UIManager.Instance.RemovePlayer((PlayerCharacter)_playerCharacter);
@@ -380,13 +387,11 @@ public class TDS_RPCManager : PunBehaviour
 
     void Start () 
 	{
-		
 	}
 
     void Update () 
 	{
-		
-	}
+    }
     #endregion
 }
 

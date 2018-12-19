@@ -66,6 +66,8 @@ internal class PhotonHandler : MonoBehaviour
 
     protected void Start()
     {
+        Application.quitting += (() => PhotonNetwork.Disconnect());
+
         UnityEngine.SceneManagement.SceneManager.sceneLoaded += (scene, loadingMode) =>
         {
             PhotonNetwork.networkingPeer.NewSceneLoaded();
@@ -90,7 +92,7 @@ internal class PhotonHandler : MonoBehaviour
     {
         PhotonHandler.AppQuits = true;
         PhotonHandler.StopFallbackSendAckThread();
-        PhotonNetwork.Disconnect();
+        //PhotonNetwork.Disconnect();
     }
 
     /// <summary>

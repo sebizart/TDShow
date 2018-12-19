@@ -55,6 +55,7 @@ public abstract class TDS_Player : TDS_Character
     [SerializeField] protected Coroutine currentAttackCoroutine = null;
 
     [SerializeField, Header("Character")] protected PlayerCharacter character = PlayerCharacter.BeardLady;
+    public PlayerCharacter Character { get { return character; } }
 
     [SerializeField, Header("Freak Controller")] protected TDS_FreakController controller = null;
 
@@ -144,6 +145,14 @@ public abstract class TDS_Player : TDS_Character
     protected override IEnumerator Attack(int _minDamage, int _maxDamage)
     {
         return base.Attack(_minDamage, _maxDamage);
+    }
+
+    public void DestroyCharacter()
+    {
+        DropObject();
+        TDS_GameManager.Instance.LeaveParty(character);
+        PhotonNetwork.Destroy(photonViewElement);
+        Destroy(gameObject);
     }
 
     protected virtual IEnumerator EndAttack()
@@ -390,10 +399,7 @@ public abstract class TDS_Player : TDS_Character
             // Change character button
             if (Input.GetButtonDown("Menu"))
             {
-                DropObject();
-                TDS_GameManager.Instance.LeaveParty(character);
-                PhotonNetwork.Destroy(photonViewElement);
-                Destroy(gameObject);
+                DestroyCharacter();
                 return;
             }
 

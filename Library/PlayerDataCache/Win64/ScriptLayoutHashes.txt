@@ -1,8 +1,8 @@
 Win64
 PlayerPath?
-C:/Users/EPIIC - Etudiant/Desktop/The Dreadful Show/TDShow - GitHub/TDShow/Build/PlayTest 0.1/The Dreadful Show.exe
+C:/Users/EPIIC - Etudiant/Desktop/The Dreadful Show/TDShow - GitHub/TDShow/Build/New Proto/The Dreadful Show.exe
 SceneListBegin?
-Assets/_DEMO/Scene/Scene_Proto__SAVE.unity
+Assets/_DEMO/Scene/Scene_Proto_Lucas.unity
 SceneListEnd?
 71bb6a6b6c8f052f948db64c7dd3ca4f Assembly-CSharp.dll:.PunTeams
 45c246b988dd7b7d62e5a5a2e09403a7 Assembly-CSharp.dll:.TDS_BeardLady
@@ -101,7 +101,7 @@ fc108ce7d98c40ac0907e8ca7f500c76 UnityEngine.UI.dll:UnityEngine.UI.Text
 0fd6822f6177297bd0eb4d83cc7a9030 UnityEngine.UI.dll:UnityEngine.UI.ToggleGroup
 abf1930d8126d0b2e00e9449129a0190 UnityEngine.UI.dll:UnityEngine.EventSystems.TouchInputModule
 64e54c0cbb0177c5ea26f340efb9ff85 UnityEngine.UI.dll:UnityEngine.UI.VerticalLayoutGroup
-1771011d8487166cfc3a3b8c557f3a07 Assembly-CSharp.dll:.TDS_FreakController
+019768f745bae718ad661a519b07c045 Assembly-CSharp.dll:.TDS_FreakController
 dfd7a2ae89b53ee12027e54728efd088 Assembly-CSharp.dll:.PhotonHandler
 71bb6a6b6c8f052f948db64c7dd3ca4f UnityEngine.Timeline.dll:UnityEngine.Timeline.ActivationPlayableAsset
 06f0fef534ca4c1d6064fd77a26bf722 UnityEngine.Timeline.dll:UnityEngine.Timeline.ActivationTrack

@@ -173,9 +173,7 @@ public class TDS_Juggler : TDS_Player
         // Actions verifications
         if (Input.GetButtonDown("Menu"))
         {
-            TDS_GameManager.Instance.LeaveParty(character);
-            PhotonNetwork.Destroy(photonViewElement);
-            Destroy(gameObject);
+            DestroyCharacter();
             return;
         }
 
